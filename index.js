@@ -19,6 +19,8 @@ function Thermostat(log, config) {
   console.log('ABC Testing');
 
   this.name = config.name;
+  this.test = config.test;
+  console.log(this.test);
   this.apiroute = config.apiroute;
   this.pollInterval = config.pollInterval || 300;
   this.validStates = config.validStates || [0, 1, 2, 3];

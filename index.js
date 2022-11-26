@@ -16,6 +16,7 @@ module.exports = function (homebridge) {
 
 function Thermostat(log, config) {
   this.log = log;
+  console.log('ABC Testing');
 
   this.name = config.name;
   this.apiroute = config.apiroute;

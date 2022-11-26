@@ -24,7 +24,7 @@ function Thermostat(log, config) {
 
   this.test2 = config.test2;
   console.log(this.test2);
-  console.log(this.test.sub);
+  console.log(this.test2.sub);
 
   this.test2sub = config.test2.sub;
   console.log(this.test2sub);

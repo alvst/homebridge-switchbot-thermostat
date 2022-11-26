@@ -22,8 +22,12 @@ function Thermostat(log, config) {
   this.test = config.test;
   console.log(this.test);
 
-  this.test2.sub = config.test2.sub;
-  console.log(this.test2.sub);
+  this.test2 = config.test2;
+  console.log(this.test2);
+  console.log(this.test.sub2);
+
+  this.test2sub = config.test2.sub;
+  console.log(this.test2sub);
 
   this.apiroute = config.apiroute;
   this.pollInterval = config.pollInterval || 300;

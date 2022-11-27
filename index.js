@@ -3,6 +3,7 @@ const packageJson = require('./package.json');
 const request = require('request');
 const ip = require('ip');
 const http = require('http');
+const fs = require('fs');
 
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
@@ -62,6 +63,14 @@ function Thermostat(log, config) {
   this.maxTemp = config.maxTemp || 30;
   this.minTemp = config.minTemp || 15;
   this.minStep = config.minStep || 0.5;
+
+  fs.open('homebridge-web-thermostat2/db.json', 'w', function (err, fd) {
+    console.log(err);
+    console.log('file opened');
+    console.log(fd);
+  });
+
+  console.log('file opened');
 
   if (this.username != null && this.password != null) {
     this.auth = {

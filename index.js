@@ -30,14 +30,14 @@ function Thermostat(log, config) {
   this.test2sub = config.test2.sub;
   console.log(this.test2sub);
 
-  this.apiroute = config.apiroute;
+  // this.apiroute = config.apiroute;
   this.pollInterval = config.pollInterval || 300;
   this.validStates = config.validStates || [0, 1, 2, 3];
   console.log(this.validStates);
 
-  this.listener = config.listener || false;
-  this.port = config.port || 2000;
-  this.checkupDelay = config.checkupDelay || 2000;
+  // this.listener = config.listener || false;
+  // this.port = config.port || 2000;
+  // this.checkupDelay = config.checkupDelay || 2000;
   this.requestArray = [
     'targetHeatingCoolingState',
     'targetTemperature',
@@ -46,19 +46,19 @@ function Thermostat(log, config) {
   ];
 
   this.manufacturer = config.manufacturer || packageJson.author;
-  this.serial = config.serial || this.apiroute;
+  this.serial = 'n/a';
   this.model = config.model || packageJson.name;
   this.firmware = config.firmware || packageJson.version;
 
-  this.username = config.username || null;
-  this.password = config.password || null;
-  this.timeout = config.timeout || 3000;
+  // this.username = config.username || null;
+  // this.password = config.password || null;
+  // this.timeout = config.timeout || 3000;
   this.http_method = config.http_method || 'GET';
 
-  this.temperatureThresholds = config.temperatureThresholds || false;
-  this.heatOnly = config.heatOnly || false;
+  // this.temperatureThresholds = config.temperatureThresholds || false;
+  // this.heatOnly = config.heatOnly || false;
 
-  this.currentRelativeHumidity = config.currentRelativeHumidity || false;
+  // this.currentRelativeHumidity = config.currentRelativeHumidity || false;
   this.temperatureDisplayUnits = config.temperatureDisplayUnits || 0;
   this.maxTemp = config.maxTemp || 30;
   this.minTemp = config.minTemp || 15;
@@ -70,45 +70,45 @@ function Thermostat(log, config) {
     console.log(fd);
   });
 
-  console.log('file opened');
+  // console.log('file opened');
 
-  if (this.username != null && this.password != null) {
-    this.auth = {
-      user: this.username,
-      pass: this.password,
-    };
-  }
+  // if (this.username != null && this.password != null) {
+  //   this.auth = {
+  //     user: this.username,
+  //     pass: this.password,
+  //   };
+  // }
 
-  if (this.listener) {
-    this.server = http.createServer(
-      function (request, response) {
-        const baseURL = 'http://' + request.headers.host + '/';
-        const url = new URL(request.url, baseURL);
-        if (this.requestArray.includes(url.pathname.substr(1))) {
-          try {
-            this.log.debug('Handling request');
-            response.end('Handling request');
-            this._httpHandler(
-              url.pathname.substr(1),
-              url.searchParams.get('value')
-            );
-          } catch (e) {
-            this.log.warn('Error parsing request: %s', e.message);
-          }
-        } else {
-          this.log.warn('Invalid request: %s', request.url);
-          response.end('Invalid request');
-        }
-      }.bind(this)
-    );
+  // if (this.listener) {
+  //   this.server = http.createServer(
+  //     function (request, response) {
+  //       const baseURL = 'http://' + request.headers.host + '/';
+  //       const url = new URL(request.url, baseURL);
+  //       if (this.requestArray.includes(url.pathname.substr(1))) {
+  //         try {
+  //           this.log.debug('Handling request');
+  //           response.end('Handling request');
+  //           this._httpHandler(
+  //             url.pathname.substr(1),
+  //             url.searchParams.get('value')
+  //           );
+  //         } catch (e) {
+  //           this.log.warn('Error parsing request: %s', e.message);
+  //         }
+  //       } else {
+  //         this.log.warn('Invalid request: %s', request.url);
+  //         response.end('Invalid request');
+  //       }
+  //     }.bind(this)
+  //   );
 
-    this.server.listen(
-      this.port,
-      function () {
-        this.log('Listen server: http://%s:%s', ip.address(), this.port);
-      }.bind(this)
-    );
-  }
+  //   this.server.listen(
+  //     this.port,
+  //     function () {
+  //       this.log('Listen server: http://%s:%s', ip.address(), this.port);
+  //     }.bind(this)
+  //   );
+  // }
 
   this.service = new Service.Thermostat(this.name);
 }
@@ -362,20 +362,24 @@ Thermostat.prototype = {
       .setCharacteristic(Characteristic.SerialNumber, this.serial)
       .setCharacteristic(Characteristic.FirmwareRevision, this.firmware);
 
+    // Needed
     this.service
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
       .updateValue(this.temperatureDisplayUnits);
 
+    // Needed
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .on('set', this.setTargetHeatingCoolingState.bind(this));
 
+    // Needed
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .setProps({
         validValues: this.validStates,
       });
 
+    // Needed
     this.service
       .getCharacteristic(Characteristic.TargetTemperature)
       .on('set', this.setTargetTemperature.bind(this))
@@ -385,6 +389,7 @@ Thermostat.prototype = {
         minStep: this.minStep,
       });
 
+    // Needed
     this.service.getCharacteristic(Characteristic.CurrentTemperature).setProps({
       minValue: -600,
       maxValue: 600,
@@ -410,14 +415,14 @@ Thermostat.prototype = {
         });
     }
 
-    this._getStatus(function () {});
+    // this._getStatus(function () {});
 
-    setInterval(
-      function () {
-        this._getStatus(function () {});
-      }.bind(this),
-      this.pollInterval * 1000
-    );
+    // setInterval(
+    //   function () {
+    //     this._getStatus(function () {});
+    //   }.bind(this),
+    //   this.pollInterval * 1000
+    // );
 
     return [this.informationService, this.service];
   },

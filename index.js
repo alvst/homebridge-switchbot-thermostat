@@ -65,9 +65,9 @@ function Thermostat(log, config) {
   this.minStep = config.minStep || 0.5;
 
   fs.open('homebridge-web-thermostat2/db.json', 'w', function (err, fd) {
-    this.log.debug(err);
-    this.log.debug('file opened');
-    this.log.debug(fd);
+    console.log(err);
+    console.log('file opened');
+    console.log(fd);
   });
 
   console.log('file opened');

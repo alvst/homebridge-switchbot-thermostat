@@ -20,7 +20,11 @@ function Thermostat(log, config) {
   this.log = log;
 
   console.log(config.thermostat_configuration);
-  console.log(config.thermostat_configuration.bearerToken);
+  // console.log(config.thermostat_configuration.bearerToken);
+
+  let test = config.thermostat_configuration.bearerToken;
+  console.log(test);
+  console.log(test.bearerToken);
 
   this.validStates = config.validStates || [0, 1, 2, 3];
 

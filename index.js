@@ -20,6 +20,7 @@ function Thermostat(log, config) {
   this.power_switch_accessory_uuid =
     config.configuration.power_switch_accessory_uuid;
   this.temp_up_accessory_uuid = config.configuration.temp_up_accessory_uuid;
+  this.test = config.configuration.bearerToken;
   this.temp_down_accessory_uuid = config.configuration.temp_down_accessory_uuid;
 
   this.log = log;

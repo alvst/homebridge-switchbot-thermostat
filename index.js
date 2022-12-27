@@ -23,6 +23,8 @@ function Thermostat(log, config) {
   console.log(config.thermostat_configuration);
   // console.log(config.thermostat_configuration['bearerToken']);
 
+  console.log(config['thermostat_configuration'].bearerToken);
+
   this.bearerToken = config.thermostat_configuration['bearerToken'];
   this.power_switch_accessory_uuid =
     config.thermostat_configuration['power_switch_accessory_uuid'];

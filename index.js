@@ -45,25 +45,15 @@ function Thermostat(log, config) {
   this.minTemp = config.thermostat_details.minTemp || 15;
   this.minStep = config.thermostat_details.minStep || 0.5;
 
-  // fs.open('homebridge-web-thermostat2/db.json', 'w', function (err, fd) {
-  //   data = JSON.parse(data);
-
-  //   console.log(err);
-  //   console.log('file opened');
-  //   console.log(fd);
-
-  //   this.poweredOn = false;
-  //   this.currentTemperature = 0;
-  // });
-  config.testing = 'testing';
-
   this.poweredOn = false;
-  this.currentTemperature = cnfig.configuration.thermostat_details.current_temp;
+  this.currentTemperature =
+    config.configuration.thermostat_details.current_temp;
 
   let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
   data = JSON.parse(data);
   this.powerState = data.table.powerState;
   this.currentTemperature = data.table.targetTemperature;
+  console.log('Current Temperature: ' + this.currentTemperature);
 
   this.service = new Service.Thermostat(this.name);
 }

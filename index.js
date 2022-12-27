@@ -16,24 +16,12 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
-  this.configuration;
-  this.power_switch_accessory_uuid;
   this.name = config.name;
-  this.configuration = config.thermostat_configuration;
-  this.test = config.thermostat_configuration;
-  console.log(typeof config.thermostat_configuration);
-  console.log(config.thermostat_configuration.power_switch_accessory_uuid);
-  this.power_switch_accessory_uuid =
-    config.thermostat_configuration.power_switch_accessory_uuid;
-
-  this.temp_up_accessory_uuid = thermostat_configuration.temp_up_accessory_uuid;
-  this.bearerToken2 = config.thermostat_configuration.bearerToken;
-  this.temp_down_accessory_uuid =
-    config.thermostat_configuration.temp_down_accessory_uuid;
-
   this.log = log;
 
-  this.pollInterval = config.pollInterval || 300;
+  console.log(config.thermostat_configuration);
+  console.log(config.thermostat_configuration.bearerToken);
+
   this.validStates = config.validStates || [0, 1, 2, 3];
 
   this.requestArray = [

@@ -19,10 +19,11 @@ function Thermostat(log, config) {
   this.name = config.name;
   this.log = log;
 
-  // console.log(config.thermostat_configuration.bearerToken);
+  console.log(config.thermostat_configuration.bearerToken);
+  console.log(config.thermostat_configuration);
 
   let configuration = config.thermostat_configuration;
-  console.log(configuration.bearerToken);
+  // console.log(configuration.bearerToken);
   // this.bearerToken = configuration.bearerToken;
   power_switch_accessory_uuid = configuration.power_switch_accessory_uuid;
   temp_up_accessory_uuid = configuration.temp_up_accessory_uuid;

@@ -22,13 +22,13 @@ function Thermostat(log, config) {
   // console.log(config.thermostat_configuration.bearerToken);
   console.log(config.thermostat_configuration);
 
-  let configuration = config.thermostat_configuration;
-  // console.log(configuration.bearerToken);
-  // this.bearerToken = configuration.bearerToken;
-  let power_switch_accessory_uuid =
-    config.thermostat_configuration.power_switch_accessory_uuid;
-  let temp_up_accessory_uuid = configuration.temp_up_accessory_uuid;
-  let temp_down_accessory_uuid = configuration.temp_down_accessory_uuid;
+  console.log(config[thermostat_configuration].bearerToken);
+
+  // let configuration = config.thermostat_configuration;
+  // let power_switch_accessory_uuid =
+  //   config.thermostat_configuration.power_switch_accessory_uuid;
+  // let temp_up_accessory_uuid = configuration.temp_up_accessory_uuid;
+  // let temp_down_accessory_uuid = configuration.temp_down_accessory_uuid;
 
   this.validStates = config.validStates || [0, 1, 2, 3];
 

@@ -16,11 +16,10 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
-  this.bearerToken = config.configuration.bearerToken;
   this.power_switch_accessory_uuid =
     config.configuration.power_switch_accessory_uuid;
   this.temp_up_accessory_uuid = config.configuration.temp_up_accessory_uuid;
-  this.test = config.configuration.bearerToken;
+  this.bearerToken2 = config.configuration.bearerToken;
   this.temp_down_accessory_uuid = config.configuration.temp_down_accessory_uuid;
 
   this.log = log;
@@ -46,7 +45,6 @@ function Thermostat(log, config) {
   this.minStep = config.thermostat_details.minStep || 0.5;
 
   this.poweredOn = false;
-  config.configuration.thermostat_details.current_temp = 70;
 
   this.currentTemperature =
     config.configuration.thermostat_details.current_temp;

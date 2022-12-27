@@ -23,7 +23,6 @@ function Thermostat(log, config) {
   this.temp_down_accessory_uuid = config.configuration.temp_down_accessory_uuid;
 
   this.log = log;
-  console.log('ABC Testing');
 
   this.pollInterval = config.pollInterval || 300;
   this.validStates = config.validStates || [0, 1, 2, 3];
@@ -46,6 +45,8 @@ function Thermostat(log, config) {
   this.minStep = config.thermostat_details.minStep || 0.5;
 
   this.poweredOn = false;
+  config.configuration.thermostat_details.current_temp = 70;
+
   this.currentTemperature =
     config.configuration.thermostat_details.current_temp;
 

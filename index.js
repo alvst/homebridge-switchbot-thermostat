@@ -210,12 +210,10 @@ Thermostat.prototype = {
     let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
     data = JSON.parse(data);
 
-    if(this.currentTemperature > data.table.currentTemp)
-    for (let i = 0; i < this.currentTemperature - ; i++) {
-      
-    }
+    if (this.currentTemperature > data.table.currentTemp)
+      for (let i = 0; i < this.currentTemperature - 0; i++) {}
     // Hit API with CURL
-    
+
     // Update the powerState property
     data.table.currentTemp = this.currentTemp - 1;
 

@@ -17,14 +17,15 @@ module.exports = function (homebridge) {
 
 function Thermostat(log, config) {
   this.name = config.name;
-  this.configuration = config.configuration;
-  // console.log(config.configuration.power_switch_accessory_uuid);
-  // this.power_switch_accessory_uuid =
-  //   this.configuration.power_switch_accessory_uuid;
+  this.configuration = config.thermostat_configuration;
+  console.log(config.thermostat_configuration.power_switch_accessory_uuid);
+  this.power_switch_accessory_uuid =
+    config.thermostat_configuration.power_switch_accessory_uuid;
 
-  this.temp_up_accessory_uuid = this.configuration.temp_up_accessory_uuid;
-  this.bearerToken2 = this.configuration.bearerToken;
-  this.temp_down_accessory_uuid = this.configuration.temp_down_accessory_uuid;
+  this.temp_up_accessory_uuid = thermostat_configuration.temp_up_accessory_uuid;
+  this.bearerToken2 = config.thermostat_configuration.bearerToken;
+  this.temp_down_accessory_uuid =
+    config.thermostat_configuration.temp_down_accessory_uuid;
 
   this.log = log;
 

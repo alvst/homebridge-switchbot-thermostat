@@ -16,6 +16,12 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
+  this.bearerToken = config.configuration.bearerToken;
+  this.power_switch_accessory_uuid =
+    config.configuration.power_switch_accessory_uuid;
+  this.temp_up_accessory_uuid = config.configuration.temp_up_accessory_uuid;
+  this.temp_down_accessory_uuid = config.configuration.temp_down_accessory_uuid;
+
   this.log = log;
   console.log('ABC Testing');
 

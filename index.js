@@ -16,6 +16,8 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
+  this.configuration;
+  this.power_switch_accessory_uuid;
   this.name = config.name;
   this.configuration = config.thermostat_configuration;
   this.test = config.thermostat_configuration;

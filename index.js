@@ -23,6 +23,7 @@ function Thermostat(log, config) {
   console.log(config.thermostat_configuration);
   let a = config.thermostat_configuration;
   console.log(a);
+  console.log(a['bearerToken']);
 
   console.log(config.thermostat_configuration[bearerToken]);
 

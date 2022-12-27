@@ -22,7 +22,8 @@ function Thermostat(log, config) {
   // console.log(config.thermostat_configuration.bearerToken);
 
   let configuration = config.thermostat_configuration;
-  this.bearerToken = configuration.bearerToken;
+  console.log(configuration.bearerToken);
+  // this.bearerToken = configuration.bearerToken;
   power_switch_accessory_uuid = configuration.power_switch_accessory_uuid;
   temp_up_accessory_uuid = configuration.temp_up_accessory_uuid;
   temp_down_accessory_uuid = configuration.temp_down_accessory_uuid;

@@ -21,10 +21,6 @@ function Thermostat(log, config) {
 
   // console.log(config.thermostat_configuration.bearerToken);
   console.log(config.thermostat_configuration);
-  let a = config.thermostat_configuration;
-  console.log(a);
-  console.log(a['bearerToken']);
-
   console.log(config.thermostat_configuration['bearerToken']);
 
   this.bearerToken = config.thermostat_configuration['bearerToken'];
@@ -61,7 +57,10 @@ function Thermostat(log, config) {
 
   this.poweredOn = false;
 
-  let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
+  let data = fs
+    .readFile('homebridge-web-thermostat2/db.json')
+    .catch(() => fs.writeFile('homebridge-web-thermostat2/db.json', content));
+
   data = JSON.parse(data);
   this.powerState = data.table.powerState;
   this.currentTemperature = data.table.targetTemperature;

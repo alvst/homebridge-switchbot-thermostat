@@ -19,8 +19,8 @@ function Thermostat(log, config) {
   this.name = config.name;
   this.configuration = config.configuration;
   // console.log(config.configuration.power_switch_accessory_uuid);
-  this.power_switch_accessory_uuid =
-    this.configuration.power_switch_accessory_uuid;
+  // this.power_switch_accessory_uuid =
+  //   this.configuration.power_switch_accessory_uuid;
 
   this.temp_up_accessory_uuid = this.configuration.temp_up_accessory_uuid;
   this.bearerToken2 = this.configuration.bearerToken;

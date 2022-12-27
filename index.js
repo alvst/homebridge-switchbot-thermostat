@@ -65,50 +65,20 @@ function Thermostat(log, config) {
   this.minStep = config.minStep || 0.5;
 
   fs.open('homebridge-web-thermostat2/db.json', 'w', function (err, fd) {
+    data = JSON.parse(data);
+
     console.log(err);
     console.log('file opened');
     console.log(fd);
+
+    this.poweredOn = false;
+    this.currentTemperature = 0;
   });
 
-  // console.log('file opened');
-
-  // if (this.username != null && this.password != null) {
-  //   this.auth = {
-  //     user: this.username,
-  //     pass: this.password,
-  //   };
-  // }
-
-  // if (this.listener) {
-  //   this.server = http.createServer(
-  //     function (request, response) {
-  //       const baseURL = 'http://' + request.headers.host + '/';
-  //       const url = new URL(request.url, baseURL);
-  //       if (this.requestArray.includes(url.pathname.substr(1))) {
-  //         try {
-  //           this.log.debug('Handling request');
-  //           response.end('Handling request');
-  //           this._httpHandler(
-  //             url.pathname.substr(1),
-  //             url.searchParams.get('value')
-  //           );
-  //         } catch (e) {
-  //           this.log.warn('Error parsing request: %s', e.message);
-  //         }
-  //       } else {
-  //         this.log.warn('Invalid request: %s', request.url);
-  //         response.end('Invalid request');
-  //       }
-  //     }.bind(this)
-  //   );
-
-  //   this.server.listen(
-  //     this.port,
-  //     function () {
-  //       this.log('Listen server: http://%s:%s', ip.address(), this.port);
-  //     }.bind(this)
-  //   );
-  // }
+  let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
+  data = JSON.parse(data);
+  this.powerState = data.table.powerState;
+  this.currentTemperature = data.table.targetTemperature;
 
   this.service = new Service.Thermostat(this.name);
 }
@@ -119,21 +89,21 @@ Thermostat.prototype = {
     callback();
   },
 
-  _httpRequest: function (url, body, method, callback) {
-    request(
-      {
-        url: url,
-        body: body,
-        method: this.http_method,
-        timeout: this.timeout,
-        rejectUnauthorized: false,
-        auth: this.auth,
-      },
-      function (error, response, body) {
-        callback(error, response, body);
-      }
-    );
-  },
+  // _httpRequest: function (url, body, method, callback) {
+  //   request(
+  //     {
+  //       url: url,
+  //       body: body,
+  //       method: this.http_method,
+  //       timeout: this.timeout,
+  //       rejectUnauthorized: false,
+  //       auth: this.auth,
+  //     },
+  //     function (error, response, body) {
+  //       callback(error, response, body);
+  //     }
+  //   );
+  // },
 
   _getStatus: function (callback) {
     const url = this.apiroute + '/status';
@@ -213,6 +183,46 @@ Thermostat.prototype = {
           }
         }
       }.bind(this)
+    );
+  },
+
+  togglePowerState: function (callback) {
+    // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
+    this.log('Toggled power state to %s', this.poweredOn);
+    let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
+    data = JSON.parse(data);
+
+    // Hit API with CURL
+
+    // Update the powerState property
+    data.table.powerState = !this.poweredOn;
+
+    // Write the updated JSON to the file
+    fs.writeFileSync(
+      'homebridge-web-thermostat2/db.json',
+      JSON.stringify(data)
+    );
+  },
+
+  changeTemp: function (callback, changeType) {
+    // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
+
+    let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
+    data = JSON.parse(data);
+
+    if(this.currentTemperature > data.table.currentTemp)
+    for (let i = 0; i < this.currentTemperature - ; i++) {
+      
+    }
+    // Hit API with CURL
+    
+    // Update the powerState property
+    data.table.currentTemp = this.currentTemp - 1;
+
+    // Write the updated JSON to the file
+    fs.writeFileSync(
+      'homebridge-web-thermostat2/db.json',
+      JSON.stringify(data)
     );
   },
 

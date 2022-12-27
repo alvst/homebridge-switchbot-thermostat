@@ -19,7 +19,7 @@ function Thermostat(log, config) {
   this.name = config.name;
   this.log = log;
 
-  console.log(config.thermostat_configuration.bearerToken);
+  // console.log(config.thermostat_configuration.bearerToken);
   console.log(config.thermostat_configuration);
 
   let configuration = config.thermostat_configuration;

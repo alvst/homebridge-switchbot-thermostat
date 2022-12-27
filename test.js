@@ -8,7 +8,7 @@ async function putData() {
       headers: {
         accept: '*/*',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsdmllIiwibmFtZSI6ImFsdmllIiwiYWRtaW4iOnRydWUsImluc3RhbmNlSWQiOiJiYjBjMmY2NzExYWZlYjYwM2Q0NmNmNTY2YjNlZmFkMjljMzNhNmM1MGQ1YTkzMDJjYjhiNzAxMTNmNzFhODNhIiwiaWF0IjoxNjY5NDc4MjM1LCJleHAiOjE2Njk1MDcwMzV9.GeDO7Bk-_v6jAhQqodnASXA-uCP3wKzMJ6MX0MG0fM0',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsdmllIiwibmFtZSI6ImFsdmllIiwiYWRtaW4iOnRydWUsImluc3RhbmNlSWQiOiJiYjBjMmY2NzExYWZlYjYwM2Q0NmNmNTY2YjNlZmFkMjljMzNhNmM1MGQ1YTkzMDJjYjhiNzAxMTNmNzFhODNhIiwiaWF0IjoxNjcwMDkzNTQ0LCJleHAiOjE2NzAxMjIzNDR9.qtDVyPrVvmORIeJ4v7ue3NEWYvqfcvGXPmQSLS-9Y6I',
         'Content-Type': 'application/json',
       },
       // body: '{\n  "characteristicType": "On",\n"value": true\n}',

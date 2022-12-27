@@ -2,7 +2,7 @@ import requests
 
 headers = {
     'accept': '*/*',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsdmllIiwibmFtZSI6ImFsdmllIiwiYWRtaW4iOnRydWUsImluc3RhbmNlSWQiOiJiYjBjMmY2NzExYWZlYjYwM2Q0NmNmNTY2YjNlZmFkMjljMzNhNmM1MGQ1YTkzMDJjYjhiNzAxMTNmNzFhODNhIiwiaWF0IjoxNjY5NTY4MTE4LCJleHAiOjE2Njk1OTY5MTh9.c1Dmu45w5NuwVZ7Y2loYgpfGBapzvwErN7K9NPNa8AM',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsdmllIiwibmFtZSI6ImFsdmllIiwiYWRtaW4iOnRydWUsImluc3RhbmNlSWQiOiJiYjBjMmY2NzExYWZlYjYwM2Q0NmNmNTY2YjNlZmFkMjljMzNhNmM1MGQ1YTkzMDJjYjhiNzAxMTNmNzFhODNhIiwiaWF0IjoxNjcwMDkzNTQ0LCJleHAiOjE2NzAxMjIzNDR9.qtDVyPrVvmORIeJ4v7ue3NEWYvqfcvGXPmQSLS-9Y6I',
     # Already added when you pass json= but not when you pass data=
     # 'Content-Type': 'application/json',
 }

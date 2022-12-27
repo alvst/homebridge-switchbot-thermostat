@@ -26,7 +26,6 @@ function Thermostat(log, config) {
 
   this.pollInterval = config.pollInterval || 300;
   this.validStates = config.validStates || [0, 1, 2, 3];
-  console.log(this.validStates);
 
   this.requestArray = [
     'targetHeatingCoolingState',
@@ -45,9 +44,6 @@ function Thermostat(log, config) {
   this.minStep = config.thermostat_details.minStep || 0.5;
 
   this.poweredOn = false;
-
-  this.currentTemperature =
-    config.configuration.thermostat_details.current_temp;
 
   let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
   data = JSON.parse(data);

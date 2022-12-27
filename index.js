@@ -25,25 +25,10 @@ function Thermostat(log, config) {
   this.log = log;
   console.log('ABC Testing');
 
-  this.name = config.name;
-  this.test = config.test;
-  console.log(this.test);
-
-  this.test2 = config.test2;
-  console.log(this.test2);
-  console.log(this.test2.sub);
-
-  this.test2sub = config.test2.sub;
-  console.log(this.test2sub);
-
-  // this.apiroute = config.apiroute;
   this.pollInterval = config.pollInterval || 300;
   this.validStates = config.validStates || [0, 1, 2, 3];
   console.log(this.validStates);
 
-  // this.listener = config.listener || false;
-  // this.port = config.port || 2000;
-  // this.checkupDelay = config.checkupDelay || 2000;
   this.requestArray = [
     'targetHeatingCoolingState',
     'targetTemperature',
@@ -54,32 +39,26 @@ function Thermostat(log, config) {
   this.manufacturer = config.manufacturer || packageJson.author;
   this.serial = 'n/a';
   this.model = config.model || packageJson.name;
-  this.firmware = config.firmware || packageJson.version;
 
-  // this.username = config.username || null;
-  // this.password = config.password || null;
-  // this.timeout = config.timeout || 3000;
-  this.http_method = config.http_method || 'GET';
-
-  // this.temperatureThresholds = config.temperatureThresholds || false;
-  // this.heatOnly = config.heatOnly || false;
-
-  // this.currentRelativeHumidity = config.currentRelativeHumidity || false;
   this.temperatureDisplayUnits = config.temperatureDisplayUnits || 0;
-  this.maxTemp = config.maxTemp || 30;
-  this.minTemp = config.minTemp || 15;
-  this.minStep = config.minStep || 0.5;
+  this.maxTemp = config.thermostat_details.maxTemp || 30;
+  this.minTemp = config.thermostat_details.minTemp || 15;
+  this.minStep = config.thermostat_details.minStep || 0.5;
 
-  fs.open('homebridge-web-thermostat2/db.json', 'w', function (err, fd) {
-    data = JSON.parse(data);
+  // fs.open('homebridge-web-thermostat2/db.json', 'w', function (err, fd) {
+  //   data = JSON.parse(data);
 
-    console.log(err);
-    console.log('file opened');
-    console.log(fd);
+  //   console.log(err);
+  //   console.log('file opened');
+  //   console.log(fd);
 
-    this.poweredOn = false;
-    this.currentTemperature = 0;
-  });
+  //   this.poweredOn = false;
+  //   this.currentTemperature = 0;
+  // });
+  config.testing = 'testing';
+
+  this.poweredOn = false;
+  this.currentTemperature = cnfig.configuration.thermostat_details.current_temp;
 
   let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
   data = JSON.parse(data);
@@ -398,9 +377,9 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TargetTemperature)
       .on('set', this.setTargetTemperature.bind(this))
       .setProps({
-        minValue: this.minTemp,
-        maxValue: this.maxTemp,
-        minStep: this.minStep,
+        minValue: this.thermostat_details.minTemp,
+        maxValue: this.thermostat_details.maxTemp,
+        minStep: this.thermostat_details.minStep,
       });
 
     // Needed

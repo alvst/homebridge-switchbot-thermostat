@@ -79,18 +79,18 @@ function Thermostat(log, config) {
   //   }
   // );
 
-  let test = {
-    powerOn: false,
-    currentTemperature: 20,
-  };
-  fs.writeFile('./db.json', JSON.stringify(test), (err) => {
-    if (err) console.log(err);
-    else {
-      console.log('File written successfully\n');
-      console.log('The written has the following contents:');
-      console.log(fs.readFileSync('db.json', 'utf8'));
-    }
-  });
+  // let test = {
+  //   powerOn: false,
+  //   currentTemperature: 20,
+  // };
+  // fs.writeFile('./db.json', JSON.stringify(test), (err) => {
+  //   if (err) console.log(err);
+  //   else {
+  //     console.log('File written successfully\n');
+  //     console.log('The written has the following contents:');
+  //     console.log(fs.readFileSync('db.json', 'utf8'));
+  //   }
+  // });
 
   fs.readFile('./db.json', 'utf8', function (err, data) {
     console.log(data);
@@ -99,7 +99,7 @@ function Thermostat(log, config) {
 
   console.log('front');
   // // console.log(JSON.parse(data));
-  // console.log(data);
+  console.log(data);
   // console.log('back');
 
   // console.log('ok');

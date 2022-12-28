@@ -3,17 +3,6 @@ const packageJson = require('./package.json');
 const request = require('request');
 const fs = require('fs');
 
-headers = {
-  accept: '*/*',
-  Authorization: `Bearer ${config.thermostat_configuration.bearerToken}`,
-  'Content-Type': 'application/json',
-};
-
-json_data = {
-  characteristicType: 'On',
-  value: True,
-};
-
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
@@ -28,6 +17,16 @@ function Thermostat(log, config) {
   this.name = config.name;
   this.log = log;
   console.log('try/catch');
+  headers = {
+    accept: '*/*',
+    Authorization: `Bearer ${config.thermostat_configuration.bearerToken}`,
+    'Content-Type': 'application/json',
+  };
+
+  json_data = {
+    characteristicType: 'On',
+    value: True,
+  };
 
   // console.log(config.thermostat_configuration.bearerToken);
   // console.log(config.thermostat_configuration);

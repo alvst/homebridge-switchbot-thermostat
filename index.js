@@ -4,6 +4,18 @@ const request = require('request');
 const ip = require('ip');
 const http = require('http');
 const fs = require('fs');
+import requests from 'node-fetch';
+
+headers = {
+  accept: '*/*',
+  Authorization: `Bearer ${config.thermostat_configuration.bearerToken}`,
+  'Content-Type': 'application/json',
+};
+
+json_data = {
+  characteristicType: 'On',
+  value: True,
+};
 
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
@@ -253,6 +265,11 @@ Thermostat.prototype = {
       this.log('Toggled power state to %s', this.poweredOn);
       if (this.poweredOn == false) {
         // curl for power on to auto
+        response = requests.put(
+          `http://localhost:8581/api/accessories/${config.thermostat_configuration.power_switch_accessory_uuid}/`,
+          (headers = headers),
+          (json = json_data)
+        );
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
@@ -261,12 +278,16 @@ Thermostat.prototype = {
           index < value - this.currentTemperature;
           index = index + 0.5
         ) {
-          console.log('increasing temp' + index);
+          console.log('increasing temp ' + index);
         }
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        // curl for decreasing the temp
+        response = requests.put(
+          `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_up_accessory_uuid}/`,
+          (headers = headers),
+          (json = json_data)
+        );
       }
       console.log('Welcome');
 
@@ -281,16 +302,22 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
-        // for (
-        //   let index = 0;
-        //   index < this.currentTemperature - value;
-        //   index + 0.5
-        // ) {
-        //   console.log('decreasing temp' + index);
-        // }
+
+        for (
+          let index = 0;
+          index < this.currentTemperature - value;
+          index = index + 0.5
+        ) {
+          console.log('decreasing temp ' + index);
+        }
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
+        response = requests.put(
+          `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_down_accessory_uuid}/`,
+          (headers = headers),
+          (json = json_data)
+        );
         // curl for decreasing the temp
       }
     }

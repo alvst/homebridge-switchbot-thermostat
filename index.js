@@ -24,6 +24,11 @@ function Thermostat(log, config) {
   // console.log(config.thermostat_configuration['bearerToken']);
 
   console.log(config['thermostat_configuration']);
+  try {
+    console.log(config['thermostat_configuration'].bearerToken);
+  } catch (error) {
+    console.log(error);
+  }
   // console.log(config['thermostat_configuration'].bearerToken);
 
   this.bearerToken = config['thermostat_configuration'].bearerToken;

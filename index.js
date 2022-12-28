@@ -187,6 +187,8 @@ Thermostat.prototype = {
   changeTemp: function (newTemp, changeType) {
     // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
     this.log('Toggled power state to %s', this.poweredOn);
+    console.log(this.validStates);
+    console.log(typeof this.validStates);
     if (this.poweredOn == false) {
       console.log('powering on');
       // curl for power on

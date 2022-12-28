@@ -185,16 +185,10 @@ Thermostat.prototype = {
     }
     console.log('Welcome');
 
-    if ((changeType = 'increase')) {
+    if (changeType == 'increase') {
       let changeAmount = this.currentTemperature - newTemp;
       for (let index = 0; index < changeAmount; index++) {
-        if (changeType > 0) {
-          // curl for increase
-          console.log('increasing temp');
-        } else {
-          // curl for decrease
-          console.log('decreasinig temp');
-        }
+        console.log('increasing temp');
       }
     } else {
       console.log('decreasing temp');

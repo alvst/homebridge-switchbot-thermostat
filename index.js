@@ -251,7 +251,10 @@ Thermostat.prototype = {
       this.log('Toggled power state to %s', this.poweredOn);
       if (this.poweredOn == false) {
         console.log('powering on');
-        this.service.getCharacteristic(Characteristic.On).onSet(true);
+        this.service
+          .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+          .updateValue('auto');
+
         // curl for power on
       }
       console.log('Welcome');
@@ -275,6 +278,12 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
       .updateValue(this.temperatureDisplayUnits);
+
+    this.service
+      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+      .setProps({
+        validValues: this.validStates,
+      });
 
     // Needed
     this.service

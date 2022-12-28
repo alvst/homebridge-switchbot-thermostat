@@ -15,7 +15,7 @@ module.exports = function (homebridge) {
   );
 };
 
-function Thermostat(log, config) {
+async function Thermostat(log, config) {
   this.name = config.name;
   this.log = log;
   console.log('try/catch');
@@ -84,7 +84,7 @@ function Thermostat(log, config) {
     currentTemperature: 20,
     v1: 1,
   };
-  let data2 = fs.writeFile('./db.json', JSON.stringify(test), (err) => {
+  let data1 = await fs.writeFile('./db.json', JSON.stringify(test), (err) => {
     if (err) console.log(err);
     else {
       console.log('File written successfully\n');

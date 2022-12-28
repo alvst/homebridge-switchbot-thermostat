@@ -176,24 +176,28 @@ Thermostat.prototype = {
     );
   },
 
-  _changeTemp: function (newTemp) {
+  _changeTemp: function (newTemp, changeType) {
     // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
     this.log('Toggled power state to %s', this.poweredOn);
-    if ((this.poweredOn = false)) {
+    if (this.poweredOn == false) {
       console.log('powering on');
       // curl for power on
     }
     console.log('Welcome');
 
-    let changeAmount = this.currentTemperature - newTemp;
-    for (let index = 0; index < changeAmount; index++) {
-      if (changeType > 0) {
-        // curl for increase
-        console.log('increasing temp');
-      } else {
-        // curl for decrease
-        console.log('decreasinig temp');
+    if ((changeType = 'increase')) {
+      let changeAmount = this.currentTemperature - newTemp;
+      for (let index = 0; index < changeAmount; index++) {
+        if (changeType > 0) {
+          // curl for increase
+          console.log('increasing temp');
+        } else {
+          // curl for decrease
+          console.log('decreasinig temp');
+        }
       }
+    } else {
+      console.log('decreasing temp');
     }
   },
 
@@ -241,7 +245,12 @@ Thermostat.prototype = {
   setTargetTemperature: function (value) {
     console.log('setTargetTemperature: ' + value);
     console.log(this.currentTemperature);
-    this._changeTemp(value);
+    if (this.currentTemperature < value) {
+      this._changeTemp(value, increase);
+    } else {
+      console.log('a');
+      this._changeTemp(value, decrease);
+    }
   },
 
   getServices: function () {

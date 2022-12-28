@@ -68,11 +68,11 @@ function Thermostat(log, config) {
     currentTemperature: 20,
   };
 
-  let data = fs
-    .readFile('homebridge-web-thermostat2/db.json')
-    .catch(() => fs.writeFile('homebridge-web-thermostat2/db.json', content));
+  // let data = fs
+  //   .readFile('homebridge-web-thermostat2/db.json')
+  //   .catch(() => fs.writeFile('homebridge-web-thermostat2/db.json', content));
 
-  data = JSON.parse(data);
+  // data = JSON.parse(data);
   this.powerState = data.powerState;
   this.currentTemperature = data.table.targetTemperature;
   console.log('Current Temperature: ' + this.currentTemperature);

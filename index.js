@@ -44,10 +44,10 @@ function Thermostat(log, config) {
   this.validStates = config.validStates || [0, 1, 2, 3];
 
   this.requestArray = [
-    'targetHeatingCoolingState',
+    // 'targetHeatingCoolingState',
     'targetTemperature',
-    'coolingThresholdTemperature',
-    'heatingThresholdTemperature',
+    // 'coolingThresholdTemperature',
+    // 'heatingThresholdTemperature',
   ];
 
   this.manufacturer = config.manufacturer || packageJson.author;
@@ -95,6 +95,7 @@ Thermostat.prototype = {
           this.log.debug('Device response: %s', responseBody);
           try {
             const json = JSON.parse(responseBody);
+            console.log('abc123');
             this.service
               .getCharacteristic(Characteristic.TargetTemperature)
               .updateValue(json.targetTemperature);

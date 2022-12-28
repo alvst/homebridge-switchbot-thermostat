@@ -18,6 +18,7 @@ module.exports = function (homebridge) {
 function Thermostat(log, config) {
   this.name = config.name;
   this.log = log;
+  console.log('try/catch');
 
   // console.log(config.thermostat_configuration.bearerToken);
   console.log(config.thermostat_configuration);

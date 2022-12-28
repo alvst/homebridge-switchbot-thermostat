@@ -243,6 +243,7 @@ Thermostat.prototype = {
       this.log('Toggled power state to %s', this.poweredOn);
       if (this.poweredOn == false) {
         console.log('powering on');
+        this.service.getCharacteristic.onSet(true);
         // curl for power on
       }
       console.log('Welcome');

@@ -252,23 +252,46 @@ Thermostat.prototype = {
     if (this.currentTemperature < value) {
       this.log('Toggled power state to %s', this.poweredOn);
       if (this.poweredOn == false) {
-        console.log('powering on');
+        // curl for power on to auto
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
-        for (let index = 0; index < value - this.currentTemperature; index++) {
+        for (
+          let index = 0;
+          index < value - this.currentTemperature;
+          index + 0.5
+        ) {
           console.log('increasing temp' + index);
         }
-        // curl for power on
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
+        // curl for decreasing the temp
       }
       console.log('Welcome');
 
       let changeAmount = this.currentTemperature - value;
       for (let index = 0; index < changeAmount; index++) {
         console.log('increasing temp');
+      }
+    } else {
+      this.log('Toggled power state to %s', this.poweredOn);
+      if (this.poweredOn == false) {
+        // curl for power on to auto
+        this.service
+          .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+          .updateValue(3);
+        for (
+          let index = 0;
+          index < this.currentTemperature - value;
+          index + 0.5
+        ) {
+          console.log('decreasing temp' + index);
+        }
+        this.service
+          .getCharacteristic(Characteristic.CurrentTemperature)
+          .updateValue(value);
+        // curl for decreasing the temp
       }
     }
   },

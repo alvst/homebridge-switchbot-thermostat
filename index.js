@@ -84,7 +84,7 @@ function Thermostat(log, config) {
     currentTemperature: 20,
     v1: 1,
   };
-  fs.writeFile('./db.json', JSON.stringify(test), (err) => {
+  let data2 = fs.writeFile('./db.json', JSON.stringify(test), (err) => {
     if (err) console.log(err);
     else {
       console.log('File written successfully\n');
@@ -92,6 +92,8 @@ function Thermostat(log, config) {
       console.log(fs.readFileSync('db.json', 'utf8'));
     }
   });
+
+  console.log(data2);
 
   fs.readFile('./db.json', 'utf8', function (err, data) {
     console.log(data);

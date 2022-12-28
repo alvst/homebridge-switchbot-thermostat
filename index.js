@@ -83,14 +83,18 @@ function Thermostat(log, config) {
     temp: '10',
     power_state: 'auto',
   };
-  fs.writeFile('./homebridge-web-thermostat2/db2.json', test, (err) => {
-    if (err) console.log(err);
-    else {
-      console.log('File written successfully\n');
-      console.log('The written has the following contents:');
-      console.log(fs.readFileSync('books.txt', 'utf8'));
+  fs.writeFile(
+    './homebridge-web-thermostat2/db2.json',
+    JSON.stringify(test),
+    (err) => {
+      if (err) console.log(err);
+      else {
+        console.log('File written successfully\n');
+        console.log('The written has the following contents:');
+        console.log(fs.readFileSync('books.txt', 'utf8'));
+      }
     }
-  });
+  );
 
   console.log('front');
   // console.log(JSON.parse(data));

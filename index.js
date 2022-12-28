@@ -63,21 +63,27 @@ function Thermostat(log, config) {
 
   console.log('Current Temperature: ');
 
-  let data = fs.readFile(
-    './homebridge-web-thermostat2/db.json',
-    'utf8',
-    (error, data) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
+  // let data = fs.createFile(
+  //   './homebridge-web-thermostat2/db.json',
+  //   'utf8',
+  //   (error, data) => {
+  //     if (error) {
+  //       console.error(error);
+  //       return;
+  //     }
 
-      console.log('front');
-      console.log(json.parse(data));
-      console.log(data);
-      console.log('back');
-    }
-  );
+  //     console.log('front');
+  //     console.log(json.parse(data));
+  //     console.log(data);
+  //     console.log('back');
+  //   }
+  // );
+
+  let test = {
+    temp: '10',
+    power_state: 'auto',
+  };
+  fs.writeFile('./homebridge-web-thermostat2/db2.json', { test });
 
   console.log('front');
   // console.log(JSON.parse(data));

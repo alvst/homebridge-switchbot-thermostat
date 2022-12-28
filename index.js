@@ -84,7 +84,7 @@ function Thermostat(log, config) {
     power_state: 'auto',
   };
   fs.writeFile(
-    './homebridge-web-thermostat2/db2.json',
+    './homebridge-web-thermostat2/db.json',
     JSON.stringify(test),
     (err) => {
       if (err) console.log(err);

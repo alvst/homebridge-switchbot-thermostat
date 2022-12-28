@@ -97,17 +97,17 @@ function Thermostat(log, config) {
   );
 
   console.log('front');
-  // console.log(JSON.parse(data));
-  console.log(data);
-  console.log('back');
+  // // console.log(JSON.parse(data));
+  // console.log(data);
+  // console.log('back');
 
-  console.log('ok');
+  // console.log('ok');
 
-  console.log(data);
+  // console.log(data);
 
-  this.powerState = data.powerOn;
-  this.currentTemperature = data.currentTemperature;
-  console.log('Current Temperature: ' + this.currentTemperature);
+  // this.powerState = data.powerOn;
+  // this.currentTemperature = data.currentTemperature;
+  // console.log('Current Temperature: ' + this.currentTemperature);
 
   this.service = new Service.Thermostat(this.name);
   return;

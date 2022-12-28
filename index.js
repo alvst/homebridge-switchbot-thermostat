@@ -178,22 +178,7 @@ Thermostat.prototype = {
 
   changeTemp: function (callback, changeType) {
     // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
-
-    let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
-    data = JSON.parse(data);
-
-    if (this.currentTemperature > data.table.currentTemp)
-      for (let i = 0; i < this.currentTemperature - 0; i++) {}
-    // Hit API with CURL
-
-    // Update the powerState property
-    data.table.currentTemp = this.currentTemp - 1;
-
-    // Write the updated JSON to the file
-    fs.writeFileSync(
-      'homebridge-web-thermostat2/db.json',
-      JSON.stringify(data)
-    );
+    this.log('Toggled power state to %s', this.poweredOn);
   },
 
   _httpHandler: function (characteristic, value) {
@@ -236,100 +221,14 @@ Thermostat.prototype = {
     }
   },
 
-  setTargetHeatingCoolingState: function (value, callback) {
-    // const url = this.apiroute + '/targetHeatingCoolingState?value=' + value;
-    // this.log.debug('Setting targetHeatingCoolingState: %s', url);
-    // this._httpRequest(
-    //   url,
-    //   '',
-    //   this.http_method,
-    //   function (error, response, responseBody) {
-    //     if (error) {
-    //       this.log.warn(
-    //         'Error setting targetHeatingCoolingState: %s',
-    //         error.message
-    //       );
-    //       callback(error);
-    //     } else {
-    //       this.log('Set targetHeatingCoolingState to: %s', value);
-    //       setTimeout(
-    //         function () {
-    //           this._getStatus(function () {});
-    //         }.bind(this),
-    //         this.checkupDelay
-    //       );
-    //       callback();
-    //     }
-    //   }.bind(this)
-    // );
-  },
-
   setTargetTemperature: function (value, callback) {
     console.log('setTargetTemperature: ' + value);
-    // value = value.toFixed(1);
-    // const url = this.apiroute + '/targetTemperature?value=' + value;
-    // this.log.debug('Setting targetTemperature: %s', url);
-    // this._httpRequest(
-    //   url,
-    //   '',
-    //   this.http_method,
-    //   function (error, response, responseBody) {
-    //     if (error) {
-    //       this.log.warn('Error setting targetTemperature: %s', error.message);
-    //       callback(error);
-    //     } else {
-    //       this.log('Set targetTemperature to: %s', value);
-    //       callback();
-    //     }
-    //   }.bind(this)
-    // );
-  },
-
-  setCoolingThresholdTemperature: function (value, callback) {
-    // value = value.toFixed(1);
-    // const url = this.apiroute + '/coolingThresholdTemperature?value=' + value;
-    // this.log.debug('Setting coolingThresholdTemperature: %s', url);
-    // this._httpRequest(
-    //   url,
-    //   '',
-    //   this.http_method,
-    //   function (error, response, responseBody) {
-    //     if (error) {
-    //       this.log.warn(
-    //         'Error setting coolingThresholdTemperature: %s',
-    //         error.message
-    //       );
-    //       callback(error);
-    //     } else {
-    //       this.log('Set coolingThresholdTemperature to: %s', value);
-    //       callback();
-    //     }
-    //   }.bind(this)
-    // );
-  },
-
-  setHeatingThresholdTemperature: function (value, callback) {
-    value = value.toFixed(1);
-    const url = this.apiroute + '/heatingThresholdTemperature?value=' + value;
-    this.log.debug('Setting heatingThresholdTemperature: %s', url);
-
-    this._httpRequest(
-      url,
-      '',
-      this.http_method,
-      function (error, response, responseBody) {
-        if (error) {
-          this.log.warn(
-            'Error setting heatingThresholdTemperature: %s',
-            error.message
-          );
-          callback(error);
-        } else {
-          this.log('Set heatingThresholdTemperature to: %s', value);
-          callback();
-        }
-      }.bind(this)
-    );
+    console.log(this.currentTemperature);
+    if (value > this.currentTemperature) {
+      this.changeTemp(callback, 'increase');
+    } else {
+      this.changeTemp(callback, 'decrease');
+    }
   },
 
   getServices: function () {
@@ -347,18 +246,6 @@ Thermostat.prototype = {
 
     // Needed
     this.service
-      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      .on('set', this.setTargetHeatingCoolingState.bind(this));
-
-    // Needed
-    this.service
-      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      .setProps({
-        validValues: this.validStates,
-      });
-
-    // Needed
-    this.service
       .getCharacteristic(Characteristic.TargetTemperature)
       .on('set', this.setTargetTemperature.bind(this))
       .setProps({
@@ -372,35 +259,6 @@ Thermostat.prototype = {
       minValue: -600,
       maxValue: 600,
     });
-
-    if (this.temperatureThresholds) {
-      this.service
-        .getCharacteristic(Characteristic.CoolingThresholdTemperature)
-        .on('set', this.setCoolingThresholdTemperature.bind(this))
-        .setProps({
-          minValue: this.minTemp,
-          maxValue: this.maxTemp,
-          minStep: this.minStep,
-        });
-
-      this.service
-        .getCharacteristic(Characteristic.HeatingThresholdTemperature)
-        .on('set', this.setHeatingThresholdTemperature.bind(this))
-        .setProps({
-          minValue: this.minTemp,
-          maxValue: this.maxTemp,
-          minStep: this.minStep,
-        });
-    }
-
-    // this._getStatus(function () {});
-
-    // setInterval(
-    //   function () {
-    //     this._getStatus(function () {});
-    //   }.bind(this),
-    //   this.pollInterval * 1000
-    // );
 
     return [this.informationService, this.service];
   },

@@ -255,7 +255,7 @@ Thermostat.prototype = {
         console.log('powering on');
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-          .updateValue('auto');
+          .updateValue(3);
 
         // curl for power on
       }

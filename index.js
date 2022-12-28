@@ -237,77 +237,75 @@ Thermostat.prototype = {
   },
 
   setTargetHeatingCoolingState: function (value, callback) {
-    const url = this.apiroute + '/targetHeatingCoolingState?value=' + value;
-    this.log.debug('Setting targetHeatingCoolingState: %s', url);
-
-    this._httpRequest(
-      url,
-      '',
-      this.http_method,
-      function (error, response, responseBody) {
-        if (error) {
-          this.log.warn(
-            'Error setting targetHeatingCoolingState: %s',
-            error.message
-          );
-          callback(error);
-        } else {
-          this.log('Set targetHeatingCoolingState to: %s', value);
-          setTimeout(
-            function () {
-              this._getStatus(function () {});
-            }.bind(this),
-            this.checkupDelay
-          );
-          callback();
-        }
-      }.bind(this)
-    );
+    // const url = this.apiroute + '/targetHeatingCoolingState?value=' + value;
+    // this.log.debug('Setting targetHeatingCoolingState: %s', url);
+    // this._httpRequest(
+    //   url,
+    //   '',
+    //   this.http_method,
+    //   function (error, response, responseBody) {
+    //     if (error) {
+    //       this.log.warn(
+    //         'Error setting targetHeatingCoolingState: %s',
+    //         error.message
+    //       );
+    //       callback(error);
+    //     } else {
+    //       this.log('Set targetHeatingCoolingState to: %s', value);
+    //       setTimeout(
+    //         function () {
+    //           this._getStatus(function () {});
+    //         }.bind(this),
+    //         this.checkupDelay
+    //       );
+    //       callback();
+    //     }
+    //   }.bind(this)
+    // );
   },
 
   setTargetTemperature: function (value, callback) {
-    value = value.toFixed(1);
-    const url = this.apiroute + '/targetTemperature?value=' + value;
-    this.log.debug('Setting targetTemperature: %s', url);
-
-    this._httpRequest(
-      url,
-      '',
-      this.http_method,
-      function (error, response, responseBody) {
-        if (error) {
-          this.log.warn('Error setting targetTemperature: %s', error.message);
-          callback(error);
-        } else {
-          this.log('Set targetTemperature to: %s', value);
-          callback();
-        }
-      }.bind(this)
-    );
+    console.log('setTargetTemperature: ' + value);
+    // value = value.toFixed(1);
+    // const url = this.apiroute + '/targetTemperature?value=' + value;
+    // this.log.debug('Setting targetTemperature: %s', url);
+    // this._httpRequest(
+    //   url,
+    //   '',
+    //   this.http_method,
+    //   function (error, response, responseBody) {
+    //     if (error) {
+    //       this.log.warn('Error setting targetTemperature: %s', error.message);
+    //       callback(error);
+    //     } else {
+    //       this.log('Set targetTemperature to: %s', value);
+    //       callback();
+    //     }
+    //   }.bind(this)
+    // );
   },
 
   setCoolingThresholdTemperature: function (value, callback) {
-    value = value.toFixed(1);
-    const url = this.apiroute + '/coolingThresholdTemperature?value=' + value;
-    this.log.debug('Setting coolingThresholdTemperature: %s', url);
-
-    this._httpRequest(
-      url,
-      '',
-      this.http_method,
-      function (error, response, responseBody) {
-        if (error) {
-          this.log.warn(
-            'Error setting coolingThresholdTemperature: %s',
-            error.message
-          );
-          callback(error);
-        } else {
-          this.log('Set coolingThresholdTemperature to: %s', value);
-          callback();
-        }
-      }.bind(this)
-    );
+    // value = value.toFixed(1);
+    // const url = this.apiroute + '/coolingThresholdTemperature?value=' + value;
+    // this.log.debug('Setting coolingThresholdTemperature: %s', url);
+    // this._httpRequest(
+    //   url,
+    //   '',
+    //   this.http_method,
+    //   function (error, response, responseBody) {
+    //     if (error) {
+    //       this.log.warn(
+    //         'Error setting coolingThresholdTemperature: %s',
+    //         error.message
+    //       );
+    //       callback(error);
+    //     } else {
+    //       this.log('Set coolingThresholdTemperature to: %s', value);
+    //       callback();
+    //     }
+    //   }.bind(this)
+    // );
   },
 
   setHeatingThresholdTemperature: function (value, callback) {

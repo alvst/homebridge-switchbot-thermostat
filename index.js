@@ -63,56 +63,8 @@ function Thermostat(log, config) {
 
   console.log('Current Temperature: ');
 
-  // let data = fs.createFile(
-  //   './homebridge-web-thermostat2/db.json',
-  //   'utf8',
-  //   (error, data) => {
-  //     if (error) {
-  //       console.error(error);
-  //       return;
-  //     }
-
-  //     console.log('front');
-  //     console.log(json.parse(data));
-  //     console.log(data);
-  //     console.log('back');
-  //   }
-  // );
-
-  let test = {
-    powerOn: false,
-    currentTemperature: 20,
-    v1: 1,
-  };
-  // let data1 = await fs.writeFile('./db.json', JSON.stringify(test), (err) => {
-  //   if (err) console.log(err);
-  //   else {
-  //     console.log('File written successfully\n');
-  //     console.log('The written has the following contents:');
-  //     console.log(fs.readFileSync('db.json', 'utf8'));
-  //   }
-  // });
-
-  let data1 = await fs.readFile('./db.json', 'utf8', function (err, data) {
-    console.log(data);
-    console.log('data');
-  });
-
-  console.log('async');
-  console.log(data1);
-
-  console.log('front');
-  // // console.log(JSON.parse(data));
-  // console.log(data);
-  // console.log('back');
-
-  // console.log('ok');
-
-  // console.log(data);
-
-  // this.powerState = data.powerOn;
-  // this.currentTemperature = data.currentTemperature;
-  // console.log('Current Temperature: ' + this.currentTemperature);
+  this.currentTemperature = 20;
+  this.poweredOn = false;
 
   this.service = new Service.Thermostat(this.name);
   return;
@@ -123,22 +75,6 @@ Thermostat.prototype = {
     this.log('Identify requested!');
     callback();
   },
-
-  // _httpRequest: function (url, body, method, callback) {
-  //   request(
-  //     {
-  //       url: url,
-  //       body: body,
-  //       method: this.http_method,
-  //       timeout: this.timeout,
-  //       rejectUnauthorized: false,
-  //       auth: this.auth,
-  //     },
-  //     function (error, response, body) {
-  //       callback(error, response, body);
-  //     }
-  //   );
-  // },
 
   _getStatus: function (callback) {
     const url = this.apiroute + '/status';

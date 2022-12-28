@@ -69,7 +69,9 @@ function Thermostat(log, config) {
       return;
     }
 
+    console.log('front');
     console.log(data);
+    console.log('back');
   });
 
   console.log('ok');

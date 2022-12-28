@@ -247,33 +247,10 @@ Thermostat.prototype = {
       }
       console.log('Welcome');
 
-      if (changeType == 'increase') {
-        let changeAmount = this.currentTemperature - newTemp;
-        for (let index = 0; index < changeAmount; index++) {
-          console.log('increasing temp');
-        }
-      } else {
-        console.log('decreasing temp');
+      let changeAmount = this.currentTemperature - newTemp;
+      for (let index = 0; index < changeAmount; index++) {
+        console.log('increasing temp');
       }
-      // changeTemp(value, increase);
-    } else {
-      console.log('a');
-      this.log('Toggled power state to %s', this.poweredOn);
-      if (this.poweredOn == false) {
-        console.log('powering on');
-        // curl for power on
-      }
-      console.log('Welcome');
-
-      if (changeType == 'increase') {
-        let changeAmount = this.currentTemperature - newTemp;
-        for (let index = 0; index < changeAmount; index++) {
-          console.log('increasing temp');
-        }
-      } else {
-        console.log('decreasing temp');
-      }
-      // changeTemp(value, decrease);
     }
   },
 

@@ -79,18 +79,18 @@ function Thermostat(log, config) {
   //   }
   // );
 
-  let test = {
-    powerOn: false,
-    currentTemperature: 20,
-  };
-  fs.writeFile('./db.json', JSON.stringify(test), (err) => {
-    if (err) console.log(err);
-    else {
-      console.log('File written successfully\n');
-      console.log('The written has the following contents:');
-      console.log(fs.readFileSync('db.json', 'utf8'));
-    }
-  });
+  // let test = {
+  //   powerOn: false,
+  //   currentTemperature: 20,
+  // };
+  // fs.writeFile('./db.json', JSON.stringify(test), (err) => {
+  //   if (err) console.log(err);
+  //   else {
+  //     console.log('File written successfully\n');
+  //     console.log('The written has the following contents:');
+  //     console.log(fs.readFileSync('db.json', 'utf8'));
+  //   }
+  // });
 
   fs.readFile('./db.json', 'utf8', function (err, data) {
     console.log(data);
@@ -106,9 +106,9 @@ function Thermostat(log, config) {
 
   // console.log(data);
 
-  // this.powerState = data.powerOn;
-  // this.currentTemperature = data.currentTemperature;
-  // console.log('Current Temperature: ' + this.currentTemperature);
+  this.powerState = data.powerOn;
+  this.currentTemperature = data.currentTemperature;
+  console.log('Current Temperature: ' + this.currentTemperature);
 
   this.service = new Service.Thermostat(this.name);
   return;
@@ -120,25 +120,11 @@ Thermostat.prototype = {
     callback();
   },
 
-  // _httpRequest: function (url, body, method, callback) {
-  //   request(
-  //     {
-  //       url: url,
-  //       body: body,
-  //       method: this.http_method,
-  //       timeout: this.timeout,
-  //       rejectUnauthorized: false,
-  //       auth: this.auth,
-  //     },
-  //     function (error, response, body) {
-  //       callback(error, response, body);
-  //     }
-  //   );
-  // },
-
   _getStatus: function (callback) {
     const url = this.apiroute + '/status';
     this.log.debug('Getting status: %s', url);
+
+    console.log('Get Status');
 
     this._httpRequest(
       url,
@@ -298,6 +284,7 @@ Thermostat.prototype = {
   setTargetHeatingCoolingState: function (value, callback) {
     const url = this.apiroute + '/targetHeatingCoolingState?value=' + value;
     this.log.debug('Setting targetHeatingCoolingState: %s', url);
+    console.log('123');
 
     this._httpRequest(
       url,

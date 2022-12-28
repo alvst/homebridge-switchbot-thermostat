@@ -247,7 +247,7 @@ Thermostat.prototype = {
       }
       console.log('Welcome');
 
-      let changeAmount = this.currentTemperature - newTemp;
+      let changeAmount = this.currentTemperature - value;
       for (let index = 0; index < changeAmount; index++) {
         console.log('increasing temp');
       }

@@ -264,7 +264,7 @@ Thermostat.prototype = {
         // curl for power on to auto
         request.put(
           {
-            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.power_switch_accessory_uuid}/`,,
+            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.power_switch_accessory_uuid}/`,
             headers: headers,
             json: json_data,
           },
@@ -287,7 +287,7 @@ Thermostat.prototype = {
           .updateValue(value);
         request.put(
           {
-            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_up_accessory_uuid}/`,,
+            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_up_accessory_uuid}/`,
             headers: headers,
             json: json_data,
           },
@@ -322,7 +322,7 @@ Thermostat.prototype = {
           .updateValue(value);
         request.put(
           {
-            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_down_accessory_uuid}/`,,
+            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_down_accessory_uuid}/`,
             headers: headers,
             json: json_data,
           },

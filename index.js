@@ -100,7 +100,7 @@ function Thermostat(log, config) {
 
   console.log('front');
   // // console.log(JSON.parse(data));
-  console.log(data);
+  // console.log(data);
   // console.log('back');
 
   // console.log('ok');

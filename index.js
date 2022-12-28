@@ -36,12 +36,12 @@ function Thermostat(log, config) {
 
   // this.bearerToken = config['thermostat_configuration'].bearerToken;
   // console.log(this.bearerToken);
-  // this.power_switch_accessory_uuid =
-  //   config.thermostat_configuration['power_switch_accessory_uuid'];
-  // this.temp_up_accessory_uuid =
-  //   config.thermostat_configuration['temp_up_accessory_uuid'];
-  // this.temp_down_accessory_uuid =
-  //   config.thermostat_configuration['temp_down_accessory_uuid'];
+  this.power_switch_accessory_uuid =
+    config.thermostat_configuration['power_switch_accessory_uuid'];
+  this.temp_up_accessory_uuid =
+    config.thermostat_configuration['temp_up_accessory_uuid'];
+  this.temp_down_accessory_uuid =
+    config.thermostat_configuration['temp_down_accessory_uuid'];
 
   // let configuration = config.thermostat_configuration;
   // let power_switch_accessory_uuid =
@@ -69,12 +69,17 @@ function Thermostat(log, config) {
 
   this.poweredOn = false;
 
+  content = {
+    powerOn: false,
+    currentTemperature: 20,
+  };
+
   let data = fs
     .readFile('homebridge-web-thermostat2/db.json')
     .catch(() => fs.writeFile('homebridge-web-thermostat2/db.json', content));
 
   data = JSON.parse(data);
-  this.powerState = data.table.powerState;
+  this.powerState = data.powerState;
   this.currentTemperature = data.table.targetTemperature;
   console.log('Current Temperature: ' + this.currentTemperature);
 

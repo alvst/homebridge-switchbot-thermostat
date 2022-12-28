@@ -79,10 +79,9 @@ function Thermostat(log, config) {
       console.log('File data:', jsonString);
     }
   );
-
-  data = JSON.parse(data);
-  this.powerState = data.powerState;
   console.log(data);
+
+  this.powerState = data.powerState;
   this.currentTemperature = data.targetTemperature;
   console.log('Current Temperature: ' + this.currentTemperature);
 

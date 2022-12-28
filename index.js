@@ -71,7 +71,7 @@ function Thermostat(log, config) {
 
   let data = fs
     .readFile('homebridge-web-thermostat2/db.json')
-    .catch(() => fs.writeFile('homebridge-web-thermostat2/db.json', content));
+    .catch(console.log('abc'));
 
   // data = JSON.parse(data);
   // this.powerState = data.powerState;

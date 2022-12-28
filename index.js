@@ -24,14 +24,6 @@ function Thermostat(log, config) {
   // console.log(config.thermostat_configuration);
   // console.log(config.thermostat_configuration['bearerToken']);
 
-  console.log(config['thermostat_configuration']);
-  try {
-    console.log('def');
-    console.log(config['thermostat_configuration'].bearerToken);
-  } catch (error) {
-    console.log('ghi');
-    console.log(error);
-  }
   // console.log(config['thermostat_configuration'].bearerToken);
 
   // this.bearerToken = config['thermostat_configuration'].bearerToken;
@@ -69,6 +61,8 @@ function Thermostat(log, config) {
 
   this.poweredOn = false;
 
+  console.log('Current Temperature: ');
+
   content = {
     powerOn: false,
     currentTemperature: 20,
@@ -84,6 +78,7 @@ function Thermostat(log, config) {
   console.log('Current Temperature: ' + this.currentTemperature);
 
   this.service = new Service.Thermostat(this.name);
+  return;
 }
 
 Thermostat.prototype = {

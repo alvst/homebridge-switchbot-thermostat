@@ -72,8 +72,8 @@ function Thermostat(log, config) {
 
   console.log(data);
 
-  this.powerState = data.powerState;
-  this.currentTemperature = data.targetTemperature;
+  this.powerState = data.powerOn;
+  this.currentTemperature = data.currentTemperature;
   console.log('Current Temperature: ' + this.currentTemperature);
 
   this.service = new Service.Thermostat(this.name);

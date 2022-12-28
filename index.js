@@ -180,6 +180,19 @@ Thermostat.prototype = {
     // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
     this.log('Toggled power state to %s', this.poweredOn);
     this.log(changeType);
+    if ((this.poweredOn = false)) {
+      // curl for power on
+    }
+    let changeAmount = this.currentTemperature - value;
+    for (let index = 0; index < changeAmount; index++) {
+      if (changeType > 0) {
+        // curl for increase
+        console.log('increase ');
+      } else {
+        // curl for decrease
+        console.log('decrease ');
+      }
+    }
   },
 
   _httpHandler: function (characteristic, value) {
@@ -222,16 +235,16 @@ Thermostat.prototype = {
     }
   },
 
-  setTargetTemperature: function (value, callback) {
+  setTargetTemperature: function (value) {
     console.log('setTargetTemperature: ' + value);
     console.log(this.currentTemperature);
     if (value > this.currentTemperature) {
       console.log('this.currentTemperature increase');
-      this.changeTemp(callback, 'increase');
+      this.changeTemp(value);
     } else {
       console.log('this.currentTemperature decrease');
 
-      this.changeTemp(callback, 'decrease');
+      this.changeTemp(value);
     }
   },
 

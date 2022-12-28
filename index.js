@@ -4,7 +4,7 @@ const request = require('request');
 const ip = require('ip');
 const http = require('http');
 const fs = require('fs');
-const requests = require('node-fetch');
+const fetch = require('node-fetch');
 
 headers = {
   accept: '*/*',
@@ -265,7 +265,7 @@ Thermostat.prototype = {
       this.log('Toggled power state to %s', this.poweredOn);
       if (this.poweredOn == false) {
         // curl for power on to auto
-        response = requests.put(
+        response = fetch(
           `http://localhost:8581/api/accessories/${config.thermostat_configuration.power_switch_accessory_uuid}/`,
           (headers = headers),
           (json = json_data)
@@ -283,7 +283,7 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        response = requests.put(
+        response = fetch(
           `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_up_accessory_uuid}/`,
           (headers = headers),
           (json = json_data)
@@ -313,7 +313,7 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        response = requests.put(
+        response = fetch(
           `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_down_accessory_uuid}/`,
           (headers = headers),
           (json = json_data)

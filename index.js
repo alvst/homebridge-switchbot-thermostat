@@ -111,12 +111,12 @@ function Thermostat(log, config) {
 
   // console.log(data);
 
-  this.powerState = data.powerOn;
-  this.currentTemperature = data.currentTemperature;
-  console.log('Current Temperature: ' + this.currentTemperature);
+  // this.powerState = data.powerOn;
+  // this.currentTemperature = data.currentTemperature;
+  // console.log('Current Temperature: ' + this.currentTemperature);
 
-  this.service = new Service.Thermostat(this.name);
-  return;
+  // this.service = new Service.Thermostat(this.name);
+  // return;
 }
 
 Thermostat.prototype = {

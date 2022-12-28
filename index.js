@@ -4,7 +4,7 @@ const request = require('request');
 const ip = require('ip');
 const http = require('http');
 const fs = require('fs');
-const fetch = require('node-fetch');
+const requests = require('node-fetch');
 
 headers = {
   accept: '*/*',

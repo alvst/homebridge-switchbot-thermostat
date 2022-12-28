@@ -1,10 +1,7 @@
 let Service, Characteristic;
 const packageJson = require('./package.json');
 const request = require('request');
-const ip = require('ip');
-const http = require('http');
 const fs = require('fs');
-const fetch = require('node-fetch');
 
 headers = {
   accept: '*/*',
@@ -265,10 +262,15 @@ Thermostat.prototype = {
       this.log('Toggled power state to %s', this.poweredOn);
       if (this.poweredOn == false) {
         // curl for power on to auto
-        response = fetch(
-          `http://localhost:8581/api/accessories/${config.thermostat_configuration.power_switch_accessory_uuid}/`,
-          (headers = headers),
-          (json = json_data)
+        request.put(
+          {
+            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.power_switch_accessory_uuid}/`,,
+            headers: headers,
+            json: json_data,
+          },
+          function (error, response, body) {
+            console.log(body);
+          }
         );
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -283,10 +285,15 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        response = fetch(
-          `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_up_accessory_uuid}/`,
-          (headers = headers),
-          (json = json_data)
+        request.put(
+          {
+            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_up_accessory_uuid}/`,,
+            headers: headers,
+            json: json_data,
+          },
+          function (error, response, body) {
+            console.log(body);
+          }
         );
       }
       console.log('Welcome');
@@ -313,10 +320,15 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        response = fetch(
-          `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_down_accessory_uuid}/`,
-          (headers = headers),
-          (json = json_data)
+        request.put(
+          {
+            url: `http://localhost:8581/api/accessories/${config.thermostat_configuration.temp_down_accessory_uuid}/`,,
+            headers: headers,
+            json: json_data,
+          },
+          function (error, response, body) {
+            console.log(body);
+          }
         );
         // curl for decreasing the temp
       }

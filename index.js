@@ -26,8 +26,10 @@ function Thermostat(log, config) {
 
   console.log(config['thermostat_configuration']);
   try {
+    console.log('def');
     console.log(config['thermostat_configuration'].bearerToken);
   } catch (error) {
+    console.log('ghi');
     console.log(error);
   }
   // console.log(config['thermostat_configuration'].bearerToken);

@@ -92,10 +92,15 @@ function Thermostat(log, config) {
     }
   });
 
+  let data1 = '';
+
   fs.readFile('./db.json', 'utf8', function (err, data) {
     console.log(data);
     console.log('data');
+    data1 = data;
   });
+
+  console.log(data1);
 
   console.log('front');
   // // console.log(JSON.parse(data));

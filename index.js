@@ -69,16 +69,8 @@ function Thermostat(log, config) {
   };
   console.log('ok');
 
-  let data = fs.readFile(
-    './homebridge-web-thermostat2/db.json',
-    'utf8',
-    (err, jsonString) => {
-      if (err) {
-        fs.createFile('./homebridge-web-thermostat2/db.json', content);
-      }
-      console.log('File data:', jsonString);
-    }
-  );
+  let data = fs.readFile('./homebridge-web-thermostat2/db.json');
+
   console.log(data);
 
   this.powerState = data.powerState;

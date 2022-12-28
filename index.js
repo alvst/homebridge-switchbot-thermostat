@@ -15,7 +15,7 @@ module.exports = function (homebridge) {
   );
 };
 
-async function Thermostat(log, config) {
+function Thermostat(log, config) {
   this.name = config.name;
   this.log = log;
   console.log('try/catch');

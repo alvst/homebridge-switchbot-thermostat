@@ -179,17 +179,18 @@ Thermostat.prototype = {
   changeTemp: function (callback, changeType) {
     // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
     this.log('Toggled power state to %s', this.poweredOn);
+    this.log(changeType);
   },
 
   _httpHandler: function (characteristic, value) {
     switch (characteristic) {
-      case 'targetHeatingCoolingState': {
-        this.service
-          .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-          .updateValue(value);
-        this.log('Updated %s to: %s', characteristic, value);
-        break;
-      }
+      // case 'targetHeatingCoolingState': {
+      //   this.service
+      //     .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+      //     .updateValue(value);
+      //   this.log('Updated %s to: %s', characteristic, value);
+      //   break;
+      // }
       case 'targetTemperature': {
         this.service
           .getCharacteristic(Characteristic.TargetTemperature)
@@ -197,20 +198,20 @@ Thermostat.prototype = {
         this.log('Updated %s to: %s', characteristic, value);
         break;
       }
-      case 'coolingThresholdTemperature': {
-        this.service
-          .getCharacteristic(Characteristic.CoolingThresholdTemperature)
-          .updateValue(value);
-        this.log('Updated %s to: %s', characteristic, value);
-        break;
-      }
-      case 'heatingThresholdTemperature': {
-        this.service
-          .getCharacteristic(Characteristic.HeatingThresholdTemperature)
-          .updateValue(value);
-        this.log('Updated %s to: %s', characteristic, value);
-        break;
-      }
+      // case 'coolingThresholdTemperature': {
+      //   this.service
+      //     .getCharacteristic(Characteristic.CoolingThresholdTemperature)
+      //     .updateValue(value);
+      //   this.log('Updated %s to: %s', characteristic, value);
+      //   break;
+      // }
+      // case 'heatingThresholdTemperature': {
+      //   this.service
+      //     .getCharacteristic(Characteristic.HeatingThresholdTemperature)
+      //     .updateValue(value);
+      //   this.log('Updated %s to: %s', characteristic, value);
+      //   break;
+      // }
       default: {
         this.log.warn(
           'Unknown characteristic "%s" with value "%s"',
@@ -225,8 +226,11 @@ Thermostat.prototype = {
     console.log('setTargetTemperature: ' + value);
     console.log(this.currentTemperature);
     if (value > this.currentTemperature) {
+      console.log('this.currentTemperature increase');
       this.changeTemp(callback, 'increase');
     } else {
+      console.log('this.currentTemperature decrease');
+
       this.changeTemp(callback, 'decrease');
     }
   },

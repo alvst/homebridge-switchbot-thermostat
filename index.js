@@ -80,10 +80,11 @@ function Thermostat(log, config) {
     }
   );
 
-  // data = JSON.parse(data);
-  // this.powerState = data.powerState;
-  // this.currentTemperature = data.table.targetTemperature;
-  // console.log('Current Temperature: ' + this.currentTemperature);
+  data = JSON.parse(data);
+  this.powerState = data.powerState;
+  console.log(data);
+  this.currentTemperature = data.targetTemperature;
+  console.log('Current Temperature: ' + this.currentTemperature);
 
   this.service = new Service.Thermostat(this.name);
   return;
@@ -398,9 +399,9 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TargetTemperature)
       .on('set', this.setTargetTemperature.bind(this))
       .setProps({
-        minValue: this.thermostat_details.minTemp,
-        maxValue: this.thermostat_details.maxTemp,
-        minStep: this.thermostat_details.minStep,
+        minValue: this.minTemp,
+        maxValue: this.maxTemp,
+        minStep: this.minStep,
       });
 
     // Needed

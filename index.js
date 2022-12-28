@@ -92,15 +92,10 @@ function Thermostat(log, config) {
     }
   });
 
-  let data1 = '';
-
   fs.readFile('./db.json', 'utf8', function (err, data) {
     console.log(data);
     console.log('data');
-    data1 = data;
   });
-
-  console.log(data1);
 
   console.log('front');
   // // console.log(JSON.parse(data));
@@ -115,8 +110,8 @@ function Thermostat(log, config) {
   // this.currentTemperature = data.currentTemperature;
   // console.log('Current Temperature: ' + this.currentTemperature);
 
-  // this.service = new Service.Thermostat(this.name);
-  // return;
+  this.service = new Service.Thermostat(this.name);
+  return;
 }
 
 Thermostat.prototype = {
@@ -125,11 +120,25 @@ Thermostat.prototype = {
     callback();
   },
 
+  // _httpRequest: function (url, body, method, callback) {
+  //   request(
+  //     {
+  //       url: url,
+  //       body: body,
+  //       method: this.http_method,
+  //       timeout: this.timeout,
+  //       rejectUnauthorized: false,
+  //       auth: this.auth,
+  //     },
+  //     function (error, response, body) {
+  //       callback(error, response, body);
+  //     }
+  //   );
+  // },
+
   _getStatus: function (callback) {
     const url = this.apiroute + '/status';
     this.log.debug('Getting status: %s', url);
-
-    console.log('Get Status');
 
     this._httpRequest(
       url,
@@ -289,7 +298,6 @@ Thermostat.prototype = {
   setTargetHeatingCoolingState: function (value, callback) {
     const url = this.apiroute + '/targetHeatingCoolingState?value=' + value;
     this.log.debug('Setting targetHeatingCoolingState: %s', url);
-    console.log('123');
 
     this._httpRequest(
       url,

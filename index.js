@@ -67,6 +67,7 @@ function Thermostat(log, config) {
     powerOn: false,
     currentTemperature: 20,
   };
+  console.log('ok');
 
   let data = fs
     .readFile('homebridge-web-thermostat2/db.json')

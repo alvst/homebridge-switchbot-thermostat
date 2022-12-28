@@ -284,7 +284,7 @@ Thermostat.prototype = {
     // Needed
     this.service
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
-      .updateValue(this.temperatureDisplayUnits);
+      .updateValue(1);
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)

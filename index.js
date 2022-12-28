@@ -26,7 +26,7 @@ function Thermostat(log, config) {
 
   console.log(config['thermostat_configuration']);
   try {
-    // console.log(config['thermostat_configuration'].bearerToken);
+    console.log(config['thermostat_configuration'].bearerToken);
   } catch (error) {
     console.log(error);
   }
@@ -34,12 +34,12 @@ function Thermostat(log, config) {
 
   // this.bearerToken = config['thermostat_configuration'].bearerToken;
   // console.log(this.bearerToken);
-  this.power_switch_accessory_uuid =
-    config.thermostat_configuration['power_switch_accessory_uuid'];
-  this.temp_up_accessory_uuid =
-    config.thermostat_configuration['temp_up_accessory_uuid'];
-  this.temp_down_accessory_uuid =
-    config.thermostat_configuration['temp_down_accessory_uuid'];
+  // this.power_switch_accessory_uuid =
+  //   config.thermostat_configuration['power_switch_accessory_uuid'];
+  // this.temp_up_accessory_uuid =
+  //   config.thermostat_configuration['temp_up_accessory_uuid'];
+  // this.temp_down_accessory_uuid =
+  //   config.thermostat_configuration['temp_down_accessory_uuid'];
 
   // let configuration = config.thermostat_configuration;
   // let power_switch_accessory_uuid =

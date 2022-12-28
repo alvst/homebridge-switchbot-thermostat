@@ -256,11 +256,7 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
-        for (
-          let index = 0;
-          index < value - this.currentTemperature;
-          index + 1
-        ) {
+        for (let index = 0; index < value - this.currentTemperature; index++) {
           console.log('increasing temp' + index);
         }
         this.service

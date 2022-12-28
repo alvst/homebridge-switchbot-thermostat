@@ -25,7 +25,7 @@ function Thermostat(log, config) {
 
   json_data = {
     characteristicType: 'On',
-    value: True,
+    value: true,
   };
 
   // console.log(config.thermostat_configuration.bearerToken);

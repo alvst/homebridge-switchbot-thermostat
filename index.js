@@ -256,7 +256,9 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
-
+        this.service
+          .getCharacteristic(Characteristic.CurrentTemperature)
+          .updateValue(value);
         // curl for power on
       }
       console.log('Welcome');

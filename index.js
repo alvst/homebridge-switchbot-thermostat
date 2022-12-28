@@ -176,14 +176,14 @@ Thermostat.prototype = {
     );
   },
 
-  changeTemp: function (callback, changeType) {
+  changeTemp: function (newTemp) {
     // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
     this.log('Toggled power state to %s', this.poweredOn);
     this.log(changeType);
     if ((this.poweredOn = false)) {
       // curl for power on
     }
-    let changeAmount = this.currentTemperature - value;
+    let changeAmount = this.currentTemperature - newTemp;
     for (let index = 0; index < changeAmount; index++) {
       if (changeType > 0) {
         // curl for increase

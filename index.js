@@ -176,7 +176,7 @@ Thermostat.prototype = {
     );
   },
 
-  changeTemp: function (newTemp) {
+  _changeTemp: function (newTemp) {
     // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
     this.log('Toggled power state to %s', this.poweredOn);
     if ((this.poweredOn = false)) {
@@ -241,7 +241,7 @@ Thermostat.prototype = {
   setTargetTemperature: function (value) {
     console.log('setTargetTemperature: ' + value);
     console.log(this.currentTemperature);
-    this.changeTemp(value);
+    this._changeTemp(value);
   },
 
   getServices: function () {

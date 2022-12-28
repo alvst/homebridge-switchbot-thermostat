@@ -84,21 +84,22 @@ async function Thermostat(log, config) {
     currentTemperature: 20,
     v1: 1,
   };
-  let data1 = await fs.writeFile('./db.json', JSON.stringify(test), (err) => {
-    if (err) console.log(err);
-    else {
-      console.log('File written successfully\n');
-      console.log('The written has the following contents:');
-      console.log(fs.readFileSync('db.json', 'utf8'));
-    }
-  });
+  // let data1 = await fs.writeFile('./db.json', JSON.stringify(test), (err) => {
+  //   if (err) console.log(err);
+  //   else {
+  //     console.log('File written successfully\n');
+  //     console.log('The written has the following contents:');
+  //     console.log(fs.readFileSync('db.json', 'utf8'));
+  //   }
+  // });
 
-  console.log(data2);
-
-  fs.readFile('./db.json', 'utf8', function (err, data) {
+  let data1 = await fs.readFile('./db.json', 'utf8', function (err, data) {
     console.log(data);
     console.log('data');
   });
+
+  console.log('async');
+  console.log(data1);
 
   console.log('front');
   // // console.log(JSON.parse(data));

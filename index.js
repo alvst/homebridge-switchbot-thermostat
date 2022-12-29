@@ -274,6 +274,7 @@ Thermostat.prototype = {
             value: true,
           },
         });
+        console.log('curl executed');
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
@@ -300,6 +301,7 @@ Thermostat.prototype = {
             value: true,
           },
         });
+        console.log('curl executed');
       }
       console.log('Welcome');
 
@@ -338,6 +340,7 @@ Thermostat.prototype = {
             value: true,
           },
         });
+        console.log('curl executed');
         // curl for decreasing the temp
       }
     }

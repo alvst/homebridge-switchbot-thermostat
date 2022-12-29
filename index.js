@@ -234,6 +234,33 @@ Thermostat.prototype = {
     }
   },
 
+  putData: async function () {
+    return new Promise((resolve, reject) => {
+      request(
+        {
+          url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
+          method: 'PUT',
+          headers: {
+            accept: '*/*',
+            Authorization: `Bearer ${this.bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          json: {
+            characteristicType: 'On',
+            value: true,
+          },
+        },
+        (error, response, body) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(response);
+          }
+        }
+      );
+    });
+  },
+
   setTargetTemperature: async function (value) {
     console.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
     console.log('setTargetTemperature: ' + value);
@@ -243,32 +270,9 @@ Thermostat.prototype = {
     );
     console.log('bearerToken: ' + this.bearerToken);
 
-    console.log(
-      new Promise((resolve, reject) => {
-        request(
-          {
-            url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
-            method: 'PUT',
-            headers: {
-              accept: '*/*',
-              Authorization: `Bearer ${this.bearerToken}`,
-              'Content-Type': 'application/json',
-            },
-            json: {
-              characteristicType: 'On',
-              value: true,
-            },
-          },
-          (error, response, body) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(response);
-            }
-          }
-        );
-      })
-    );
+    putData().then((response) => {
+      console.log(response);
+    });
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)

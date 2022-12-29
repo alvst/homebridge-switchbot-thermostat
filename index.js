@@ -257,8 +257,13 @@ Thermostat.prototype = {
   setTargetTemperature: function (value) {
     console.log('setTargetTemperature: ' + value);
     console.log(this.currentTemperature);
+    console.log(this.temp_up_accessory_uuid);
+    console.log(this.temp_down_accessory_uuid);
+    console.log(this.power_switch_accessory_uuid);
+    console.log(this.bearerToken);
+
     if (this.currentTemperature < value) {
-      this.log('Toggled power state to %s', this.poweredOn);
+      this.log('Power state currently %s', this.poweredOn);
       if (this.poweredOn == false) {
         // curl for power on to auto
         request({
@@ -284,8 +289,6 @@ Thermostat.prototype = {
           index = index + 0.5
         ) {
           console.log('increasing temp ' + index);
-          console.log(this.temp_up_accessory_uuid);
-          console.log(this.bearerToken);
           request({
             url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}/`,
             method: 'PUT',

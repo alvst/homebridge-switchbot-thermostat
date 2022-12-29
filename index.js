@@ -261,7 +261,7 @@ Thermostat.prototype = {
     });
   },
 
-  setTargetTemperature: async function (value) {
+  setTargetTemperature1: async function (value) {
     console.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
     console.log('setTargetTemperature: ' + value);
     console.log(`Current Temperature: ${this.currentTemperature}`);
@@ -278,7 +278,7 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(3);
   },
-  setTargetTemperature2: async function (value) {
+  setTargetTemperature: async function (value) {
     console.log(`Changing Temp from ${this.currentTemperature} to ${value}}`);
     console.log('setTargetTemperature: ' + value);
     console.log(`Current Temperature: ${this.currentTemperature}`);

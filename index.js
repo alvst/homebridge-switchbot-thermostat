@@ -18,7 +18,6 @@ function Thermostat(log, config) {
   this.log = log;
 
   this.bearerToken = config.thermostat_configuration['bearerToken'];
-  console.log(this.bearerToken);
   this.power_switch_accessory_uuid =
     config.thermostat_configuration['power_switch_accessory_uuid'];
   this.temp_up_accessory_uuid =
@@ -51,8 +50,6 @@ function Thermostat(log, config) {
   this.minStep = config.thermostat_details.minStep || 0.5;
 
   this.poweredOn = false;
-
-  console.log('Current Temperature: ');
 
   this.currentTemperature = 20;
   this.poweredOn = false;
@@ -237,8 +234,18 @@ Thermostat.prototype = {
     }
   },
 
-  putData: async function () {
-    return new Promise((resolve, reject) => {
+  setTargetTemperature: async function (value) {
+    console.log(`Changing Temp from ${this.currentTemperature} to ${value}}`);
+    console.log('setTargetTemperature: ' + value);
+    console.log(`Current Temperature: ${this.currentTemperature}`);
+    console.log('temp_up_accessory_uuid : ' + this.temp_up_accessory_uuid);
+    console.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
+    console.log(
+      'power_switch_accessory_uuid' + this.power_switch_accessory_uuid
+    );
+    console.log('bearerToken: ' + this.bearerToken);
+
+    new Promise((resolve, reject) => {
       request(
         {
           url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
@@ -262,14 +269,17 @@ Thermostat.prototype = {
         }
       );
     });
-  },
 
-  setTargetTemperature: async function (value) {
+    this.service
+      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+      .updateValue(3);
+  },
+  setTargetTemperature2: async function (value) {
     console.log(`Changing Temp from ${this.currentTemperature} to ${value}}`);
     console.log('setTargetTemperature: ' + value);
     console.log(`Current Temperature: ${this.currentTemperature}`);
-    console.log('temp_up_accessory_uuid' + this.temp_up_accessory_uuid);
-    console.log('temp_down_accessory_uuid' + this.temp_down_accessory_uuid);
+    console.log('temp_up_accessory_uuid : ' + this.temp_up_accessory_uuid);
+    console.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
     console.log(
       'power_switch_accessory_uuid' + this.power_switch_accessory_uuid
     );

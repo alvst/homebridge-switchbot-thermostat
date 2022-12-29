@@ -274,7 +274,7 @@ Thermostat.prototype = {
             value: true,
           },
         });
-        console.log('curl executed');
+        console.log('curl executed to power device on');
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
@@ -284,24 +284,24 @@ Thermostat.prototype = {
           index = index + 0.5
         ) {
           console.log('increasing temp ' + index);
+          request({
+            url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}/`,
+            method: 'PUT',
+            headers: {
+              accept: '*/*',
+              Authorization: `Bearer ${this.bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+            json: {
+              characteristicType: 'On',
+              value: true,
+            },
+          });
+          console.log('curl executed to increase temp');
         }
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        request({
-          url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}/`,
-          method: 'PUT',
-          headers: {
-            accept: '*/*',
-            Authorization: `Bearer ${this.bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          json: {
-            characteristicType: 'On',
-            value: true,
-          },
-        });
-        console.log('curl executed');
       }
       console.log('Welcome');
 
@@ -323,25 +323,25 @@ Thermostat.prototype = {
           index = index + 0.5
         ) {
           console.log('decreasing temp ' + index);
+          request({
+            url: `http://localhost:8581/api/accessories/${this.temp_down_accessory_uuid}/`,
+            method: 'PUT',
+            headers: {
+              accept: '*/*',
+              Authorization: `Bearer ${this.bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+            json: {
+              characteristicType: 'On',
+              value: true,
+            },
+          });
+          console.log('curl executed to decrease temp');
+          // curl for decreasing the temp
         }
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        request({
-          url: `http://localhost:8581/api/accessories/${this.temp_down_accessory_uuid}/`,
-          method: 'PUT',
-          headers: {
-            accept: '*/*',
-            Authorization: `Bearer ${this.bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          json: {
-            characteristicType: 'On',
-            value: true,
-          },
-        });
-        console.log('curl executed');
-        // curl for decreasing the temp
       }
     }
   },

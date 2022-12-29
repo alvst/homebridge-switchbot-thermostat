@@ -261,14 +261,26 @@ Thermostat.prototype = {
       this.log('Toggled power state to %s', this.poweredOn);
       if (this.poweredOn == false) {
         // curl for power on to auto
-        request.put(
+        request(
           {
             url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
-            headers: headers,
-            json: json_data,
+            method: 'PUT',
+            headers: {
+              accept: '*/*',
+              Authorization: `Bearer ${this.bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+            json: {
+              characteristicType: 'On',
+              value: true,
+            },
           },
-          function (error, response, body) {
-            console.log(body);
+          (error, response, body) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(response);
+            }
           }
         );
         this.service
@@ -284,14 +296,26 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        request.put(
+        request(
           {
             url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}/`,
-            headers: headers,
-            json: json_data,
+            method: 'PUT',
+            headers: {
+              accept: '*/*',
+              Authorization: `Bearer ${this.bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+            json: {
+              characteristicType: 'On',
+              value: true,
+            },
           },
-          function (error, response, body) {
-            console.log(body);
+          (error, response, body) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(response);
+            }
           }
         );
       }
@@ -319,14 +343,26 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        request.put(
+        request(
           {
             url: `http://localhost:8581/api/accessories/${this.temp_down_accessory_uuid}/`,
-            headers: headers,
-            json: json_data,
+            method: 'PUT',
+            headers: {
+              accept: '*/*',
+              Authorization: `Bearer ${this.bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+            json: {
+              characteristicType: 'On',
+              value: true,
+            },
           },
-          function (error, response, body) {
-            console.log(body);
+          (error, response, body) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(response);
+            }
           }
         );
         // curl for decreasing the temp

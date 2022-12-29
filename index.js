@@ -270,7 +270,7 @@ Thermostat.prototype = {
     );
     console.log('bearerToken: ' + this.bearerToken);
 
-    putData().then((response) => {
+    await this.putData().then((response) => {
       console.log(response);
     });
 

@@ -254,6 +254,33 @@ Thermostat.prototype = {
     }
   },
 
+  putData: async function () {
+    return new Promise((resolve, reject) => {
+      request(
+        {
+          url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
+          method: 'PUT',
+          headers: {
+            accept: '*/*',
+            Authorization: `Bearer ${this.bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          json: {
+            characteristicType: 'On',
+            value: true,
+          },
+        },
+        (error, response, body) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(response);
+          }
+        }
+      );
+    });
+  },
+
   setTargetTemperature: async function (value) {
     console.log('setTargetTemperature: ' + value);
     console.log(this.currentTemperature);
@@ -409,7 +436,7 @@ Thermostat.prototype = {
     // Needed
     this.service
       .getCharacteristic(Characteristic.TargetTemperature)
-      .on('set', this.setTargetTemperature.bind(this))
+      .on('set', this.putData.bind(this))
       .setProps({
         minValue: this.minTemp,
         maxValue: this.maxTemp,

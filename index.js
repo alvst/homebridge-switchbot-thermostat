@@ -284,6 +284,8 @@ Thermostat.prototype = {
           index = index + 0.5
         ) {
           console.log('increasing temp ' + index);
+          console.log(this.temp_up_accessory_uuid);
+          console.log(this.bearerToken);
           request({
             url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}/`,
             method: 'PUT',

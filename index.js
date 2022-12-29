@@ -235,40 +235,40 @@ Thermostat.prototype = {
   },
 
   setTargetTemperature: async function (value) {
-    console.log(`Changing Temp from ${this.currentTemperature} to ${value}}`);
+    console.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
     console.log('setTargetTemperature: ' + value);
     console.log(`Current Temperature: ${this.currentTemperature}`);
-    console.log('temp_up_accessory_uuid : ' + this.temp_up_accessory_uuid);
-    console.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
     console.log(
       'power_switch_accessory_uuid' + this.power_switch_accessory_uuid
     );
     console.log('bearerToken: ' + this.bearerToken);
 
-    new Promise((resolve, reject) => {
-      request(
-        {
-          url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
-          method: 'PUT',
-          headers: {
-            accept: '*/*',
-            Authorization: `Bearer ${this.bearerToken}`,
-            'Content-Type': 'application/json',
+    console.log(
+      new Promise((resolve, reject) => {
+        request(
+          {
+            url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
+            method: 'PUT',
+            headers: {
+              accept: '*/*',
+              Authorization: `Bearer ${this.bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+            json: {
+              characteristicType: 'On',
+              value: true,
+            },
           },
-          json: {
-            characteristicType: 'On',
-            value: true,
-          },
-        },
-        (error, response, body) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(response);
+          (error, response, body) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(response);
+            }
           }
-        }
-      );
-    });
+        );
+      })
+    );
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)

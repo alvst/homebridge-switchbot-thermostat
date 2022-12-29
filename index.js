@@ -238,7 +238,7 @@ Thermostat.prototype = {
     return new Promise((resolve, reject) => {
       request(
         {
-          url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
+          url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}`,
           method: 'PUT',
           headers: {
             accept: '*/*',

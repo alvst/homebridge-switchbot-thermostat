@@ -294,29 +294,9 @@ Thermostat.prototype = {
       if (this.poweredOn == false) {
         // curl for power on to auto
 
-        new Promise((resolve, reject) => {
-          request(
-            {
-              url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
-              method: 'PUT',
-              headers: {
-                accept: '*/*',
-                Authorization: `Bearer ${this.bearerToken}`,
-                'Content-Type': 'application/json',
-              },
-              json: {
-                characteristicType: 'On',
-                value: true,
-              },
-            },
-            (error, response, body) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(response);
-              }
-            }
-          );
+        console.log('hi');
+        putData().then((response) => {
+          console.log(response);
         });
 
         console.log('curl executed to power device on');
@@ -436,7 +416,7 @@ Thermostat.prototype = {
     // Needed
     this.service
       .getCharacteristic(Characteristic.TargetTemperature)
-      .on('set', this.putData.bind(this))
+      .on('set', this.setTargetTemperature.bind(this))
       .setProps({
         minValue: this.minTemp,
         maxValue: this.maxTemp,

@@ -34,8 +34,7 @@ function Thermostat(log, config) {
 
   // console.log(config['thermostat_configuration'].bearerToken);
 
-  // this.bearerToken = config['thermostat_configuration'].bearerToken;
-  // console.log(this.bearerToken);
+  this.bearerToken = config['thermostat_configuration'].bearerToken;
   this.power_switch_accessory_uuid =
     config.thermostat_configuration['power_switch_accessory_uuid'];
   this.temp_up_accessory_uuid =
@@ -282,23 +281,44 @@ Thermostat.prototype = {
   },
 
   setTargetTemperature: async function (value) {
+    console.log(`Changing Temp from ${this.currentTemperature} to ${value}}`);
     console.log('setTargetTemperature: ' + value);
-    console.log(this.currentTemperature);
-    console.log(this.temp_up_accessory_uuid);
-    console.log(this.temp_down_accessory_uuid);
-    console.log(this.power_switch_accessory_uuid);
-    console.log(this.bearerToken);
+    console.log(`Current Temperature: ${this.currentTemperature}`);
+    console.log('temp_up_accessory_uuid' + this.temp_up_accessory_uuid);
+    console.log('temp_down_accessory_uuid' + this.temp_down_accessory_uuid);
+    console.log(
+      'power_switch_accessory_uuid' + this.power_switch_accessory_uuid
+    );
+    console.log('bearerToken' + this.bearerToken);
 
     if (this.currentTemperature < value) {
       this.log('Power state currently %s', this.poweredOn);
       if (this.poweredOn == false) {
         // curl for power on to auto
-
-        console.log('hi');
-        putData().then((response) => {
-          console.log(response);
+        new Promise((resolve, reject) => {
+          request(
+            {
+              url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
+              method: 'PUT',
+              headers: {
+                accept: '*/*',
+                Authorization: `Bearer ${this.bearerToken}`,
+                'Content-Type': 'application/json',
+              },
+              json: {
+                characteristicType: 'On',
+                value: true,
+              },
+            },
+            (error, response, body) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(response);
+              }
+            }
+          );
         });
-
         console.log('curl executed to power device on');
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -308,7 +328,7 @@ Thermostat.prototype = {
           index < value - this.currentTemperature;
           index = index + 0.5
         ) {
-          console.log('increasing temp ' + index);
+          console.log(`increasing temp ${index} / ${value}`);
           new Promise((resolve, reject) => {
             request(
               {
@@ -340,7 +360,6 @@ Thermostat.prototype = {
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
       }
-      console.log('Welcome');
 
       let changeAmount = this.currentTemperature - value;
       for (let index = 0; index < changeAmount; index++) {
@@ -359,7 +378,7 @@ Thermostat.prototype = {
           index < this.currentTemperature - value;
           index = index + 0.5
         ) {
-          console.log('decreasing temp ' + index);
+          console.log(`decreasing temp ${index} / ${value}`);
           new Promise((resolve, reject) => {
             request(
               {

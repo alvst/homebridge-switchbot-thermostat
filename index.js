@@ -278,6 +278,7 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(3);
   },
+
   setTargetTemperature: async function (value) {
     console.log(`Changing Temp from ${this.currentTemperature} to ${value}}`);
     console.log('setTargetTemperature: ' + value);
@@ -326,11 +327,13 @@ Thermostat.prototype = {
           index < value - this.currentTemperature;
           index = index + 0.5
         ) {
-          console.log(`increasing temp ${index} / ${value}`);
+          console.log(
+            `increasing temp ${index} / ${value - this.currentTemperature}`
+          );
           new Promise((resolve, reject) => {
             request(
               {
-                url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}/`,
+                url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}`,
                 method: 'PUT',
                 headers: {
                   accept: '*/*',
@@ -376,11 +379,13 @@ Thermostat.prototype = {
           index < this.currentTemperature - value;
           index = index + 0.5
         ) {
-          console.log(`decreasing temp ${index} / ${value}`);
+          console.log(
+            `decreasing temp ${index} / ${this.currentTemperature - value}`
+          );
           new Promise((resolve, reject) => {
             request(
               {
-                url: `http://localhost:8581/api/accessories/${this.temp_down_accessory_uuid}/`,
+                url: `http://localhost:8581/api/accessories/${this.temp_down_accessory_uuid}`,
                 method: 'PUT',
                 headers: {
                   accept: '*/*',

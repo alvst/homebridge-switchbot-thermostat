@@ -261,28 +261,19 @@ Thermostat.prototype = {
       this.log('Toggled power state to %s', this.poweredOn);
       if (this.poweredOn == false) {
         // curl for power on to auto
-        request(
-          {
-            url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
-            method: 'PUT',
-            headers: {
-              accept: '*/*',
-              Authorization: `Bearer ${this.bearerToken}`,
-              'Content-Type': 'application/json',
-            },
-            json: {
-              characteristicType: 'On',
-              value: true,
-            },
+        request({
+          url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}/`,
+          method: 'PUT',
+          headers: {
+            accept: '*/*',
+            Authorization: `Bearer ${this.bearerToken}`,
+            'Content-Type': 'application/json',
           },
-          (error, response, body) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(response);
-            }
-          }
-        );
+          json: {
+            characteristicType: 'On',
+            value: true,
+          },
+        });
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
@@ -296,28 +287,19 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        request(
-          {
-            url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}/`,
-            method: 'PUT',
-            headers: {
-              accept: '*/*',
-              Authorization: `Bearer ${this.bearerToken}`,
-              'Content-Type': 'application/json',
-            },
-            json: {
-              characteristicType: 'On',
-              value: true,
-            },
+        request({
+          url: `http://localhost:8581/api/accessories/${this.temp_up_accessory_uuid}/`,
+          method: 'PUT',
+          headers: {
+            accept: '*/*',
+            Authorization: `Bearer ${this.bearerToken}`,
+            'Content-Type': 'application/json',
           },
-          (error, response, body) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(response);
-            }
-          }
-        );
+          json: {
+            characteristicType: 'On',
+            value: true,
+          },
+        });
       }
       console.log('Welcome');
 
@@ -343,28 +325,19 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-        request(
-          {
-            url: `http://localhost:8581/api/accessories/${this.temp_down_accessory_uuid}/`,
-            method: 'PUT',
-            headers: {
-              accept: '*/*',
-              Authorization: `Bearer ${this.bearerToken}`,
-              'Content-Type': 'application/json',
-            },
-            json: {
-              characteristicType: 'On',
-              value: true,
-            },
+        request({
+          url: `http://localhost:8581/api/accessories/${this.temp_down_accessory_uuid}/`,
+          method: 'PUT',
+          headers: {
+            accept: '*/*',
+            Authorization: `Bearer ${this.bearerToken}`,
+            'Content-Type': 'application/json',
           },
-          (error, response, body) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(response);
-            }
-          }
-        );
+          json: {
+            characteristicType: 'On',
+            value: true,
+          },
+        });
         // curl for decreasing the temp
       }
     }

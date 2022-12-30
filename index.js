@@ -14,6 +14,9 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
+  console.log(
+    'Device Restarted. Please set thermostat lowest temperature and Off.'
+  );
   this.name = config.name;
   this.log = log;
 
@@ -357,6 +360,11 @@ Thermostat.prototype = {
 
           console.log('curl executed to increase temp');
         }
+        console.log(
+          `Bot sent ${
+            value - this.currentTemperature
+          } requests to increase temp`
+        );
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);

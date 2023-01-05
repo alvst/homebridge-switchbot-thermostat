@@ -14,7 +14,7 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
-  console.log(
+  this.log(
     'Device Restarted. Please set thermostat lowest temperature and Off.'
   );
   this.name = config.name;
@@ -94,7 +94,6 @@ Thermostat.prototype = {
           this.log.debug('Device response: %s', responseBody);
           try {
             const json = JSON.parse(responseBody);
-            console.log('abc123');
             this.service
               .getCharacteristic(Characteristic.TargetTemperature)
               .updateValue(json.targetTemperature);
@@ -169,31 +168,10 @@ Thermostat.prototype = {
     data.table.powerState = !this.poweredOn;
 
     // Write the updated JSON to the file
-    fs.writeFileSync(
-      'homebridge-web-thermostat2/db.json',
-      JSON.stringify(data)
-    );
-  },
-
-  changeTemp: function (newTemp, changeType) {
-    // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
-    this.log('Toggled power state to %s', this.poweredOn);
-    console.log(this.validStates);
-    console.log(typeof this.validStates);
-    if (this.poweredOn == false) {
-      console.log('powering on');
-      // curl for power on
-    }
-    console.log('Welcome');
-
-    if (changeType == 'increase') {
-      let changeAmount = this.currentTemperature - newTemp;
-      for (let index = 0; index < changeAmount; index++) {
-        console.log('increasing temp');
-      }
-    } else {
-      console.log('decreasing temp');
-    }
+    // fs.writeFileSync(
+    //   'homebridge-web-thermostat2/db.json',
+    //   JSON.stringify(data)
+    // );
   },
 
   _httpHandler: function (characteristic, value) {
@@ -209,7 +187,6 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.TargetTemperature)
           .updateValue(value);
-        console.log('here we are');
         this.log('Updated %s to: %s', characteristic, value);
         break;
       }
@@ -237,65 +214,20 @@ Thermostat.prototype = {
     }
   },
 
-  putData: async function () {
-    return new Promise((resolve, reject) => {
-      request(
-        {
-          url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}`,
-          method: 'PUT',
-          headers: {
-            accept: '*/*',
-            Authorization: `Bearer ${this.bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          json: {
-            characteristicType: 'On',
-            value: true,
-          },
-        },
-        (error, response, body) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(response);
-          }
-        }
-      );
-    });
-  },
-
-  setTargetTemperature1: async function (value) {
-    console.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
-    console.log('setTargetTemperature: ' + value);
-    console.log(`Current Temperature: ${this.currentTemperature}`);
-    console.log(
-      'power_switch_accessory_uuid' + this.power_switch_accessory_uuid
-    );
-    console.log('bearerToken: ' + this.bearerToken);
-
-    await this.putData().then((response) => {
-      console.log(response);
-    });
-
-    this.service
-      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      .updateValue(3);
-  },
-
   setTargetTemperature: async function (value) {
-    console.log(`Changing Temp from ${this.currentTemperature} to ${value}}`);
-    console.log('setTargetTemperature: ' + value);
-    console.log(`Current Temperature: ${this.currentTemperature}`);
-    console.log('temp_up_accessory_uuid : ' + this.temp_up_accessory_uuid);
-    console.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
-    console.log(
-      'power_switch_accessory_uuid' + this.power_switch_accessory_uuid
+    this.log(`Changing Temp from ${this.currentTemperature} to ${value}}`);
+    this.log(`setTargetTemperature: ${value}`);
+    this.log(`Current Temperature: ${this.currentTemperature}`);
+    this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
+    this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
+    this.log(
+      `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
     );
-    console.log('bearerToken' + this.bearerToken);
+    this.log(`bearerToken: ${this.bearerToken}`);
 
     if (this.currentTemperature < value) {
       this.log('Power state currently %s', this.poweredOn);
-      if (this.poweredOn == false) {
+      if (this.poweredOn === false) {
         // curl for power on to auto
         new Promise((resolve, reject) => {
           request(
@@ -321,7 +253,7 @@ Thermostat.prototype = {
             }
           );
         });
-        console.log('curl executed to power device on');
+        this.log('curl executed to power device on');
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(3);
@@ -330,7 +262,7 @@ Thermostat.prototype = {
           index < value - this.currentTemperature;
           index = index + 0.5
         ) {
-          console.log(
+          this.log(
             `increasing temp ${index} / ${value - this.currentTemperature}`
           );
           new Promise((resolve, reject) => {
@@ -358,9 +290,9 @@ Thermostat.prototype = {
             );
           });
 
-          console.log('curl executed to increase temp');
+          this.log('curl executed to increase temp');
         }
-        console.log(
+        this.log(
           `Bot sent ${
             value - this.currentTemperature
           } requests to increase temp`
@@ -368,11 +300,6 @@ Thermostat.prototype = {
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value);
-      }
-
-      let changeAmount = this.currentTemperature - value;
-      for (let index = 0; index < changeAmount; index++) {
-        console.log('increasing temp');
       }
     } else {
       this.log('Toggled power state to %s', this.poweredOn);
@@ -387,7 +314,7 @@ Thermostat.prototype = {
           index < this.currentTemperature - value;
           index = index + 0.5
         ) {
-          console.log(
+          this.log(
             `decreasing temp ${index} / ${this.currentTemperature - value}`
           );
           new Promise((resolve, reject) => {
@@ -414,7 +341,7 @@ Thermostat.prototype = {
               }
             );
           });
-          console.log('curl executed to decrease temp');
+          this.log('curl executed to decrease temp');
           // curl for decreasing the temp
         }
         this.service

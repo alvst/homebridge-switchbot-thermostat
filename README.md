@@ -19,7 +19,7 @@
 
 - ### If using OpenAPI Connection
 
-0. Configure the Switchbot Plugin:
+0. Install/Configure the Switchbot Plugin:
 1. Download SwitchBot App on App Store or Google Play Store
 2. Register a SwitchBot account and log in into your account
 3. Generate an Token within the App
@@ -36,7 +36,10 @@
    - Click Developer Options
    - Click Copy `secret` to Clipboard
 6. Input your `secret` into the config parameter
-7. Configure all your Switchbot Bots to Multipress mode
+
+   Switchbot Thermostat Specific instructions
+
+7. Configure all your Switchbot Bots to 'Multipress' mode
 8. Place your Switchbot Bots onto the thermostat making sure they are able to hit the buttons.
 
 - ### If using BLE Connection
@@ -48,6 +51,6 @@
 
 </p>
 
-## Supported SwitchBot Devices
+## Supported Devices
 
-You can use this thermostat with basically any thermostat that seems like it would be compatible but I make no guarantees.
+You can use this thermostat with basically any thermostat that seems like it would be compatible. Also feel free to adapt it as needed.

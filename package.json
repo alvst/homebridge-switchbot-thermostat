@@ -1,7 +1,7 @@
 {
-  "name": "homebridge-web-thermostat2",
+  "name": "homebridge-switchbot-thermostat",
   "version": "1.4.5",
-  "description": "Homebridge plugin for a web-based thermostat",
+  "description": "Homebridge plugin for a Switchbot powered thermostat",
   "main": "index.js",
   "dependencies": {
     "ip": ">=1.1.5",

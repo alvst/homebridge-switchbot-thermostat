@@ -1,7 +1,6 @@
 let Service, Characteristic;
 const packageJson = require('./package.json');
 const request = require('request');
-const fs = require('fs');
 
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
@@ -157,21 +156,9 @@ Thermostat.prototype = {
   },
 
   togglePowerState: function (callback) {
-    // write to homebridge-web-thermostat2/db.json to change table, powerState to !powerState
     this.log('Toggled power state to %s', this.poweredOn);
-    let data = fs.readFileSync('homebridge-web-thermostat2/db.json');
     data = JSON.parse(data);
-
-    // Hit API with CURL
-
-    // Update the powerState property
     data.table.powerState = !this.poweredOn;
-
-    // Write the updated JSON to the file
-    // fs.writeFileSync(
-    //   'homebridge-web-thermostat2/db.json',
-    //   JSON.stringify(data)
-    // );
   },
 
   _httpHandler: function (characteristic, value) {

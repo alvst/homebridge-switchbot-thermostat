@@ -155,38 +155,39 @@ Thermostat.prototype = {
   //   );
   // },
 
-  togglePowerState: function (callback) {
-    this.log('Toggled power state to %s', this.poweredOn);
-    data = JSON.parse(data);
-    data.table.powerState = !this.poweredOn;
-    new Promise((resolve, reject) => {
-      request(
-        {
-          url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}`,
-          method: 'PUT',
-          headers: {
-            accept: '*/*',
-            Authorization: `Bearer ${this.bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          json: {
-            characteristicType: 'On',
-            value: true,
-          },
-        },
-        (error, response, body) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(response);
-          }
-        }
-      );
-    });
-  },
+  // togglePowerState: function (callback) {
+  //   this.log('Toggled power state to %s', this.poweredOn);
+  //   data = JSON.parse(data);
+  //   data.table.powerState = !this.poweredOn;
+  //   new Promise((resolve, reject) => {
+  //     request(
+  //       {
+  //         url: `http://localhost:8581/api/accessories/${this.power_switch_accessory_uuid}`,
+  //         method: 'PUT',
+  //         headers: {
+  //           accept: '*/*',
+  //           Authorization: `Bearer ${this.bearerToken}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //         json: {
+  //           characteristicType: 'On',
+  //           value: true,
+  //         },
+  //       },
+  //       (error, response, body) => {
+  //         if (error) {
+  //           reject(error);
+  //         } else {
+  //           resolve(response);
+  //         }
+  //       }
+  //     );
+  //   });
+  // },
 
   _httpHandler: function (characteristic, value) {
     switch (characteristic) {
+      console.log('characteristic', characteristic);
       // case 'targetHeatingCoolingState': {
       //   this.service
       //     .getCharacteristic(Characteristic.TargetHeatingCoolingState)

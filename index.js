@@ -121,6 +121,64 @@ Thermostat.prototype = {
       .updateValue(value);
   },
 
+  setTargetTemperature: async function (value) {
+    this.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
+    this.log(`setTargetTemperature: ${value}`);
+    this.log(`Current Temperature: ${this.currentTemperature}`);
+    this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
+    this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
+    this.log(
+      `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
+    );
+    this.log(`bearerToken: ${this.bearerToken}`);
+
+    this.sendCurl(this.power_switch_accessory_uuid);
+
+    this.service
+      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+      .updateValue(3);
+
+    if (this.currentTemperature < value) {
+      for (
+        let index = 0;
+        index < value - this.currentTemperature;
+        index = index + 0.5
+      ) {
+        this.log(
+          `increasing temp ${index} / ${value - this.currentTemperature}`
+        );
+
+        this.sendCurl(this.temp_up_accessory_uuid);
+
+        this.log('curl executed to increase temp');
+      }
+      this.log(
+        `Bot sent ${value - this.currentTemperature} requests to increase temp`
+      );
+      this.service
+        .getCharacteristic(Characteristic.CurrentTemperature)
+        .updateValue(value);
+    } else {
+      this.log('Toggled power state to %s', this.poweredOn);
+      for (
+        let index = 0;
+        index < this.currentTemperature - value;
+        index = index + 0.5
+      ) {
+        this.log(
+          `decreasing temp ${index} / ${this.currentTemperature - value}`
+        );
+        this.sendCurl(this.temp_down_accessory_uuid);
+
+        this.log('curl executed to decrease temp');
+        // curl for decreasing the temp
+      }
+      this.service
+        .getCharacteristic(Characteristic.CurrentTemperature)
+        .updateValue(value);
+    }
+  },
+
   sendCurl: async function (device) {
     new Promise((resolve, reject) => {
       request(
@@ -146,63 +204,6 @@ Thermostat.prototype = {
         }
       );
     });
-  },
-
-  setTargetTemperature: async function (value) {
-    this.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
-    this.log(`setTargetTemperature: ${value}`);
-    this.log(`Current Temperature: ${this.currentTemperature}`);
-    this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
-    this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
-    this.log(
-      `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
-    );
-    this.log(`bearerToken: ${this.bearerToken}`);
-
-    sendCurl(this.power_switch_accessory_uuid);
-    this.service
-      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      .updateValue(3);
-
-    if (this.currentTemperature < value) {
-      for (
-        let index = 0;
-        index < value - this.currentTemperature;
-        index = index + 0.5
-      ) {
-        this.log(
-          `increasing temp ${index} / ${value - this.currentTemperature}`
-        );
-
-        sendCurl(this.temp_up_accessory_uuid);
-
-        this.log('curl executed to increase temp');
-      }
-      this.log(
-        `Bot sent ${value - this.currentTemperature} requests to increase temp`
-      );
-      this.service
-        .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(value);
-    } else {
-      this.log('Toggled power state to %s', this.poweredOn);
-      for (
-        let index = 0;
-        index < this.currentTemperature - value;
-        index = index + 0.5
-      ) {
-        this.log(
-          `decreasing temp ${index} / ${this.currentTemperature - value}`
-        );
-        sendCurl(this.temp_down_accessory_uuid);
-
-        this.log('curl executed to decrease temp');
-        // curl for decreasing the temp
-      }
-      this.service
-        .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(value);
-    }
   },
 
   getServices: function () {

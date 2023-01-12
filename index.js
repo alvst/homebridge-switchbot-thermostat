@@ -114,11 +114,16 @@ Thermostat.prototype = {
   },
 
   setTargetHeatingCoolingState: function (value, callback) {
-    console.log('toggling targetHeatingCoolingState');
+    console.log(
+      'setting power state to %s from setTargetHeatingCoolingState function',
+      value
+    );
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(value);
+
+    this.sendCurl(this.power_switch_accessory_uuid);
   },
 
   setTargetTemperature: async function (value) {
@@ -137,6 +142,10 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(3);
+
+    this.log(
+      'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
+    );
 
     if (this.currentTemperature < value) {
       for (

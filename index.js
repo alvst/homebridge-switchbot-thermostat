@@ -236,14 +236,6 @@ Thermostat.prototype = {
     );
     this.log(`bearerToken: ${this.bearerToken}`);
 
-    console.log(
-      this.service
-        .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(value)
-    );
-
-    console.log(Characteristic.CurrentTemperature);
-
     if (this.currentTemperature < value) {
       this.log('Power state currently %s', this.poweredOn);
       console.log(this.poweredOn);

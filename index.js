@@ -226,24 +226,9 @@ Thermostat.prototype = {
 
   setTargetHeatingCoolingState: function (value, callback) {
     console.log('toggling targetHeatingCoolingState');
-    console.log(
-      this.service
-        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .setProps({
-          updateValue: 2,
-        })
-    );
+    console.log(value);
 
-    if (
-      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .value === 0
-    ) {
-      this.service
-        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .updateValue(3);
-      this.log('Updated TargetHeatingCoolingState to: %s', 3);
-      console.log('Curl to turn on thermostat');
-    }
+    console.log('Curl to turn on thermostat');
   },
 
   setTargetTemperature: async function (value) {

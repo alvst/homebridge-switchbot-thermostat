@@ -13,7 +13,7 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
-  this.log(
+  console.log(
     'Device Restarted. Please set thermostat lowest temperature and Off.'
   );
   this.name = config.name;

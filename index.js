@@ -186,8 +186,9 @@ Thermostat.prototype = {
   // },
 
   _httpHandler: function (characteristic, value) {
+    console.log('characteristic', characteristic);
+
     switch (characteristic) {
-      console.log('characteristic', characteristic);
       // case 'targetHeatingCoolingState': {
       //   this.service
       //     .getCharacteristic(Characteristic.TargetHeatingCoolingState)

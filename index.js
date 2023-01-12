@@ -121,7 +121,7 @@ Thermostat.prototype = {
       .updateValue(value);
   },
 
-  sendCurl: function (device, callback) {
+  sendCurl: async function (device) {
     new Promise((resolve, reject) => {
       request(
         {

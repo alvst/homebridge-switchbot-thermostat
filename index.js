@@ -51,8 +51,6 @@ function Thermostat(log, config) {
   this.minTemp = config.thermostat_details.minTemp || 15;
   this.minStep = config.thermostat_details.minStep || 0.5;
 
-  this.poweredOn = false;
-
   this.currentTemperature = 20;
 
   this.service = new Service.Thermostat(this.name);
@@ -246,6 +244,17 @@ Thermostat.prototype = {
           updateValue: 2,
         })
     );
+
+    if (
+      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .value === 0
+    ) {
+      this.service
+        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .updateValue(3);
+      this.log('Updated TargetHeatingCoolingState to: %s', 3);
+      console.log('Curl to turn on thermostat');
+    }
 
     // if (this.currentTemperature < value) {
     //   this.log('Power state currently %s', this.poweredOn);

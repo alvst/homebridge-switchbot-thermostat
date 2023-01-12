@@ -36,7 +36,7 @@ function Thermostat(log, config) {
   this.validStates = config.validStates || [0, 1, 2, 3];
 
   this.requestArray = [
-    // 'targetHeatingCoolingState',
+    'targetHeatingCoolingState',
     'targetTemperature',
     // 'coolingThresholdTemperature',
     // 'heatingThresholdTemperature',
@@ -186,13 +186,13 @@ Thermostat.prototype = {
     console.log('characteristic', characteristic);
 
     switch (characteristic) {
-      // case 'targetHeatingCoolingState': {
-      //   this.service
-      //     .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      //     .updateValue(value);
-      //   this.log('Updated %s to: %s', characteristic, value);
-      //   break;
-      // }
+      case 'targetHeatingCoolingState': {
+        this.service
+          .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+          .updateValue(value);
+        this.log('Updated %s to: %s', characteristic, value);
+        break;
+      }
       case 'targetTemperature': {
         this.service
           .getCharacteristic(Characteristic.TargetTemperature)
@@ -224,19 +224,8 @@ Thermostat.prototype = {
     }
   },
 
-  setTargetTemperature: async function (value) {
-    this.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
-    this.log(`setTargetTemperature: ${value}`);
-    this.log(`Current Temperature: ${this.currentTemperature}`);
-    this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
-    this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
-    this.log(
-      `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
-    );
-    this.log(`bearerToken: ${this.bearerToken}`);
-
-    console.log('Power state currently %s', this.poweredOn);
-
+  setTargetHeatingCoolingState: function (value, callback) {
+    console.log('toggling targetHeatingCoolingState');
     console.log(
       this.service
         .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -255,6 +244,18 @@ Thermostat.prototype = {
       this.log('Updated TargetHeatingCoolingState to: %s', 3);
       console.log('Curl to turn on thermostat');
     }
+  },
+
+  setTargetTemperature: async function (value) {
+    this.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
+    this.log(`setTargetTemperature: ${value}`);
+    this.log(`Current Temperature: ${this.currentTemperature}`);
+    this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
+    this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
+    this.log(
+      `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
+    );
+    this.log(`bearerToken: ${this.bearerToken}`);
 
     // if (this.currentTemperature < value) {
     //   this.log('Power state currently %s', this.poweredOn);
@@ -397,6 +398,10 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
       .updateValue(1);
+
+    this.service
+      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+      .on('set', this.setTargetHeatingCoolingState.bind(this));
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)

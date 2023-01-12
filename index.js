@@ -74,86 +74,86 @@ Thermostat.prototype = {
     callback();
   },
 
-  _getStatus: function (callback) {
-    const url = this.apiroute + '/status';
-    this.log.debug('Getting status: %s', url);
+  // _getStatus: function (callback) {
+  //   const url = this.apiroute + '/status';
+  //   this.log.debug('Getting status: %s', url);
 
-    this._httpRequest(
-      url,
-      '',
-      this.http_method,
-      function (error, response, responseBody) {
-        if (error) {
-          this.log.warn('Error getting status: %s', error.message);
-          this.service
-            .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
-            .updateValue(new Error('Polling failed'));
-          callback(error);
-        } else {
-          this.log.debug('Device response: %s', responseBody);
-          try {
-            const json = JSON.parse(responseBody);
-            this.service
-              .getCharacteristic(Characteristic.TargetTemperature)
-              .updateValue(json.targetTemperature);
-            this.log.debug(
-              'Updated TargetTemperature to: %s',
-              json.targetTemperature
-            );
-            this.service
-              .getCharacteristic(Characteristic.CurrentTemperature)
-              .updateValue(json.currentTemperature);
-            this.log.debug(
-              'Updated CurrentTemperature to: %s',
-              json.currentTemperature
-            );
-            this.service
-              .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-              .updateValue(json.targetHeatingCoolingState);
-            this.log.debug(
-              'Updated TargetHeatingCoolingState to: %s',
-              json.targetHeatingCoolingState
-            );
-            this.service
-              .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
-              .updateValue(json.currentHeatingCoolingState);
-            this.log.debug(
-              'Updated CurrentHeatingCoolingState to: %s',
-              json.currentHeatingCoolingState
-            );
-            if (this.temperatureThresholds) {
-              this.service
-                .getCharacteristic(Characteristic.CoolingThresholdTemperature)
-                .updateValue(json.coolingThresholdTemperature);
-              this.log.debug(
-                'Updated CoolingThresholdTemperature to: %s',
-                json.coolingThresholdTemperature
-              );
-              this.service
-                .getCharacteristic(Characteristic.HeatingThresholdTemperature)
-                .updateValue(json.heatingThresholdTemperature);
-              this.log.debug(
-                'Updated HeatingThresholdTemperature to: %s',
-                json.heatingThresholdTemperature
-              );
-            }
-            if (this.currentRelativeHumidity) {
-              this.service
-                .getCharacteristic(Characteristic.CurrentRelativeHumidity)
-                .updateValue(json.currentRelativeHumidity);
-              this.log.debug(
-                'Updated CurrentRelativeHumidity to: %s',
-                json.currentRelativeHumidity
-              );
-            }
-            callback();
-          } catch (e) {
-            this.log.warn('Error parsing status: %s', e.message);
-          }
-        }
-      }.bind(this)
-    );
-  },
+  //   this._httpRequest(
+  //     url,
+  //     '',
+  //     this.http_method,
+  //     function (error, response, responseBody) {
+  //       if (error) {
+  //         this.log.warn('Error getting status: %s', error.message);
+  //         this.service
+  //           .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
+  //           .updateValue(new Error('Polling failed'));
+  //         callback(error);
+  //       } else {
+  //         this.log.debug('Device response: %s', responseBody);
+  //         try {
+  //           const json = JSON.parse(responseBody);
+  //           this.service
+  //             .getCharacteristic(Characteristic.TargetTemperature)
+  //             .updateValue(json.targetTemperature);
+  //           this.log.debug(
+  //             'Updated TargetTemperature to: %s',
+  //             json.targetTemperature
+  //           );
+  //           this.service
+  //             .getCharacteristic(Characteristic.CurrentTemperature)
+  //             .updateValue(json.currentTemperature);
+  //           this.log.debug(
+  //             'Updated CurrentTemperature to: %s',
+  //             json.currentTemperature
+  //           );
+  //           this.service
+  //             .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+  //             .updateValue(json.targetHeatingCoolingState);
+  //           this.log.debug(
+  //             'Updated TargetHeatingCoolingState to: %s',
+  //             json.targetHeatingCoolingState
+  //           );
+  //           this.service
+  //             .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
+  //             .updateValue(json.currentHeatingCoolingState);
+  //           this.log.debug(
+  //             'Updated CurrentHeatingCoolingState to: %s',
+  //             json.currentHeatingCoolingState
+  //           );
+  //           if (this.temperatureThresholds) {
+  //             this.service
+  //               .getCharacteristic(Characteristic.CoolingThresholdTemperature)
+  //               .updateValue(json.coolingThresholdTemperature);
+  //             this.log.debug(
+  //               'Updated CoolingThresholdTemperature to: %s',
+  //               json.coolingThresholdTemperature
+  //             );
+  //             this.service
+  //               .getCharacteristic(Characteristic.HeatingThresholdTemperature)
+  //               .updateValue(json.heatingThresholdTemperature);
+  //             this.log.debug(
+  //               'Updated HeatingThresholdTemperature to: %s',
+  //               json.heatingThresholdTemperature
+  //             );
+  //           }
+  //           if (this.currentRelativeHumidity) {
+  //             this.service
+  //               .getCharacteristic(Characteristic.CurrentRelativeHumidity)
+  //               .updateValue(json.currentRelativeHumidity);
+  //             this.log.debug(
+  //               'Updated CurrentRelativeHumidity to: %s',
+  //               json.currentRelativeHumidity
+  //             );
+  //           }
+  //           callback();
+  //         } catch (e) {
+  //           this.log.warn('Error parsing status: %s', e.message);
+  //         }
+  //       }
+  //     }.bind(this)
+  //   );
+  // },
 
   togglePowerState: function (callback) {
     this.log('Toggled power state to %s', this.poweredOn);

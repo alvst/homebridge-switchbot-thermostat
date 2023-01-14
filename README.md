@@ -80,7 +80,7 @@
 
 <p align="center">
 
-<img src="./Thermostat.jpg" width="1px">
+<img src="https://github.com/alvst/switchbot-theromstat/blob/main/Thermostat.jpg?raw=true" width="1px">
 
 </p>
 

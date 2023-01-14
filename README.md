@@ -1,6 +1,6 @@
 <span align="center">
 
-<a href=""><img alt="homebridge-verified" src="" width="350px"></a>
+<a href=""><img alt="" src="" width="350px"></a>
 
 # @Switchbot Thermostat
 
@@ -80,7 +80,7 @@
 
 <p align="center">
 
-<img src="https://github.com/alvst/switchbot-theromstat/blob/main/Thermostat.jpg?raw=true" width="1px">
+<img src="https://github.com/alvst/switchbot-theromstat/blob/main/Thermostat.jpg?raw=true" width="350px">
 
 </p>
 

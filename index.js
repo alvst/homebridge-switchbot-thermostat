@@ -76,6 +76,7 @@ Thermostat.prototype = {
 
     switch (characteristic) {
       case 'targetHeatingCoolingState': {
+        // Toggle Power State
         this.service
           .getCharacteristic(Characteristic.TargetHeatingCoolingState)
           .updateValue(value);

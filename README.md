@@ -2,7 +2,7 @@
 
 <a href=""><img alt="" src="" width="350px"></a>
 
-# @Switchbot Thermostat
+# Switchbot Thermostat
 
 <p>The Homebridge <a href="https://www.switch-bot.com">SwitchBot Thermostat</a> is an accessory plugin allows you to access your SwitchBot Device(s) to control your thermostat from HomeKit with
   <a href="https://homebridge.io">Homebridge</a>. 
@@ -86,4 +86,4 @@
 
 ## Supported Devices
 
-You can use this thermostat with basically any thermostat that seems like it would be compatible. Also feel free to adapt it as needed. You may need to make slight modifications if the features I created aren't the exact features you created. You can see my Thermostat and it's capabilities above. Because of the limitations of HomeKit, I didn't leverage all the buttons (FANS SPEED which increase the fan speed, and OPER MODE which changes it from Air conditioning, to heat, etc).
+You can use this thermostat with basically any thermostat that seems like it would be compatible. Also feel free to adapt it as needed. You may need to make slight modifications if the features I created aren't the exact features you created. You can see my Thermostat and it's capabilities above. Because of the limitations of HomeKit, I didn't leverage all the buttons (FANS SPEED which increase the fan speed, and OPER MODE which changes it from Air conditioning, to heat, etc). This plugin will work with any thermostat with temperature up and down buttons and a power on/off button. Additional actions are not currently supported but could easily be added in. I'd like to add fan speed, however, I don't believe thats currently supported by Homebridge Thermostats.

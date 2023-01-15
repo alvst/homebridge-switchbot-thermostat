@@ -55,13 +55,6 @@ function Thermostat(log, config) {
 
   this.service = new Service.Thermostat(this.name);
 
-  // this.service = new this.api.hap.Service.Switch(this.name);
-
-  // // link methods used when getting or setting the state of the service
-  // this.service
-  //   .getCharacteristic(this.api.hap.Characteristic.On)
-  //   .onGet(this.getOnHandler.bind(this)) // bind to getOnHandler method below
-  //   .onSet(this.setOnHandler.bind(this)); // bind to setOnHandler method below
   return;
 }
 
@@ -90,20 +83,6 @@ Thermostat.prototype = {
         this.log('Updated %s to: %s', characteristic, value);
         break;
       }
-      // case 'coolingThresholdTemperature': {
-      //   this.service
-      //     .getCharacteristic(Characteristic.CoolingThresholdTemperature)
-      //     .updateValue(value);
-      //   this.log('Updated %s to: %s', characteristic, value);
-      //   break;
-      // }
-      // case 'heatingThresholdTemperature': {
-      //   this.service
-      //     .getCharacteristic(Characteristic.HeatingThresholdTemperature)
-      //     .updateValue(value);
-      //   this.log('Updated %s to: %s', characteristic, value);
-      //   break;
-      // }
       default: {
         this.log.warn(
           'Unknown characteristic "%s" with value "%s"',

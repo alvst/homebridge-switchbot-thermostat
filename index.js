@@ -117,8 +117,9 @@ Thermostat.prototype = {
     );
     this.log(`bearerToken: ${this.bearerToken}`);
 
-    console.log(Characteristic.TargetHeatingCoolingState.value);
-    console.log(Characteristic.TargetHeatingCoolingState.value());
+    console.log(
+      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
+    );
 
     this.sendCurl(this.power_switch_accessory_uuid);
 

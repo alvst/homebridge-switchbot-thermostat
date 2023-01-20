@@ -28,8 +28,7 @@
 
    c. The length of a Bearer Token's expiration can be changed in Homebridge -> ⋮ -> UI Settings -> Advanced -> Session Timeout (in seconds)
 
-5. I recommend putting your Thermostat on a separate bridge.
-6. Configure the package.json by adding a new accessory:
+5. Configure the package.json by adding a new accessory:
 
 ```json
     "accessories": [
@@ -59,14 +58,13 @@
 
 ## Optional fields
 
-| Key                       | Description                                                                                  | Default  |
-| ------------------------- | -------------------------------------------------------------------------------------------- | -------- |
-| `validStates`             | Which states you would like to enable (see [key](#heatingcoolingstate-key))                  | `[0, 3]` |
-| `temperatureDisplayUnits` | Whether you want °C (`0`) or °F (`1`) as your units                                          | `0`      |
-| `maxTemp`                 | Upper bound for the temperature selector in the Home app                                     | `30`     |
-| `minTemp`                 | Lower bound for the temperature selector in the Home app                                     | `15`     |
-| `minStep`                 | Minimum increment value for the temperature selector in the Home app                         | `0.5`    |
-| `temperatureThresholds`   | Whether you want the thermostat accessory to have heating and cooling temperature thresholds | `false`  |
+| Key                       | Description                                                                 | Default  |
+| ------------------------- | --------------------------------------------------------------------------- | -------- |
+| `validStates`             | Which states you would like to enable (see [key](#heatingcoolingstate-key)) | `[0, 3]` |
+| `temperatureDisplayUnits` | Whether you want °C (`0`) or °F (`1`) as your units                         | `0`      |
+| `maxTemp`                 | Upper bound for the temperature selector in the Home app                    | `30`     |
+| `minTemp`                 | Lower bound for the temperature selector in the Home app                    | `15`     |
+| `minStep`                 | Minimum increment value for the temperature selector in the Home app        | `0.5`    |
 
 ## HeatingCoolingState Key
 
@@ -86,4 +84,4 @@
 
 ## Supported Devices
 
-You can use this thermostat with basically any thermostat that seems like it would be compatible. Also feel free to adapt it as needed. You may need to make slight modifications if the features I created aren't the exact features you created. You can see my Thermostat and it's capabilities above. Because of the limitations of HomeKit, I didn't leverage all the buttons (FANS SPEED which increase the fan speed, and OPER MODE which changes it from Air conditioning, to heat, etc). This plugin will work with any thermostat with temperature up and down buttons and a power on/off button. Additional actions are not currently supported but could easily be added in. I'd like to add fan speed, however, I don't believe thats currently supported by Homebridge Thermostats.
+You can use this thermostat with basically any thermostat that seems like it would be compatible. Also feel free to adapt it as needed. You may need to make slight modifications if the features I created aren't the exact features you created. You can see my Thermostat and it's capabilities above. Because of the limitations of HomeKit, I didn't leverage all the buttons (FANS SPEED which increase the fan speed, and OPER MODE which changes it from air conditioning to heat, etc). This plugin will work with any thermostat with temperature up and down buttons and a power on/off button. Additional actions are not currently supported but could easily be added in. I'd like to add fan speed, however, I don't believe thats currently supported by Homebridge Thermostats.

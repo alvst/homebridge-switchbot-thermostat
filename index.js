@@ -119,6 +119,7 @@ Thermostat.prototype = {
 
     console.log(
       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .value
     );
 
     this.sendCurl(this.power_switch_accessory_uuid);

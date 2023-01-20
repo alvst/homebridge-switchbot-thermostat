@@ -141,7 +141,7 @@ Thermostat.prototype = {
         'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
       );
 
-      this.sleep(10000);
+      await this.sleep(10000);
     }
 
     if (this.currentTemperature < value) {

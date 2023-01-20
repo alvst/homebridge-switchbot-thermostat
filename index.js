@@ -106,6 +106,10 @@ Thermostat.prototype = {
     this.sendCurl(this.power_switch_accessory_uuid);
   },
 
+  sleep: async function (milliseconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  },
+
   setTargetTemperature: async function (value) {
     this.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
     this.log(`setTargetTemperature: ${value}`);
@@ -135,6 +139,8 @@ Thermostat.prototype = {
       this.log(
         'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
       );
+
+      sleep(5000);
     }
 
     if (this.currentTemperature < value) {
@@ -144,7 +150,9 @@ Thermostat.prototype = {
         index = index + 0.5
       ) {
         this.log(
-          `increasing temp ${index} / ${value - this.currentTemperature}`
+          `increasing temp ${(index + 0.5) * 2}) / ${
+            (value - this.currentTemperature) * 2
+          }`
         );
 
         this.sendCurl(this.temp_up_accessory_uuid);

@@ -107,6 +107,7 @@ Thermostat.prototype = {
   },
 
   sleep: async function (milliseconds) {
+    this.log('sleeping for ' + milliseconds + ' milliseconds');
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   },
 
@@ -140,7 +141,7 @@ Thermostat.prototype = {
         'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
       );
 
-      sleep(5000);
+      this.sleep(5000);
     }
 
     if (this.currentTemperature < value) {

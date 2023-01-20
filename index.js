@@ -141,7 +141,7 @@ Thermostat.prototype = {
         'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
       );
 
-      this.sleep(5000);
+      this.sleep(10000);
     }
 
     if (this.currentTemperature < value) {
@@ -151,7 +151,7 @@ Thermostat.prototype = {
         index = index + 0.5
       ) {
         this.log(
-          `increasing temp ${(index + 0.5) * 2}) / ${
+          `increasing temp ${(index + 0.5) * 2} / ${
             (value - this.currentTemperature) * 2
           }`
         );

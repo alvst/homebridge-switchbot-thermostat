@@ -104,6 +104,7 @@ Thermostat.prototype = {
       .updateValue(value);
 
     this.sendCurl(this.power_switch_accessory_uuid);
+    callback();
   },
 
   sleep: async function (milliseconds) {
@@ -185,6 +186,7 @@ Thermostat.prototype = {
         .getCharacteristic(Characteristic.CurrentTemperature)
         .updateValue(value);
     }
+    callback();
   },
 
   sendCurl: async function (device) {

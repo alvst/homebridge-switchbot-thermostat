@@ -103,7 +103,7 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(value);
 
-    this.sendCurl(this.power_switch_accessory_uuid);
+    // this.sendCurl(this.power_switch_accessory_uuid);
 
     callback();
   },

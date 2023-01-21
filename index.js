@@ -105,6 +105,9 @@ Thermostat.prototype = {
 
     this.sendCurl(this.power_switch_accessory_uuid);
     callback();
+
+    this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
+      .updateValue;
   },
 
   sleep: async function (milliseconds) {
@@ -112,7 +115,7 @@ Thermostat.prototype = {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   },
 
-  setTargetTemperature: async function (value) {
+  setTargetTemperature: async function (value, callback) {
     this.log(`Changing Temp from ${this.currentTemperature} to ${value}`);
     this.log(`setTargetTemperature: ${value}`);
     this.log(`Current Temperature: ${this.currentTemperature}`);
@@ -122,11 +125,6 @@ Thermostat.prototype = {
       `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
     );
     this.log(`bearerToken: ${this.bearerToken}`);
-
-    console.log(
-      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .value
-    );
 
     if (
       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -142,7 +140,7 @@ Thermostat.prototype = {
         'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
       );
 
-      // await this.sleep(10000);
+      await this.sleep(10000);
     }
 
     if (this.currentTemperature < value) {
@@ -169,6 +167,7 @@ Thermostat.prototype = {
       this.service
         .getCharacteristic(Characteristic.CurrentTemperature)
         .updateValue(value);
+      callback();
     } else {
       this.log('Toggled power state to %s', this.poweredOn);
       for (
@@ -185,8 +184,8 @@ Thermostat.prototype = {
       this.service
         .getCharacteristic(Characteristic.CurrentTemperature)
         .updateValue(value);
+      callback();
     }
-    callback();
   },
 
   sendCurl: async function (device) {

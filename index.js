@@ -105,8 +105,6 @@ Thermostat.prototype = {
 
     this.sendCurl(this.power_switch_accessory_uuid);
 
-    this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      .updateValue;
     callback();
   },
 

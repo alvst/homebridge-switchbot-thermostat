@@ -104,10 +104,10 @@ Thermostat.prototype = {
       .updateValue(value);
 
     this.sendCurl(this.power_switch_accessory_uuid);
-    callback();
 
     this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue;
+    callback();
   },
 
   sleep: async function (milliseconds) {

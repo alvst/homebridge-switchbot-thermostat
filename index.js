@@ -103,7 +103,7 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(value);
 
-    // this.sendCurl(this.power_switch_accessory_uuid);
+    this.sendCurl(this.power_switch_accessory_uuid);
 
     callback();
   },
@@ -124,22 +124,22 @@ Thermostat.prototype = {
     );
     this.log(`bearerToken: ${this.bearerToken}`);
 
-    // if (
-    //   this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
-    //     .value == 0
-    // ) {
-    //   this.sendCurl(this.power_switch_accessory_uuid);
+    if (
+      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .value == 0
+    ) {
+      this.sendCurl(this.power_switch_accessory_uuid);
 
-    //   this.service
-    //     .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-    //     .updateValue(3);
+      this.service
+        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .updateValue(3);
 
-    //   this.log(
-    //     'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
-    //   );
+      this.log(
+        'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
+      );
 
-    //   await this.sleep(10000);
-    // }
+      await this.sleep(10000);
+    }
 
     if (this.currentTemperature < value) {
       for (

@@ -51,8 +51,6 @@ function Thermostat(log, config) {
   this.minTemp = config.thermostat_details.minTemp || 15;
   this.minStep = config.thermostat_details.minStep || 0.5;
 
-  this.currentTemperature = 20;
-
   this.service = new Service.Thermostat(this.name);
 
   return;
@@ -141,9 +139,12 @@ Thermostat.prototype = {
       await this.sleep(10000);
     }
     
-    this.log(this.currentTemperature)
+    this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature))
+     this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
+     this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value())
     this.log(value)
 
+    
     if (this.currentTemperature < value) {
       for (
         let index = 0;

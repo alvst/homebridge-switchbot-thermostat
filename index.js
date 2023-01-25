@@ -140,6 +140,9 @@ Thermostat.prototype = {
 
       await this.sleep(10000);
     }
+    
+    this.log(this.currentTemperature)
+    this.log(value)
 
     if (this.currentTemperature < value) {
       for (

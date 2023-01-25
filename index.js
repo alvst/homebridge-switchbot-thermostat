@@ -145,10 +145,10 @@ Thermostat.prototype = {
       for (
         let index = 0;
         index < value - this.currentTemperature;
-        index = index + 0.5
+        index = index + minStep
       ) {
         this.log(
-          `increasing temp ${(index + 0.5) * 2} / ${
+          `increasing temp ${(index + minStep) * 2} / ${
             (value - this.currentTemperature) * 2
           }`
         );
@@ -171,7 +171,7 @@ Thermostat.prototype = {
       for (
         let index = 0;
         index < this.currentTemperature - value;
-        index = index + 0.5
+        index = index + minStep
       ) {
         this.log(
           `decreasing temp ${index} / ${this.currentTemperature - value}`

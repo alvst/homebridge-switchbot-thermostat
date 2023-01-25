@@ -140,12 +140,9 @@ Thermostat.prototype = {
     }
     
     this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature))
-     this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
-     this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value())
-    this.log(value)
 
     
-    if (this.currentTemperature < value) {
+    if (0 < value) {
       for (
         let index = 0;
         index < value - this.currentTemperature;
@@ -160,6 +157,10 @@ Thermostat.prototype = {
         this.sendCurl(this.temp_up_accessory_uuid);
 
         this.log('curl executed to increase temp');
+       
+        this.service
+        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .updateValue(value);
       }
       this.log(
         `Bot sent ${

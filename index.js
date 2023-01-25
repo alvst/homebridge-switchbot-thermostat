@@ -230,7 +230,11 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
       .updateValue(1);
-
+    
+    this.service
+        .getCharacteristic(Characteristic.CurrentTemperature)
+        .updateValue(this.minTemp);
+    
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .on('set', this.setTargetHeatingCoolingState.bind(this));
@@ -257,7 +261,6 @@ Thermostat.prototype = {
       maxValue: 600,
       unit: 'fahrenheit',
       format: 'int',
-      value: this.minTemp,
     });
 
     return [this.informationService, this.service];

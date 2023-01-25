@@ -145,10 +145,10 @@ Thermostat.prototype = {
       for (
         let index = 0;
         index < value - this.currentTemperature;
-        index = index + minStep
+        index = index + this.minStep
       ) {
         this.log(
-          `increasing temp ${(index + minStep) * 2} / ${
+          `increasing temp ${(index + this.minStep) * 2} / ${
             (value - this.currentTemperature) * 2
           }`
         );
@@ -171,10 +171,10 @@ Thermostat.prototype = {
       for (
         let index = 0;
         index < this.currentTemperature - value;
-        index = index + minStep
+        index = index + this.minStep
       ) {
         this.log(
-          `decreasing temp ${index} / ${this.currentTemperature - value}`
+          `decreasing temp $({index + this.minStep) * 2} / ${(this.currentTemperature - value) * 2}`
         );
         this.sendCurl(this.temp_down_accessory_uuid);
         this.log('curl executed to decrease temp');

@@ -139,18 +139,18 @@ Thermostat.prototype = {
       await this.sleep(10000);
     }
     
-    this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature))
+    this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
 
     
     if (0 < value) {
       for (
         let index = 0;
-        index < value - this.service.getCharacteristic(Characteristic.CurrentTemperature);
+        index < value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value;
         index = index + this.minStep
       ) {
         this.log(
           `increasing temp ${(index + this.minStep) * 2} / ${
-            (value - this.service.getCharacteristic(Characteristic.CurrentTemperature)) * 2
+            (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
           }`
         );
 
@@ -164,7 +164,7 @@ Thermostat.prototype = {
       }
       this.log(
         `Bot sent ${
-          (value - this.service.getCharacteristic(Characteristic.CurrentTemperature)) * 2
+          (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
         } requests to increase temp`
       );
       this.service
@@ -172,14 +172,13 @@ Thermostat.prototype = {
         .updateValue(value);
       callback();
     } else {
-      this.log('Toggled power state to %s', this.poweredOn);
       for (
         let index = 0;
-        index < this.service.getCharacteristic(Characteristic.CurrentTemperature) - value;
+        index < this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value;
         index = index + this.minStep
       ) {
         this.log(
-          `decreasing temp $({index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature) - value) * 2}`
+          `decreasing temp $({index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value) * 2}`
         );
         this.sendCurl(this.temp_down_accessory_uuid);
         this.log('curl executed to decrease temp');

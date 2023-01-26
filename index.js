@@ -114,7 +114,7 @@ Thermostat.prototype = {
   setTargetTemperature: async function (value, callback) {
     this.log(`Changing Temp from ${this.service.getCharacteristic(Characteristic.CurrentTemperature).value} to ${value}`);
     this.log(`setTargetTemperature: ${value}`);
-    this.log(`Current Temperature: ${this.currentTemperature}`);
+    this.log(`Current Temperature: ${this.service.getCharacteristic(Characteristic.CurrentTemperature).value}`);
     this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
     this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
     this.log(
@@ -153,6 +153,7 @@ Thermostat.prototype = {
             (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
           }`
         );
+        console.log(this.minStep);
 
         this.sendCurl(this.temp_up_accessory_uuid);
 

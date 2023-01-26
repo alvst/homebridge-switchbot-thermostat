@@ -159,7 +159,7 @@ Thermostat.prototype = {
         this.log('curl executed to increase temp');
        
         this.service
-        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .getCharacteristic(Characteristic.CurrentTemperature)
         .updateValue(value);
       }
       this.log(

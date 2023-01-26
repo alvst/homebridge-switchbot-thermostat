@@ -148,6 +148,10 @@ Thermostat.prototype = {
         index < value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value;
         index = index + this.minStep
       ) {
+        console.log(index);
+        console.log(this.minStep);
+        console.log(value);
+        console.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
         this.log(
           `increasing temp ${(index + this.minStep) * 2} / ${
             (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2

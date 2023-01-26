@@ -153,7 +153,6 @@ Thermostat.prototype = {
             (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
           }`
         );
-        console.log(this.minStep);
 
         this.sendCurl(this.temp_up_accessory_uuid);
 
@@ -170,9 +169,6 @@ Thermostat.prototype = {
         .updateValue(value);
       }
       
-      this.service
-        .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(value);
       callback();
     } else {
       for (
@@ -181,7 +177,7 @@ Thermostat.prototype = {
         index = index + this.minStep
       ) {
         this.log(
-          `decreasing temp $({index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value) * 2}`
+          `decreasing temp ${(index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value) * 2}`
         );
         this.sendCurl(this.temp_down_accessory_uuid);
         this.log('curl executed to decrease temp');
@@ -189,6 +185,7 @@ Thermostat.prototype = {
       this.service
         .getCharacteristic(Characteristic.CurrentTemperature)
         .updateValue(value);
+      
       callback();
     }
   },
@@ -235,7 +232,7 @@ Thermostat.prototype = {
     
     this.service
         .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(this.minTemp);
+        .updateValue(this.minTemp + 1);
     
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)

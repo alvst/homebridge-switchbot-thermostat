@@ -143,9 +143,13 @@ Thermostat.prototype = {
 
     
     if (this.service.getCharacteristic(Characteristic.CurrentTemperature).value < value) {
+        console.log('this.minStep');
         console.log(this.minStep);
+        console.log('value');
         console.log(value);
+        console.log('this.service.getCharacteristic(Characteristic.CurrentTemperature).value')
         console.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
+        console.log('value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value')
         console.log(value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
       for (
         let index = 0;

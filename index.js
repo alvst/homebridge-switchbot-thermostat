@@ -145,7 +145,7 @@ Thermostat.prototype = {
     if (this.service.getCharacteristic(Characteristic.CurrentTemperature).value < value) {
       for (
         let index = 0;
-        index < value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value;
+        index < this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value;
         index = index + this.minStep
       ) {
         console.log(index);

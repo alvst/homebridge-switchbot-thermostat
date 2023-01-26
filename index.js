@@ -62,35 +62,6 @@ Thermostat.prototype = {
     callback();
   },
 
-  _httpHandler: function (characteristic, value) {
-    console.log('characteristic', characteristic);
-
-    switch (characteristic) {
-      case 'targetHeatingCoolingState': {
-        // Toggle Power State
-        this.service
-          .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-          .updateValue(value);
-        this.log('Updated %s to: %s', characteristic, value);
-        break;
-      }
-      case 'targetTemperature': {
-        this.service
-          .getCharacteristic(Characteristic.TargetTemperature)
-          .updateValue(value);
-        this.log('Updated %s to: %s', characteristic, value);
-        break;
-      }
-      default: {
-        this.log.warn(
-          'Unknown characteristic "%s" with value "%s"',
-          characteristic,
-          value
-        );
-      }
-    }
-  },
-
   setTargetHeatingCoolingState: function (value, callback) {
     console.log(
       'setting power state to %s from setTargetHeatingCoolingState function',
@@ -101,7 +72,7 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(value);
 
-//     this.sendCurl(this.power_switch_accessory_uuid);
+    //     this.sendCurl(this.power_switch_accessory_uuid);
 
     callback();
   },
@@ -112,21 +83,29 @@ Thermostat.prototype = {
   },
 
   setTargetTemperature: async function (value, callback) {
-    this.log(`Changing Temp from ${this.service.getCharacteristic(Characteristic.CurrentTemperature).value} to ${value}`);
-    this.log(`setTargetTemperature: ${value}`);
-    this.log(`Current Temperature: ${this.service.getCharacteristic(Characteristic.CurrentTemperature).value}`);
-    this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
-    this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
-    this.log(
-      `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
-    );
-    this.log(`bearerToken: ${this.bearerToken}`);
+    // this.log(
+    //   `Changing Temp from ${
+    //     this.service.getCharacteristic(Characteristic.CurrentTemperature).value
+    //   } to ${value}`
+    // );
+    // this.log(`setTargetTemperature: ${value}`);
+    // this.log(
+    //   `Current Temperature: ${
+    //     this.service.getCharacteristic(Characteristic.CurrentTemperature).value
+    //   }`
+    // );
+    // this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
+    // this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
+    // this.log(
+    //   `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
+    // );
+    // this.log(`bearerToken: ${this.bearerToken}`);
 
     if (
       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
         .value == 0
     ) {
-      this.sendCurl(this.power_switch_accessory_uuid);
+      // this.sendCurl(this.power_switch_accessory_uuid);
 
       this.service
         .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -138,17 +117,15 @@ Thermostat.prototype = {
 
       await this.sleep(10000);
     }
-    
-    this.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
 
-    
-    if (this.service.getCharacteristic(Characteristic.CurrentTemperature).value < value) {
-        console.log('value');
-        console.log(value);
-        console.log('this.service.getCharacteristic(Characteristic.CurrentTemperature).value')
-        console.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
+    if (
+      this.service.getCharacteristic(Characteristic.CurrentTemperature).value <
+      value
+    ) {
       for (
-        let index = this.service.getCharacteristic(Characteristic.CurrentTemperature).value;
+        let index = this.service.getCharacteristic(
+          Characteristic.CurrentTemperature
+        ).value;
         index < value;
         index = index + this.minStep
       ) {
@@ -156,58 +133,78 @@ Thermostat.prototype = {
         console.log(this.minStep);
         console.log('value');
         console.log(value);
-        console.log('this.service.getCharacteristic(Characteristic.CurrentTemperature).value')
-        console.log(this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
-        console.log('value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value')
-        console.log(value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value)
-        
+        console.log(
+          'this.service.getCharacteristic(Characteristic.CurrentTemperature).value'
+        );
+        console.log(
+          this.service.getCharacteristic(Characteristic.CurrentTemperature)
+            .value
+        );
+        console.log(
+          'value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value'
+        );
+        console.log(
+          value -
+            this.service.getCharacteristic(Characteristic.CurrentTemperature)
+              .value
+        );
+
         this.log(
-          `increasing temp ${(index + this.minStep) * 2} / ${
-            (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
+          `increasing temp ${
+            index -
+            this.service.getCharacteristic(Characteristic.CurrentTemperature)
+              .value +
+            this.minStep
+          } / ${
+            value -
+            this.service.getCharacteristic(Characteristic.CurrentTemperature)
+              .value
           }`
         );
 
-        this.sendCurl(this.temp_up_accessory_uuid);
+        // this.sendCurl(this.temp_up_accessory_uuid);
 
         this.log('curl executed to increase temp');
-        
+
         this.log(
-        `Bot sent ${
-          value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value
-        } requests to increase temp`
-      );
-        
-//         this.log(
-//         `Bot sent ${
-//           (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
-//         } requests to increase temp`
-//       );
-       
+          `Bot sent ${
+            value -
+            this.service.getCharacteristic(Characteristic.CurrentTemperature)
+              .value
+          } requests to increase temp`
+        );
+
+        //         this.log(
+        //         `Bot sent ${
+        //           (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
+        //         } requests to increase temp`
+        //       );
+
         this.service
-        .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(value);
+          .getCharacteristic(Characteristic.CurrentTemperature)
+          .updateValue(value);
       }
-      
+
       callback();
-    } 
-//     else {
-//       for (
-//         let index = 0;
-//         index < this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value;
-//         index = index + this.minStep
-//       ) {
-//         this.log(
-//           `decreasing temp ${(index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value) * 2}`
-//         );
-//         this.sendCurl(this.temp_down_accessory_uuid);
-//         this.log('curl executed to decrease temp');
-//       }
-//       this.service
-//         .getCharacteristic(Characteristic.CurrentTemperature)
-//         .updateValue(value);
-      
-//       callback();
-//     }
+    }
+    //     else {
+    //       for (
+    //         let index = 0;
+    //         index < this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value;
+    //         index = index + this.minStep
+    //       ) {
+    //         this.log(
+    //           `decreasing temp ${(index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value) * 2}`
+    //         );
+    //         this.sendCurl(this.temp_down_accessory_uuid);
+    //         this.log('curl executed to decrease temp');
+    //       }
+    //       this.service
+    //         .getCharacteristic(Characteristic.CurrentTemperature)
+    //         .updateValue(value);
+
+    //       callback();
+    //     }
   },
 
   sendCurl: async function (device) {
@@ -249,11 +246,11 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
       .updateValue(1);
-    
+
     this.service
-        .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(this.minTemp);
-    
+      .getCharacteristic(Characteristic.CurrentTemperature)
+      .updateValue(this.minTemp);
+
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .on('set', this.setTargetHeatingCoolingState.bind(this));

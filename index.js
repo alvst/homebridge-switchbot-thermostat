@@ -232,7 +232,7 @@ Thermostat.prototype = {
     
     this.service
         .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(this.minTemp + 1);
+        .updateValue(this.minTemp);
     
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)

@@ -136,6 +136,12 @@ Thermostat.prototype = {
 
         console.log(index);
         console.log(this.minStep);
+        console.log(
+          this.service
+            .getCharacteristic(Characteristic.CurrentTemperature)
+            .updateValue(value)
+        );
+        console.log(value);
 
         // this.service
         //   .getCharacteristic(Characteristic.CurrentTemperature)

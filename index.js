@@ -49,7 +49,7 @@ function Thermostat(log, config) {
   this.temperatureDisplayUnits = config.temperatureDisplayUnits || 0;
   this.maxTemp = config.thermostat_details.maxTemp || 30;
   this.minTemp = config.thermostat_details.minTemp || 15;
-  this.minStep = config.thermostat_details.minStep || 0.5;
+  this.minStep = config.thermostat_details.temp_interval || 0.5;
 
   this.service = new Service.Thermostat(this.name);
 

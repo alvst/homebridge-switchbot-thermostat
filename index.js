@@ -83,24 +83,6 @@ Thermostat.prototype = {
   },
 
   setTargetTemperature: async function (value, callback) {
-    // this.log(
-    //   `Changing Temp from ${
-    //     this.service.getCharacteristic(Characteristic.CurrentTemperature).value
-    //   } to ${value}`
-    // );
-    // this.log(`setTargetTemperature: ${value}`);
-    // this.log(
-    //   `Current Temperature: ${
-    //     this.service.getCharacteristic(Characteristic.CurrentTemperature).value
-    //   }`
-    // );
-    // this.log(`temp_up_accessory_uuid : ${this.temp_up_accessory_uuid}`);
-    // this.log('temp_down_accessory_uuid: ' + this.temp_down_accessory_uuid);
-    // this.log(
-    //   `power_switch_accessory_uuid: ${this.power_switch_accessory_uuid}`
-    // );
-    // this.log(`bearerToken: ${this.bearerToken}`);
-
     if (
       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
         .value == 0
@@ -122,23 +104,24 @@ Thermostat.prototype = {
       this.service.getCharacteristic(Characteristic.CurrentTemperature).value <
       value
     ) {
-       console.log('value');
-        console.log(value);
-        console.log(
-          'this.service.getCharacteristic(Characteristic.CurrentTemperature).value'
-        );
-        console.log(
+      console.log('value' + value);
+      // console.log(value);
+      console.log(
+        'this.service.getCharacteristic(Characteristic.CurrentTemperature).value' +
           this.service.getCharacteristic(Characteristic.CurrentTemperature)
             .value
-        );
-        console.log(
-          'value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value'
-        );
-        console.log(
+      );
+      console.log(
+        'value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value' +
           value -
-            this.service.getCharacteristic(Characteristic.CurrentTemperature)
-              .value
-        );
+          this.service.getCharacteristic(Characteristic.CurrentTemperature)
+            .value
+      );
+      // console.log(
+      //   value -
+      //     this.service.getCharacteristic(Characteristic.CurrentTemperature)
+      //       .value
+      // );
       for (
         let index = this.service.getCharacteristic(
           Characteristic.CurrentTemperature

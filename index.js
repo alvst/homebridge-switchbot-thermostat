@@ -260,7 +260,7 @@ Thermostat.prototype = {
       minValue: -600,
       maxValue: 600,
       unit: 'fahrenheit',
-      format: 'int',
+      format: 'Integer',
     });
 
     return [this.informationService, this.service];

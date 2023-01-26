@@ -129,54 +129,13 @@ Thermostat.prototype = {
         index < value;
         index = index + this.minStep
       ) {
-        console.log('value');
-        console.log(value);
-        console.log(
-          'this.service.getCharacteristic(Characteristic.CurrentTemperature).value'
-        );
-        console.log(
+        this.log(
           this.service.getCharacteristic(Characteristic.CurrentTemperature)
-            .value
-        );
-        console.log(
-          'value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value'
-        );
-        console.log(
-          value -
-            this.service.getCharacteristic(Characteristic.CurrentTemperature)
-              .value
+            .value - value
         );
 
-        this.log(
-          `increasing temp ${
-            index -
-            this.service.getCharacteristic(Characteristic.CurrentTemperature)
-              .value +
-            this.minStep
-          } / ${
-            value -
-            this.service.getCharacteristic(Characteristic.CurrentTemperature)
-              .value
-          }`
-        );
-
-        // this.sendCurl(this.temp_up_accessory_uuid);
-
-        this.log('curl executed to increase temp');
-
-        this.log(
-          `Bot sent ${
-            value -
-            this.service.getCharacteristic(Characteristic.CurrentTemperature)
-              .value
-          } requests to increase temp`
-        );
-
-        //         this.log(
-        //         `Bot sent ${
-        //           (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
-        //         } requests to increase temp`
-        //       );
+        console.log(index);
+        console.log(this.minStep);
 
         // this.service
         //   .getCharacteristic(Characteristic.CurrentTemperature)

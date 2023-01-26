@@ -173,9 +173,15 @@ Thermostat.prototype = {
         
         this.log(
         `Bot sent ${
-          (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
+          value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value
         } requests to increase temp`
       );
+        
+//         this.log(
+//         `Bot sent ${
+//           (value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value) * 2
+//         } requests to increase temp`
+//       );
        
         this.service
         .getCharacteristic(Characteristic.CurrentTemperature)
@@ -183,24 +189,25 @@ Thermostat.prototype = {
       }
       
       callback();
-    } else {
-      for (
-        let index = 0;
-        index < this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value;
-        index = index + this.minStep
-      ) {
-        this.log(
-          `decreasing temp ${(index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value) * 2}`
-        );
-        this.sendCurl(this.temp_down_accessory_uuid);
-        this.log('curl executed to decrease temp');
-      }
-      this.service
-        .getCharacteristic(Characteristic.CurrentTemperature)
-        .updateValue(value);
+    } 
+//     else {
+//       for (
+//         let index = 0;
+//         index < this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value;
+//         index = index + this.minStep
+//       ) {
+//         this.log(
+//           `decreasing temp ${(index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature).value - value) * 2}`
+//         );
+//         this.sendCurl(this.temp_down_accessory_uuid);
+//         this.log('curl executed to decrease temp');
+//       }
+//       this.service
+//         .getCharacteristic(Characteristic.CurrentTemperature)
+//         .updateValue(value);
       
-      callback();
-    }
+//       callback();
+//     }
   },
 
   sendCurl: async function (device) {

@@ -178,9 +178,9 @@ Thermostat.prototype = {
         //         } requests to increase temp`
         //       );
 
-        this.service
-          .getCharacteristic(Characteristic.CurrentTemperature)
-          .updateValue(value);
+        // this.service
+        //   .getCharacteristic(Characteristic.CurrentTemperature)
+        //   .updateValue(value);
       }
 
       callback();

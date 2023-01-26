@@ -145,12 +145,12 @@ Thermostat.prototype = {
     if (0 < value) {
       for (
         let index = 0;
-        index < value - this.currentTemperature;
+        index < value - this.service.getCharacteristic(Characteristic.CurrentTemperature);
         index = index + this.minStep
       ) {
         this.log(
           `increasing temp ${(index + this.minStep) * 2} / ${
-            (value - this.currentTemperature) * 2
+            (value - this.service.getCharacteristic(Characteristic.CurrentTemperature)) * 2
           }`
         );
 
@@ -164,7 +164,7 @@ Thermostat.prototype = {
       }
       this.log(
         `Bot sent ${
-          (value - this.currentTemperature) * 2
+          (value - this.service.getCharacteristic(Characteristic.CurrentTemperature)) * 2
         } requests to increase temp`
       );
       this.service
@@ -175,11 +175,11 @@ Thermostat.prototype = {
       this.log('Toggled power state to %s', this.poweredOn);
       for (
         let index = 0;
-        index < this.currentTemperature - value;
+        index < this.service.getCharacteristic(Characteristic.CurrentTemperature) - value;
         index = index + this.minStep
       ) {
         this.log(
-          `decreasing temp $({index + this.minStep) * 2} / ${(this.currentTemperature - value) * 2}`
+          `decreasing temp $({index + this.minStep) * 2} / ${(this.service.getCharacteristic(Characteristic.CurrentTemperature) - value) * 2}`
         );
         this.sendCurl(this.temp_down_accessory_uuid);
         this.log('curl executed to decrease temp');

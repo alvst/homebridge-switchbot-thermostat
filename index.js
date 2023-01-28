@@ -114,13 +114,13 @@ Thermostat.prototype = {
       ) {
         console.log(`increasing temp ${index} / ${value}`);
       }
-
       console.log(
         this.service
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value)
       );
     }
+
     //     else {
     //       for (
     //         let index = 0;

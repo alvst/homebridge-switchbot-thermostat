@@ -76,12 +76,16 @@ Thermostat.prototype = {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   },
 
+  convertToFahrenheit: function (value) {
+    return (value * 9) / 5 + 32;
+  },
+
   setTargetTemperature: async function (value, callback) {
     if (
       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
         .value == 0
     ) {
-      this.sendCurl(this.power_switch_accessory_uuid);
+      // this.sendCurl(this.power_switch_accessory_uuid);
 
       this.service
         .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -93,6 +97,9 @@ Thermostat.prototype = {
 
       await this.sleep(10000);
     }
+
+    startTempFahrenheit = this.convertToFahrenheit(value);
+    console.log('startTempFahrenheit', startTempFahrenheit);
 
     if (
       this.service.getCharacteristic(Characteristic.CurrentTemperature).value <
@@ -107,7 +114,7 @@ Thermostat.prototype = {
         index = index + this.minStep
       ) {
         console.log(`increasing temp ${index + 1} / ${value}`);
-        this.sendCurl(this.temp_up_accessory_uuid);
+        // this.sendCurl(this.temp_up_accessory_uuid);
       }
       console.log(
         this.service
@@ -124,7 +131,7 @@ Thermostat.prototype = {
         index = index - this.minStep
       ) {
         console.log(`decreasing temp ${index + 1} / ${value}`);
-        this.sendCurl(this.temp_down_accessory_uuid);
+        // this.sendCurl(this.temp_down_accessory_uuid);
       }
       console.log(
         this.service
@@ -222,7 +229,7 @@ Thermostat.prototype = {
     this.service.getCharacteristic(Characteristic.CurrentTemperature).setProps({
       minValue: -600,
       maxValue: 600,
-      // unit: 'fahrenheit',
+      unit: 'fahrenheit',
       // format: 'Integer',
     });
 

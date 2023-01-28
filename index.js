@@ -222,8 +222,8 @@ Thermostat.prototype = {
     this.service.getCharacteristic(Characteristic.CurrentTemperature).setProps({
       minValue: -600,
       maxValue: 600,
-      // unit: 'fahrenheit',
-      format: 'Integer',
+      unit: 'fahrenheit',
+      // format: 'Integer',
     });
 
     return [this.informationService, this.service];

@@ -104,51 +104,49 @@ Thermostat.prototype = {
       'this.service.getCharacteristic(Characteristic.CurrentTemperature).value',
       this.service.getCharacteristic(Characteristic.CurrentTemperature).value
     );
-    if (startTempFahrenheit !== 72.5) {
-      if (
-        this.service.getCharacteristic(Characteristic.CurrentTemperature)
-          .value < value
-      ) {
-        console.log('increasing temp');
-        for (
-          let index = this.service.getCharacteristic(
-            Characteristic.CurrentTemperature
-          ).value;
-          index < value;
-          index = index + this.minStep
-        ) {
-          console.log(`increasing temp ${index + this.minStep} / ${value}`);
-          this.sendCurl(this.temp_up_accessory_uuid);
-        }
-        console.log(
-          this.service
-            .getCharacteristic(Characteristic.CurrentTemperature)
-            .updateValue(value)
-        );
-      } else {
-        console.log('decreasing temp');
-        for (
-          let index = this.service.getCharacteristic(
-            Characteristic.CurrentTemperature
-          ).value;
-          index > value;
-          index = index - this.minStep
-        ) {
-          console.log(`decreasing temp ${index + this.minStep} / ${value}`);
-          this.sendCurl(this.temp_down_accessory_uuid);
-        }
-        console.log(
-          this.service
-            .getCharacteristic(Characteristic.CurrentTemperature)
-            .updateValue(value)
-        );
-      }
 
-      callback();
+    if (
+      this.service.getCharacteristic(Characteristic.CurrentTemperature).value <
+        value &&
+      this.service.getCharacteristic(Characteristic.CurrentTemperature)
+        .value !== 22.5
+    ) {
+      console.log('increasing temp');
+      for (
+        let index = this.service.getCharacteristic(
+          Characteristic.CurrentTemperature
+        ).value;
+        index < value;
+        index = index + this.minStep
+      ) {
+        console.log(`increasing temp ${index + this.minStep} / ${value}`);
+        this.sendCurl(this.temp_up_accessory_uuid);
+      }
+      console.log(
+        this.service
+          .getCharacteristic(Characteristic.CurrentTemperature)
+          .updateValue(value)
+      );
     } else {
-      console.log('skip');
-      callback();
+      console.log('decreasing temp');
+      for (
+        let index = this.service.getCharacteristic(
+          Characteristic.CurrentTemperature
+        ).value;
+        index > value;
+        index = index - this.minStep
+      ) {
+        console.log(`decreasing temp ${index + this.minStep} / ${value}`);
+        this.sendCurl(this.temp_down_accessory_uuid);
+      }
+      console.log(
+        this.service
+          .getCharacteristic(Characteristic.CurrentTemperature)
+          .updateValue(value)
+      );
     }
+
+    callback();
   },
 
   sendCurl: async function (device) {

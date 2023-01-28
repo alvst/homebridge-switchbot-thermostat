@@ -104,24 +104,7 @@ Thermostat.prototype = {
       this.service.getCharacteristic(Characteristic.CurrentTemperature).value <
       value
     ) {
-      console.log('value' + value);
-      // console.log(value);
-      console.log(
-        'this.service.getCharacteristic(Characteristic.CurrentTemperature).value' +
-          this.service.getCharacteristic(Characteristic.CurrentTemperature)
-            .value
-      );
-      console.log(
-        'value - this.service.getCharacteristic(Characteristic.CurrentTemperature).value' +
-          value -
-          this.service.getCharacteristic(Characteristic.CurrentTemperature)
-            .value
-      );
-      // console.log(
-      //   value -
-      //     this.service.getCharacteristic(Characteristic.CurrentTemperature)
-      //       .value
-      // );
+      console.log('increasing temp');
       for (
         let index = this.service.getCharacteristic(
           Characteristic.CurrentTemperature
@@ -129,24 +112,14 @@ Thermostat.prototype = {
         index < value;
         index = index + this.minStep
       ) {
-        this.log(
-          this.service.getCharacteristic(Characteristic.CurrentTemperature)
-            .value - value
-        );
-
-        console.log(index);
-        console.log(this.minStep);
-        console.log(
-          this.service
-            .getCharacteristic(Characteristic.CurrentTemperature)
-            .updateValue(value)
-        );
-        console.log(value);
-
-        // this.service
-        //   .getCharacteristic(Characteristic.CurrentTemperature)
-        //   .updateValue(value);
+        console.log(`increasing temp ${index} / ${value}`);
       }
+
+      console.log(
+        this.service
+          .getCharacteristic(Characteristic.CurrentTemperature)
+          .updateValue(value)
+      );
 
       callback();
     }

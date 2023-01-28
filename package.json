@@ -4,6 +4,7 @@
   "description": "Homebridge plugin for a Switchbot powered thermostat",
   "main": "index.js",
   "dependencies": {
+    "homebridge-switchbot-thermostat": "github:alvst/switchbot-thermostat",
     "ip": ">=1.1.5",
     "node-fetch": "^3.3.0",
     "request": ">=2.88.0"

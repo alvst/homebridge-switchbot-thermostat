@@ -120,8 +120,6 @@ Thermostat.prototype = {
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value)
       );
-
-      callback();
     }
     //     else {
     //       for (
@@ -141,6 +139,7 @@ Thermostat.prototype = {
 
     //       callback();
     //     }
+    callback();
   },
 
   sendCurl: async function (device) {

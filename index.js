@@ -27,12 +27,6 @@ function Thermostat(log, config) {
   this.temp_down_accessory_uuid =
     config.thermostat_configuration['temp_down_accessory_uuid'];
 
-  // let configuration = config.thermostat_configuration;
-  // let power_switch_accessory_uuid =
-  //   config.thermostat_configuration.power_switch_accessory_uuid;
-  // let temp_up_accessory_uuid = configuration.temp_up_accessory_uuid;
-  // let temp_down_accessory_uuid = configuration.temp_down_accessory_uuid;
-
   this.validStates = config.validStates || [0, 1, 2, 3];
 
   this.requestArray = [
@@ -72,13 +66,13 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(value);
 
-    //     this.sendCurl(this.power_switch_accessory_uuid);
+    this.sendCurl(this.power_switch_accessory_uuid);
 
     callback();
   },
 
   sleep: async function (milliseconds) {
-    this.log('sleeping for ' + milliseconds + ' milliseconds');
+    this.log('Pausing for ' + milliseconds + ' milliseconds');
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   },
 
@@ -87,7 +81,7 @@ Thermostat.prototype = {
       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
         .value == 0
     ) {
-      // this.sendCurl(this.power_switch_accessory_uuid);
+      this.sendCurl(this.power_switch_accessory_uuid);
 
       this.service
         .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -113,6 +107,7 @@ Thermostat.prototype = {
         index = index + this.minStep
       ) {
         console.log(`increasing temp ${index + 1} / ${value}`);
+        this.sendCurl(this.temp_up_accessory_uuid);
       }
       console.log(
         this.service
@@ -129,6 +124,7 @@ Thermostat.prototype = {
         index = index - this.minStep
       ) {
         console.log(`decreasing temp ${index + 1} / ${value}`);
+        this.sendCurl(this.temp_down_accessory_uuid);
       }
       console.log(
         this.service

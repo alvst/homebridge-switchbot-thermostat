@@ -113,7 +113,7 @@ Thermostat.prototype = {
         index < value;
         index = index + this.minStep
       ) {
-        console.log(`increasing temp ${index + 1} / ${value}`);
+        console.log(`increasing temp ${index + this.minStep} / ${value}`);
         // this.sendCurl(this.temp_up_accessory_uuid);
       }
       console.log(
@@ -130,7 +130,7 @@ Thermostat.prototype = {
         index > value;
         index = index - this.minStep
       ) {
-        console.log(`decreasing temp ${index + 1} / ${value}`);
+        console.log(`decreasing temp ${index + this.minStep} / ${value}`);
         // this.sendCurl(this.temp_down_accessory_uuid);
       }
       console.log(

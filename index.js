@@ -107,9 +107,7 @@ Thermostat.prototype = {
 
     if (
       this.service.getCharacteristic(Characteristic.CurrentTemperature).value <
-        value &&
-      this.service.getCharacteristic(Characteristic.CurrentTemperature)
-        .value !== 22.5
+      value
     ) {
       console.log('increasing temp');
       for (
@@ -119,8 +117,13 @@ Thermostat.prototype = {
         index < value;
         index = index + this.minStep
       ) {
-        console.log(`increasing temp ${index + this.minStep} / ${value}`);
-        this.sendCurl(this.temp_up_accessory_uuid);
+        if (
+          this.service.getCharacteristic(Characteristic.CurrentTemperature)
+            .value !== 22.5
+        ) {
+          console.log(`increasing temp ${index + this.minStep} / ${value}`);
+          this.sendCurl(this.temp_up_accessory_uuid);
+        }
       }
       console.log(
         this.service
@@ -136,8 +139,13 @@ Thermostat.prototype = {
         index > value;
         index = index - this.minStep
       ) {
-        console.log(`decreasing temp ${index + this.minStep} / ${value}`);
-        this.sendCurl(this.temp_down_accessory_uuid);
+        if (
+          this.service.getCharacteristic(Characteristic.CurrentTemperature)
+            .value !== 22.5
+        ) {
+          console.log(`decreasing temp ${index + this.minStep} / ${value}`);
+          this.sendCurl(this.temp_down_accessory_uuid);
+        }
       }
       console.log(
         this.service

@@ -175,6 +175,7 @@ Thermostat.prototype = {
         },
         (error, response, body) => {
           if (error) {
+            this.log(error);
             reject(error);
           } else {
             resolve(response);

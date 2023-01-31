@@ -95,7 +95,7 @@ Thermostat.prototype = {
         'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
       );
 
-      await this.sleep(10000);
+      await this.sleep(15000);
     }
 
     startTempFahrenheit = this.convertToFahrenheit(value);
@@ -152,6 +152,25 @@ Thermostat.prototype = {
           .getCharacteristic(Characteristic.CurrentTemperature)
           .updateValue(value)
       );
+    }
+
+    await this.sleep(15000);
+
+    if (
+      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .value == 3
+    ) {
+      this.sendCurl(this.power_switch_accessory_uuid);
+
+      this.service
+        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .updateValue(3);
+
+      this.log(
+        'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
+      );
+
+      await this.sleep(15000);
     }
 
     callback();

@@ -90,6 +90,17 @@ Thermostat.prototype = {
   testing: async function (value, callback) {
     this.queue.add(async () => {
       console.log('testing');
+      this.setTargetTemperature(value, callback);
+      // await this.sleep(5000);
+      console.log('testing done');
+    });
+  },
+
+  changePowerState: async function (value, callback) {
+    console.log(value);
+    this.queue.add(async () => {
+      console.log('testing');
+      this.setTargetHeatingCoolingState(value, callback);
       await this.sleep(5000);
       console.log('testing done');
     });
@@ -107,7 +118,7 @@ Thermostat.prototype = {
 
     this.sendCurl(this.power_switch_accessory_uuid);
 
-    callback();
+    // callback();
   },
 
   sleep: async function (milliseconds) {
@@ -120,6 +131,7 @@ Thermostat.prototype = {
   },
 
   setTargetTemperature: async function (value, callback) {
+    let count = 0;
     if (
       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
         .value == 0
@@ -134,7 +146,7 @@ Thermostat.prototype = {
         'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
       );
 
-      await this.sleep(15000);
+      await this.sleep(5000);
     }
 
     startTempFahrenheit = this.convertToFahrenheit(value);
@@ -159,17 +171,14 @@ Thermostat.prototype = {
         console.log(index !== 22.5);
         console.log(index);
         if (index !== 22.5) {
+          count++;
+
           console.log(`increasing temp ${index + this.minStep} / ${value}`);
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
           console.log('skipping 22.5');
         }
       }
-      console.log(
-        this.service
-          .getCharacteristic(Characteristic.CurrentTemperature)
-          .updateValue(value)
-      );
     } else {
       console.log('decreasing temp');
       for (
@@ -180,39 +189,22 @@ Thermostat.prototype = {
         index = index - this.minStep
       ) {
         if (index !== 22.5) {
+          count++;
           console.log(`decreasing temp ${index + this.minStep} / ${value}`);
-          this.sendCurl(this.temp_down_accessory_uuid);
+          await this.sendCurl(this.temp_down_accessory_uuid);
         } else {
           console.log('skipping 22.5');
         }
       }
-      console.log(
-        this.service
-          .getCharacteristic(Characteristic.CurrentTemperature)
-          .updateValue(value)
-      );
     }
+    this.service
+      .getCharacteristic(Characteristic.CurrentTemperature)
+      .updateValue(value);
+    console.log(count + 1);
+    await this.sleep(5000 * (count + 1));
+    console.log('done sleeping');
 
-    await this.sleep(15000);
-
-    if (
-      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .value == 3
-    ) {
-      this.sendCurl(this.power_switch_accessory_uuid);
-
-      this.service
-        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .updateValue(3);
-
-      this.log(
-        'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
-      );
-
-      await this.sleep(15000);
-    }
-
-    callback();
+    // callback();
   },
 
   sendCurl: async function (device) {
@@ -262,7 +254,7 @@ Thermostat.prototype = {
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      .on('set', this.testing.bind(this));
+      .on('set', this.changePowerState.bind(this));
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -284,8 +276,6 @@ Thermostat.prototype = {
     this.service.getCharacteristic(Characteristic.CurrentTemperature).setProps({
       minValue: -600,
       maxValue: 600,
-      unit: 'fahrenheit',
-      // format: 'Integer',
     });
 
     return [this.informationService, this.service];

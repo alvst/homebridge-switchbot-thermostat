@@ -47,13 +47,52 @@ function Thermostat(log, config) {
 
   this.service = new Service.Thermostat(this.name);
 
+  this.queue = new Queue();
+
   return;
+}
+
+class Queue {
+  constructor() {
+    this.queue = [];
+    this.isProcessing = false;
+    this.counter = 0;
+  }
+
+  add(fn) {
+    this.queue.push(fn);
+    console.log(this.counter++);
+    this.processQueue();
+  }
+
+  processQueue() {
+    if (this.isProcessing) {
+      return;
+    }
+    if (this.queue.length === 0) {
+      return;
+    }
+    this.isProcessing = true;
+    const fn = this.queue.shift();
+    fn().finally(() => {
+      this.isProcessing = false;
+      this.processQueue();
+    });
+  }
 }
 
 Thermostat.prototype = {
   identify: function (callback) {
     this.log('Identify requested!');
     callback();
+  },
+
+  testing: async function (value, callback) {
+    this.queue.add(async () => {
+      console.log('testing');
+      await this.sleep(5000);
+      console.log('testing done');
+    });
   },
 
   setTargetHeatingCoolingState: function (value, callback) {
@@ -223,7 +262,7 @@ Thermostat.prototype = {
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      .on('set', this.setTargetHeatingCoolingState.bind(this));
+      .on('set', this.testing.bind(this));
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -234,7 +273,7 @@ Thermostat.prototype = {
     // Needed
     this.service
       .getCharacteristic(Characteristic.TargetTemperature)
-      .on('set', this.setTargetTemperature.bind(this))
+      .on('set', this.testing.bind(this))
       .setProps({
         minValue: this.minTemp,
         maxValue: this.maxTemp,

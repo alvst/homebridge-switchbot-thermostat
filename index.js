@@ -70,6 +70,7 @@ class Queue {
       return;
     }
     if (this.queue.length === 0) {
+      console.log('queue is empty');
       return;
     }
     this.isProcessing = true;
@@ -89,24 +90,31 @@ Thermostat.prototype = {
 
   testing: async function (value, callback) {
     this.queue.add(async () => {
-      console.log('testing');
-      this.setTargetTemperature(value, callback);
+      console.log('sleeping for temp change');
+      // this.service
+      //   .getCharacteristic(Characteristic.CurrentTemperature)
+      //   .updateValue(value);
+      // callback();
+
+      await this.setTargetTemperature(value, callback);
       // await this.sleep(5000);
-      console.log('testing done');
+      console.log('done sleeping for temp change');
     });
   },
 
   changePowerState: async function (value, callback) {
     console.log(value);
     this.queue.add(async () => {
-      console.log('testing');
-      this.setTargetHeatingCoolingState(value, callback);
+      console.log('sleeping for power state change');
+
+      callback();
+      await this.setTargetHeatingCoolingState(value, callback);
       await this.sleep(5000);
-      console.log('testing done');
+      console.log('done sleeping for power state change');
     });
   },
 
-  setTargetHeatingCoolingState: function (value, callback) {
+  setTargetHeatingCoolingState: async function (value, callback) {
     console.log(
       'setting power state to %s from setTargetHeatingCoolingState function',
       value
@@ -132,6 +140,20 @@ Thermostat.prototype = {
 
   setTargetTemperature: async function (value, callback) {
     let count = 0;
+    let startPowerState = this.service.getCharacteristic(
+      Characteristic.TargetHeatingCoolingState
+    ).value;
+
+    if (startPowerState == 0) {
+      this.sendCurl(this.power_switch_accessory_uuid);
+
+      this.log(
+        'temporarily turning thermostat on to change temperature from setTargetTemperature function'
+      );
+
+      await this.sleep(5000);
+    }
+
     if (
       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
         .value == 0
@@ -200,11 +222,21 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.CurrentTemperature)
       .updateValue(value);
+    callback();
+
     console.log(count + 1);
     await this.sleep(5000 * (count + 1));
     console.log('done sleeping');
 
-    // callback();
+    if (startPowerState == 0) {
+      this.sendCurl(this.power_switch_accessory_uuid);
+
+      this.log(
+        'undoing the temporary power On state change from setTargetTemperature function'
+      );
+
+      await this.sleep(5000);
+    }
   },
 
   sendCurl: async function (device) {

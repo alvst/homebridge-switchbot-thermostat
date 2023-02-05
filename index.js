@@ -13,7 +13,7 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
-  console.log(
+  this.log(
     'Device Restarted. Please set thermostat lowest temperature and Off.'
   );
   this.name = config.name;
@@ -90,7 +90,7 @@ Thermostat.prototype = {
 
   testing: async function (value, callback) {
     this.queue.add(async () => {
-      console.log('sleeping for temp change');
+      this.log('sleeping for temp change');
       // this.service
       //   .getCharacteristic(Characteristic.CurrentTemperature)
       //   .updateValue(value);
@@ -98,24 +98,24 @@ Thermostat.prototype = {
 
       await this.setTargetTemperature(value, callback);
       // await this.sleep(5000);
-      console.log('done sleeping for temp change');
+      this.log('done sleeping for temp change');
     });
   },
 
   changePowerState: async function (value, callback) {
-    console.log(value);
+    this.log(value);
     this.queue.add(async () => {
-      console.log('sleeping for power state change');
+      this.log('sleeping for power state change');
 
       callback();
       await this.setTargetHeatingCoolingState(value, callback);
       await this.sleep(5000);
-      console.log('done sleeping for power state change');
+      this.log('done sleeping for power state change');
     });
   },
 
   setTargetHeatingCoolingState: async function (value, callback) {
-    console.log(
+    this.log(
       'setting power state to %s from setTargetHeatingCoolingState function',
       value
     );
@@ -162,50 +162,33 @@ Thermostat.prototype = {
       await this.sleep(5000);
     }
 
-    // if (
-    //   this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
-    //     .value == 0
-    // ) {
-    //   this.sendCurl(this.power_switch_accessory_uuid);
-
-    //   this.service
-    //     .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-    //     .updateValue(3);
-
-    //   this.log(
-    //     'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
-    //   );
-
-    //   await this.sleep(5000);
-    // }
-
     startTempFahrenheit = this.convertToFahrenheit(value);
-    console.log('startTempFahrenheit', startTempFahrenheit);
-    console.log(
+    this.log('startTempFahrenheit', startTempFahrenheit);
+    this.log(
       'this.service.getCharacteristic(Characteristic.CurrentTemperature).value',
       startValue
     );
 
     if (startValue < value) {
-      console.log('increasing temp');
+      this.log('increasing temp');
       for (
         let index = startValue;
         index < value;
         index = index + this.minStep
       ) {
-        console.log(index !== 22.5);
-        console.log(index);
+        this.log(index !== 22.5);
+        this.log(index);
         if (index !== 22.5) {
           count++;
 
-          console.log(`increasing temp ${index + this.minStep} / ${value}`);
+          this.log(`increasing temp ${index + this.minStep} / ${value}`);
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
-          console.log('skipping 22.5');
+          this.log('skipping 22.5');
         }
       }
     } else {
-      console.log('decreasing temp');
+      this.log('decreasing temp');
       for (
         let index = startValue;
         index > value;
@@ -213,17 +196,17 @@ Thermostat.prototype = {
       ) {
         if (index !== 22.5) {
           count++;
-          console.log(`decreasing temp ${index + this.minStep} / ${value}`);
+          this.log(`decreasing temp ${index + this.minStep} / ${value}`);
           await this.sendCurl(this.temp_down_accessory_uuid);
         } else {
-          console.log('skipping 22.5');
+          this.log('skipping 22.5');
         }
       }
     }
 
-    console.log(count + 1);
+    this.log(count + 1);
     await this.sleep(5000 * (count + 1));
-    console.log('done sleeping');
+    this.log('done sleeping');
 
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);

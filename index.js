@@ -143,6 +143,14 @@ Thermostat.prototype = {
     let startPowerState = this.service.getCharacteristic(
       Characteristic.TargetHeatingCoolingState
     ).value;
+    let startValue = this.service.getCharacteristic(
+      Characteristic.CurrentTemperature
+    ).value;
+
+    this.service
+      .getCharacteristic(Characteristic.CurrentTemperature)
+      .updateValue(value);
+    callback();
 
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
@@ -175,18 +183,13 @@ Thermostat.prototype = {
     console.log('startTempFahrenheit', startTempFahrenheit);
     console.log(
       'this.service.getCharacteristic(Characteristic.CurrentTemperature).value',
-      this.service.getCharacteristic(Characteristic.CurrentTemperature).value
+      startValue
     );
 
-    if (
-      this.service.getCharacteristic(Characteristic.CurrentTemperature).value <
-      value
-    ) {
+    if (startValue < value) {
       console.log('increasing temp');
       for (
-        let index = this.service.getCharacteristic(
-          Characteristic.CurrentTemperature
-        ).value;
+        let index = startValue;
         index < value;
         index = index + this.minStep
       ) {
@@ -204,9 +207,7 @@ Thermostat.prototype = {
     } else {
       console.log('decreasing temp');
       for (
-        let index = this.service.getCharacteristic(
-          Characteristic.CurrentTemperature
-        ).value;
+        let index = startValue;
         index > value;
         index = index - this.minStep
       ) {
@@ -219,10 +220,6 @@ Thermostat.prototype = {
         }
       }
     }
-    this.service
-      .getCharacteristic(Characteristic.CurrentTemperature)
-      .updateValue(value);
-    callback();
 
     console.log(count + 1);
     await this.sleep(5000 * (count + 1));

@@ -162,22 +162,22 @@ Thermostat.prototype = {
       await this.sleep(5000);
     }
 
-    if (
-      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .value == 0
-    ) {
-      this.sendCurl(this.power_switch_accessory_uuid);
+    // if (
+    //   this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
+    //     .value == 0
+    // ) {
+    //   this.sendCurl(this.power_switch_accessory_uuid);
 
-      this.service
-        .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .updateValue(3);
+    //   this.service
+    //     .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+    //     .updateValue(3);
 
-      this.log(
-        'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
-      );
+    //   this.log(
+    //     'Temp Change Requested. Power State toggled to AUTO from setTargetTemperature function'
+    //   );
 
-      await this.sleep(5000);
-    }
+    //   await this.sleep(5000);
+    // }
 
     startTempFahrenheit = this.convertToFahrenheit(value);
     console.log('startTempFahrenheit', startTempFahrenheit);

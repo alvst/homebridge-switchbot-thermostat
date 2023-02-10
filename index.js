@@ -88,9 +88,9 @@ Thermostat.prototype = {
     callback();
   },
 
-  testing: async function (value, callback) {
+  changeTempState: async function (value, callback) {
     this.queue.add(async () => {
-      this.log('sleeping for temp change');
+      this.log('queuing for temp change');
       // this.service
       //   .getCharacteristic(Characteristic.CurrentTemperature)
       //   .updateValue(value);
@@ -98,19 +98,19 @@ Thermostat.prototype = {
 
       await this.setTargetTemperature(value, callback);
       // await this.sleep(5000);
-      this.log('done sleeping for temp change');
+      this.log('done; sleeping for temp change');
     });
   },
 
   changePowerState: async function (value, callback) {
     this.log(value);
     this.queue.add(async () => {
-      this.log('sleeping for power state change');
+      this.log('queuing for power state change');
 
       callback();
       await this.setTargetHeatingCoolingState(value, callback);
       await this.sleep(5000);
-      this.log('done sleeping for power state change');
+      this.log('done; sleeping for power state change');
     });
   },
 
@@ -176,7 +176,7 @@ Thermostat.prototype = {
         index < value;
         index = index + this.minStep
       ) {
-        this.log(index !== 22.5);
+        // this.log(index !== 22.5);
         this.log(index);
         if (index !== 22.5) {
           count++;
@@ -206,7 +206,7 @@ Thermostat.prototype = {
 
     this.log(count + 1);
     await this.sleep(5000 * (count + 1));
-    this.log('done sleeping');
+    this.log('done; sleeping from setTargetTemperature function');
 
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
@@ -277,7 +277,7 @@ Thermostat.prototype = {
     // Needed
     this.service
       .getCharacteristic(Characteristic.TargetTemperature)
-      .on('set', this.testing.bind(this))
+      .on('set', this.changeTempState.bind(this))
       .setProps({
         minValue: this.minTemp,
         maxValue: this.maxTemp,

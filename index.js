@@ -49,35 +49,8 @@ function Thermostat(log, config) {
 
   this.queue = new Queue();
 
-  this.checkCache();
-
   return;
 }
-
-const updateCache = (key, value) => {
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      console.log('File does not exist, creating a new file...');
-      const newData = {
-        powerStateOn: 0,
-        currentTemp: 22.5,
-      };
-      fs.writeFile(filePath, JSON.stringify(newData), (err) => {
-        if (err) throw err;
-        console.log('File created successfully');
-      });
-    } else {
-      console.log('Updating Cache...');
-      const fileData = JSON.parse(data);
-      fileData[key] = value;
-      fs.writeFile(filePath, JSON.stringify(fileData), (err) => {
-        if (err) throw err;
-        console.log('Cache successfully updated');
-        console.log(fileData);
-      });
-    }
-  });
-};
 
 class Queue {
   constructor() {
@@ -88,7 +61,7 @@ class Queue {
 
   add(fn) {
     this.queue.push(fn);
-    console.log(this.counter++);
+    this.counter++;
     this.processQueue();
   }
 
@@ -119,47 +92,17 @@ Thermostat.prototype = {
     let powerStateOn = 0;
     let currentTemp = 22;
 
-    // fs.readFileSync(filePath, (err, data) => {
-    //   console.log('Checking cache...');
-    //   if (err) {
-    //     console.log('Cache file does not exist, creating a new file...');
-    //     const newData = {
-    //       powerStateOn: powerStateOn,
-    //       currentTemp: currentTemp,
-    //     };
-    //     fs.writeFile(filePath, JSON.stringify(newData), (err) => {
-    //       if (err) throw err;
-    //       console.log('Cache file created successfully');
-    //     });
-    //   } else {
-    //     console.log('Cache file exists, reading data...');
-    //     const fileData = JSON.parse(data);
-    //     console.log(fileData);
-    //     powerStateOn = fileData.powerStateOn;
-    //     currentTemp = fileData.currentTemp;
-    //     console.log(
-    //       `Your Thermostat is currently ${powerStateOn > 0.5 ? 'on' : 'off'}.`
-    //     );
-    //     console.log(
-    //       `${
-    //         powerStateOn > 0.5
-    //           ? `Your thermostat is currently set to ${currentTemp} degrees.`
-    //           : `When your device is powered on, your Thermostat will be set to ${currentTemp} degrees.`
-    //       }`
-    //     );
-    //   }
-    // });
     try {
       const data = fs.readFileSync(filePath, 'utf-8');
-      console.log('Cache file exists, reading data...');
+      this.log('Cache file exists, reading data...');
       const fileData = JSON.parse(data);
-      console.log(fileData);
+      // this.log(fileData);
       powerStateOn = fileData.powerStateOn;
       currentTemp = fileData.currentTemp;
-      console.log(
+      this.log(
         `Your Thermostat is currently ${powerStateOn > 0.5 ? 'on' : 'off'}.`
       );
-      console.log(
+      this.log(
         `${
           powerStateOn > 0.5
             ? `Your thermostat is currently set to ${currentTemp} degrees.`
@@ -167,16 +110,14 @@ Thermostat.prototype = {
         }`
       );
     } catch (err) {
-      console.log('Cache file does not exist, creating a new file...');
+      this.log('Cache file does not exist, creating a new file...');
       const newData = {
         powerStateOn: powerStateOn,
         currentTemp: currentTemp,
       };
       fs.writeFileSync(filePath, JSON.stringify(newData));
-      console.log('Cache file created successfully');
+      this.log('Cache file created successfully');
     }
-
-    console.log(currentTemp);
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -185,17 +126,31 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.CurrentTemperature)
       .updateValue(currentTemp);
+  },
 
-    console.log(
-      'Current Temp: ',
-      this.service.getCharacteristic(Characteristic.CurrentTemperature).value
-    );
-
-    console.log(
-      'Current power state: ',
-      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
-        .value
-    );
+  updateCache: function (key, value) {
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        this.log('File does not exist, creating a new file...');
+        const newData = {
+          powerStateOn: 0,
+          currentTemp: 22.5,
+        };
+        fs.writeFile(filePath, JSON.stringify(newData), (err) => {
+          if (err) throw err;
+          this.log('File created successfully');
+        });
+      } else {
+        this.log('Updating Cache...');
+        const fileData = JSON.parse(data);
+        fileData[key] = value;
+        fs.writeFile(filePath, JSON.stringify(fileData), (err) => {
+          if (err) throw err;
+          this.log('Cache successfully updated');
+          this.log(fileData);
+        });
+      }
+    });
   },
 
   changeTempState: async function (value, callback) {
@@ -237,7 +192,7 @@ Thermostat.prototype = {
 
     this.sendCurl(this.power_switch_accessory_uuid);
 
-    updateCache('powerStateOn', value);
+    this.updateCache('powerStateOn', value);
   },
 
   sleep: async function (milliseconds) {
@@ -265,7 +220,7 @@ Thermostat.prototype = {
       .updateValue(value);
     callback();
 
-    updateCache('currentTemp', value);
+    this.updateCache('currentTemp', value);
 
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
@@ -294,7 +249,7 @@ Thermostat.prototype = {
         index = index + this.minStep
       ) {
         // this.log(index !== 22.5);
-        this.log(index);
+        // this.log(index);
         if (index !== 22.5 || 17.5 || 27.5) {
           count++;
 
@@ -386,6 +341,8 @@ Thermostat.prototype = {
     // this.service
     //   .getCharacteristic(Characteristic.CurrentTemperature)
     //   .updateValue(this.minTemp);
+
+    this.checkCache();
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)

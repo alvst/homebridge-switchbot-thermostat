@@ -147,28 +147,38 @@ Thermostat.prototype = {
         fs.writeFile(filePath, JSON.stringify(fileData), (err) => {
           if (err) throw err;
           this.log('Cache successfully updated');
-          this.log(fileData);
+          // this.log(fileData);
         });
       }
     });
   },
 
   changeTempState: async function (value, callback) {
+    let startValue = this.service.getCharacteristic(
+      Characteristic.CurrentTemperature
+    ).value;
+
+    this.service
+      .getCharacteristic(Characteristic.CurrentTemperature)
+      .updateValue(value);
+    callback();
+
     this.queue.add(async () => {
       this.log('queuing for temp change');
-      // this.service
-      //   .getCharacteristic(Characteristic.CurrentTemperature)
-      //   .updateValue(value);
-      // callback();
 
-      await this.setTargetTemperature(value, callback);
+      await this.setTargetTemperature(value, startValue, callback);
       // await this.sleep(5000);
       this.log('done; sleeping for temp change');
     });
   },
 
   changePowerState: async function (value, callback) {
-    this.log(value);
+    // this.log(value);
+    this.service
+      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+      .updateValue(value);
+    callback();
+
     this.queue.add(async () => {
       this.log('queuing for power state change');
 
@@ -185,11 +195,6 @@ Thermostat.prototype = {
       value
     );
 
-    this.service
-      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-      .updateValue(value);
-    callback();
-
     this.sendCurl(this.power_switch_accessory_uuid);
 
     this.updateCache('powerStateOn', value);
@@ -204,23 +209,21 @@ Thermostat.prototype = {
     return (value * 9) / 5 + 32;
   },
 
-  setTargetTemperature: async function (value, callback) {
+  setTargetTemperature: async function (value, startValue, callback) {
     let count = 0;
     let startPowerState = this.service.getCharacteristic(
       Characteristic.TargetHeatingCoolingState
     ).value;
-    let startValue = this.service.getCharacteristic(
-      Characteristic.CurrentTemperature
-    ).value;
+    // let startValue = this.service.getCharacteristic(
+    //   Characteristic.CurrentTemperature
+    // ).value;
 
     this.log('start value C', startValue);
 
-    this.service
-      .getCharacteristic(Characteristic.CurrentTemperature)
-      .updateValue(value);
-    callback();
-
-    this.updateCache('currentTemp', value);
+    this.updateCache(
+      'currentTemp',
+      this.service.getCharacteristic(Characteristic.CurrentTemperature).value
+    );
 
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
@@ -234,8 +237,8 @@ Thermostat.prototype = {
       await this.sleep(5000);
     }
 
-    startTempFahrenheit = this.convertToFahrenheit(value);
-    this.log('startTempFahrenheit', startTempFahrenheit);
+    // startTempFahrenheit = this.convertToFahrenheit(value);
+    // this.log('startTempFahrenheit', startTempFahrenheit);
     this.log(
       'this.service.getCharacteristic(Characteristic.CurrentTemperature).value',
       startValue

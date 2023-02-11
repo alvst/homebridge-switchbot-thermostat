@@ -70,7 +70,7 @@ class Queue {
       return;
     }
     if (this.queue.length === 0) {
-      console.log('queue is empty');
+      console.log('Homebridge Thermostat queue is empty');
       return;
     }
     this.isProcessing = true;
@@ -167,7 +167,6 @@ Thermostat.prototype = {
       this.log('queuing for temp change');
 
       await this.setTargetTemperature(value, startValue, callback);
-      // await this.sleep(5000);
       this.log('done; sleeping for temp change');
     });
   },
@@ -182,9 +181,9 @@ Thermostat.prototype = {
     this.queue.add(async () => {
       this.log('queuing for power state change');
 
-      // callback();
       await this.setTargetHeatingCoolingState(value, callback);
       await this.sleep(5000);
+
       this.log('done; sleeping for power state change');
     });
   },
@@ -214,11 +213,8 @@ Thermostat.prototype = {
     let startPowerState = this.service.getCharacteristic(
       Characteristic.TargetHeatingCoolingState
     ).value;
-    // let startValue = this.service.getCharacteristic(
-    //   Characteristic.CurrentTemperature
-    // ).value;
 
-    this.log('start value C', startValue);
+    // this.log('start value C', startValue);
 
     this.updateCache(
       'currentTemp',
@@ -228,42 +224,39 @@ Thermostat.prototype = {
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
 
-      this.log(
-        'temporarily turning thermostat on to change temperature from setTargetTemperature function'
-      );
+      this.log('Temporarily turning thermostat on to change temperature');
+      // this.log('from setTargetTemperature function');
 
-      this.log('This change was likely triggered by an automation. ');
+      this.log('This is likely triggered by an automation. ');
 
       await this.sleep(5000);
     }
 
-    // startTempFahrenheit = this.convertToFahrenheit(value);
-    // this.log('startTempFahrenheit', startTempFahrenheit);
-    this.log(
-      'this.service.getCharacteristic(Characteristic.CurrentTemperature).value',
-      startValue
-    );
+    // this.log(
+    //   'this.service.getCharacteristic(Characteristic.CurrentTemperature).value',
+    //   startValue
+    // );
 
     if (startValue < value) {
-      this.log('increasing temp');
+      this.log('Increasing temp');
       for (
         let index = startValue;
         index < value;
         index = index + this.minStep
       ) {
-        // this.log(index !== 22.5);
-        // this.log(index);
         if (index !== 22.5 || 17.5 || 27.5) {
           count++;
 
           this.log(`increasing temp ${index + this.minStep} / ${value}`);
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
-          this.log('skipping 22.5 or 17.5 or 27.5');
+          this.log(
+            `skipping ${value} because it is 22.5 or 17.5 or 27.5 which is a duplicate in Fahrenheit temperature`
+          );
         }
       }
     } else {
-      this.log('decreasing temp');
+      this.log('Decreasing temp');
       for (
         let index = startValue;
         index > value;
@@ -274,7 +267,9 @@ Thermostat.prototype = {
           this.log(`decreasing temp ${index + this.minStep} / ${value}`);
           await this.sendCurl(this.temp_down_accessory_uuid);
         } else {
-          this.log('skipping 22.5 or 17.5 or 27.5');
+          this.log(
+            `skipping ${value} because it is 22.5 or 17.5 or 27.5 which is a duplicate in Fahrenheit temperature`
+          );
         }
       }
     }
@@ -290,11 +285,7 @@ Thermostat.prototype = {
         'Undoing the temporary power On state change from setTargetTemperature function'
       );
 
-      this.log(
-        'undoing the temporary power On state change from setTargetTemperature function'
-      );
-
-      this.log('This change was likely triggered by an automation. ');
+      this.log('This change was likely triggered by an automation.');
 
       await this.sleep(5000);
     }
@@ -340,10 +331,6 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
       .updateValue(1);
-
-    // this.service
-    //   .getCharacteristic(Characteristic.CurrentTemperature)
-    //   .updateValue(this.minTemp);
 
     this.checkCache();
 

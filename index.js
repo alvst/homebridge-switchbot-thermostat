@@ -258,6 +258,8 @@ Thermostat.prototype = {
       Characteristic.CurrentTemperature
     ).value;
 
+    this.log('start value C', startValue);
+
     this.service
       .getCharacteristic(Characteristic.CurrentTemperature)
       .updateValue(value);
@@ -381,9 +383,9 @@ Thermostat.prototype = {
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
       .updateValue(1);
 
-    this.service
-      .getCharacteristic(Characteristic.CurrentTemperature)
-      .updateValue(this.minTemp);
+    // this.service
+    //   .getCharacteristic(Characteristic.CurrentTemperature)
+    //   .updateValue(this.minTemp);
 
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)

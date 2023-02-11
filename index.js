@@ -19,7 +19,7 @@ function Thermostat(log, config) {
   this.log = log;
   this.name = config.name;
   let powerStateOn = 0;
-  let currentTemp = 22.5;
+  let currentTemp = 22;
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
@@ -247,13 +247,13 @@ Thermostat.prototype = {
       ) {
         // this.log(index !== 22.5);
         this.log(index);
-        if (index !== 22.5) {
+        if (index !== 22.5 || 17.5 || 27.5) {
           count++;
 
           this.log(`increasing temp ${index + this.minStep} / ${value}`);
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
-          this.log('skipping 22.5');
+          this.log('skipping 22.5 or 17.5 or 27.5');
         }
       }
     } else {
@@ -263,12 +263,12 @@ Thermostat.prototype = {
         index > value;
         index = index - this.minStep
       ) {
-        if (index !== 22.5) {
+        if (index !== 22.5 || 17.5 || 27.5) {
           count++;
           this.log(`decreasing temp ${index + this.minStep} / ${value}`);
           await this.sendCurl(this.temp_down_accessory_uuid);
         } else {
-          this.log('skipping 22.5');
+          this.log('skipping 22.5 or 17.5 or 27.5');
         }
       }
     }

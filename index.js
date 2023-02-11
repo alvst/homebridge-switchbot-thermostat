@@ -1,6 +1,9 @@
 let Service, Characteristic;
 const packageJson = require('./package.json');
 const request = require('request');
+const fs = require('fs');
+
+const filePath = '/tmp/cache.json';
 
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
@@ -13,11 +16,40 @@ module.exports = function (homebridge) {
 };
 
 function Thermostat(log, config) {
-  console.log(
-    'Device Restarted. Please set thermostat lowest temperature and Off.'
-  );
-  this.name = config.name;
   this.log = log;
+  this.name = config.name;
+  let powerStateOn = 0;
+  let currentTemp = 22.5;
+
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      this.log('Cache file does not exist, creating a new file...');
+      const newData = {
+        powerStateOn: 0,
+        currentTemp: 22.5,
+      };
+      fs.writeFile(filePath, JSON.stringify(newData), (err) => {
+        if (err) throw err;
+        this.log('Cache file created successfully');
+      });
+    } else {
+      this.log('Cache file exists, reading data...');
+      const fileData = JSON.parse(data);
+      this.log(fileData);
+      powerStateOn = fileData.powerStateOn;
+      currentTemp = fileData.currentTemp;
+      this.log(
+        `Your Thermostat is currently ${powerStateOn > 0.5 ? 'on' : 'off'}.`
+      );
+      this.log(
+        `${
+          powerStateOn > 0.5
+            ? `Your thermostat is currently set to ${currentTemp} degrees.`
+            : `When your device is powered on, your Thermostat will be set to ${currentTemp} degrees.`
+        }`
+      );
+    }
+  });
 
   this.bearerToken = config.thermostat_configuration['bearerToken'];
   this.power_switch_accessory_uuid =
@@ -47,10 +79,42 @@ function Thermostat(log, config) {
 
   this.service = new Service.Thermostat(this.name);
 
+  this.service
+    .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+    .updateValue(powerStateOn);
+
+  this.service
+    .getCharacteristic(Characteristic.CurrentTemperature)
+    .updateValue(currentTemp);
+
   this.queue = new Queue();
 
   return;
 }
+
+const updateCache = (key, value) => {
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      this.log('File does not exist, creating a new file...');
+      const newData = {
+        powerStateOn: false,
+        currentTemp: 22.5,
+      };
+      fs.writeFile(filePath, JSON.stringify(newData), (err) => {
+        if (err) throw err;
+        this.log('File created successfully');
+      });
+    } else {
+      this.log('Updating Cache...');
+      const fileData = JSON.parse(data);
+      fileData[key] = value;
+      fs.writeFile(filePath, JSON.stringify(fileData), (err) => {
+        if (err) throw err;
+        this.log('Cache successfully updated');
+      });
+    }
+  });
+};
 
 class Queue {
   constructor() {
@@ -107,7 +171,7 @@ Thermostat.prototype = {
     this.queue.add(async () => {
       this.log('queuing for power state change');
 
-      callback();
+      // callback();
       await this.setTargetHeatingCoolingState(value, callback);
       await this.sleep(5000);
       this.log('done; sleeping for power state change');
@@ -123,10 +187,11 @@ Thermostat.prototype = {
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .updateValue(value);
+    callback();
 
     this.sendCurl(this.power_switch_accessory_uuid);
 
-    // callback();
+    updateCache('powerStateOn', value);
   },
 
   sleep: async function (milliseconds) {
@@ -152,12 +217,16 @@ Thermostat.prototype = {
       .updateValue(value);
     callback();
 
+    updateCache('currentTemp', value);
+
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
 
       this.log(
         'temporarily turning thermostat on to change temperature from setTargetTemperature function'
       );
+
+      this.log('This change was likely triggered by an automation. ');
 
       await this.sleep(5000);
     }
@@ -204,7 +273,7 @@ Thermostat.prototype = {
       }
     }
 
-    this.log(count + 1);
+    // this.log(count + 1);
     await this.sleep(5000 * (count + 1));
     this.log('done; sleeping from setTargetTemperature function');
 
@@ -212,8 +281,14 @@ Thermostat.prototype = {
       this.sendCurl(this.power_switch_accessory_uuid);
 
       this.log(
+        'Undoing the temporary power On state change from setTargetTemperature function'
+      );
+
+      this.log(
         'undoing the temporary power On state change from setTargetTemperature function'
       );
+
+      this.log('This change was likely triggered by an automation. ');
 
       await this.sleep(5000);
     }

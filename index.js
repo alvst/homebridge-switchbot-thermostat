@@ -25,8 +25,8 @@ function Thermostat(log, config) {
     if (err) {
       this.log('Cache file does not exist, creating a new file...');
       const newData = {
-        powerStateOn: 0,
-        currentTemp: 22.5,
+        powerStateOn: powerStateOn,
+        currentTemp: currentTemp,
       };
       fs.writeFile(filePath, JSON.stringify(newData), (err) => {
         if (err) throw err;

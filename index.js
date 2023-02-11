@@ -95,22 +95,22 @@ function Thermostat(log, config) {
 const updateCache = (key, value) => {
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      this.log('File does not exist, creating a new file...');
+      console.log('File does not exist, creating a new file...');
       const newData = {
         powerStateOn: false,
         currentTemp: 22.5,
       };
       fs.writeFile(filePath, JSON.stringify(newData), (err) => {
         if (err) throw err;
-        this.log('File created successfully');
+        console.log('File created successfully');
       });
     } else {
-      this.log('Updating Cache...');
+      console.log('Updating Cache...');
       const fileData = JSON.parse(data);
       fileData[key] = value;
       fs.writeFile(filePath, JSON.stringify(fileData), (err) => {
         if (err) throw err;
-        this.log('Cache successfully updated');
+        console.log('Cache successfully updated');
       });
     }
   });

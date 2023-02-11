@@ -18,38 +18,6 @@ module.exports = function (homebridge) {
 function Thermostat(log, config) {
   this.log = log;
   this.name = config.name;
-  let powerStateOn = 0;
-  let currentTemp = 22;
-
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      this.log('Cache file does not exist, creating a new file...');
-      const newData = {
-        powerStateOn: powerStateOn,
-        currentTemp: currentTemp,
-      };
-      fs.writeFile(filePath, JSON.stringify(newData), (err) => {
-        if (err) throw err;
-        this.log('Cache file created successfully');
-      });
-    } else {
-      this.log('Cache file exists, reading data...');
-      const fileData = JSON.parse(data);
-      this.log(fileData);
-      powerStateOn = fileData.powerStateOn;
-      currentTemp = fileData.currentTemp;
-      this.log(
-        `Your Thermostat is currently ${powerStateOn > 0.5 ? 'on' : 'off'}.`
-      );
-      this.log(
-        `${
-          powerStateOn > 0.5
-            ? `Your thermostat is currently set to ${currentTemp} degrees.`
-            : `When your device is powered on, your Thermostat will be set to ${currentTemp} degrees.`
-        }`
-      );
-    }
-  });
 
   this.bearerToken = config.thermostat_configuration['bearerToken'];
   this.power_switch_accessory_uuid =
@@ -79,15 +47,9 @@ function Thermostat(log, config) {
 
   this.service = new Service.Thermostat(this.name);
 
-  this.service
-    .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-    .updateValue(powerStateOn);
-
-  this.service
-    .getCharacteristic(Characteristic.CurrentTemperature)
-    .updateValue(currentTemp);
-
   this.queue = new Queue();
+
+  this.checkCache();
 
   return;
 }
@@ -97,7 +59,7 @@ const updateCache = (key, value) => {
     if (err) {
       console.log('File does not exist, creating a new file...');
       const newData = {
-        powerStateOn: false,
+        powerStateOn: 0,
         currentTemp: 22.5,
       };
       fs.writeFile(filePath, JSON.stringify(newData), (err) => {
@@ -111,6 +73,7 @@ const updateCache = (key, value) => {
       fs.writeFile(filePath, JSON.stringify(fileData), (err) => {
         if (err) throw err;
         console.log('Cache successfully updated');
+        console.log(fileData);
       });
     }
   });
@@ -150,6 +113,89 @@ Thermostat.prototype = {
   identify: function (callback) {
     this.log('Identify requested!');
     callback();
+  },
+
+  checkCache: async function () {
+    let powerStateOn = 0;
+    let currentTemp = 22;
+
+    // fs.readFileSync(filePath, (err, data) => {
+    //   console.log('Checking cache...');
+    //   if (err) {
+    //     console.log('Cache file does not exist, creating a new file...');
+    //     const newData = {
+    //       powerStateOn: powerStateOn,
+    //       currentTemp: currentTemp,
+    //     };
+    //     fs.writeFile(filePath, JSON.stringify(newData), (err) => {
+    //       if (err) throw err;
+    //       console.log('Cache file created successfully');
+    //     });
+    //   } else {
+    //     console.log('Cache file exists, reading data...');
+    //     const fileData = JSON.parse(data);
+    //     console.log(fileData);
+    //     powerStateOn = fileData.powerStateOn;
+    //     currentTemp = fileData.currentTemp;
+    //     console.log(
+    //       `Your Thermostat is currently ${powerStateOn > 0.5 ? 'on' : 'off'}.`
+    //     );
+    //     console.log(
+    //       `${
+    //         powerStateOn > 0.5
+    //           ? `Your thermostat is currently set to ${currentTemp} degrees.`
+    //           : `When your device is powered on, your Thermostat will be set to ${currentTemp} degrees.`
+    //       }`
+    //     );
+    //   }
+    // });
+    try {
+      const data = fs.readFileSync(filePath, 'utf-8');
+      console.log('Cache file exists, reading data...');
+      const fileData = JSON.parse(data);
+      console.log(fileData);
+      powerStateOn = fileData.powerStateOn;
+      currentTemp = fileData.currentTemp;
+      console.log(
+        `Your Thermostat is currently ${powerStateOn > 0.5 ? 'on' : 'off'}.`
+      );
+      console.log(
+        `${
+          powerStateOn > 0.5
+            ? `Your thermostat is currently set to ${currentTemp} degrees.`
+            : `When your device is powered on, your Thermostat will be set to ${currentTemp} degrees.`
+        }`
+      );
+    } catch (err) {
+      console.log('Cache file does not exist, creating a new file...');
+      const newData = {
+        powerStateOn: powerStateOn,
+        currentTemp: currentTemp,
+      };
+      fs.writeFileSync(filePath, JSON.stringify(newData));
+      console.log('Cache file created successfully');
+    }
+
+    console.log(currentTemp);
+
+    this.service
+      .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+      .updateValue(powerStateOn);
+
+    this.service
+      .getCharacteristic(Characteristic.CurrentTemperature)
+      .updateValue(currentTemp);
+
+    console.log(
+      'Current Temp: ',
+      this.service.getCharacteristic(Characteristic.CurrentTemperature).value
+    );
+
+    console.log(
+      'Current power state: ',
+      this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState)
+        .value
+    );
   },
 
   changeTempState: async function (value, callback) {

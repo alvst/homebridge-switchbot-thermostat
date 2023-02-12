@@ -1,4 +1,4 @@
-<span align="center">
+<span text-align="center">
 
 <img alt="Thermostat Gif" src="Thermostat.gif" width="350px">
 

@@ -244,6 +244,7 @@ Thermostat.prototype = {
         index < value;
         index = index + this.minStep
       ) {
+        console.log(index !== 17.5 || 22.5 || 27.5);
         if (index !== 22.5 || 17.5 || 27.5) {
           count++;
 

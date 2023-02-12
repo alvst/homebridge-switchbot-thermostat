@@ -35,14 +35,11 @@
          {
             "accessory": "Thermostat",
             "name": "Thermostat",
-            "temperatureDisplayUnits": 1,
-            "minStep": 0.5,
             "validStates": [
                 0,
                 3
             ],
             "thermostat_details": {
-                "temp_interval": 1,
                 "minTemp": 15,
                 "maxTemp": 30
             },
@@ -58,13 +55,11 @@
 
 ## Optional fields
 
-| Key                       | Description                                                                 | Default  |
-| ------------------------- | --------------------------------------------------------------------------- | -------- |
-| `validStates`             | Which states you would like to enable (see [key](#heatingcoolingstate-key)) | `[0, 3]` |
-| `temperatureDisplayUnits` | Whether you want °C (`0`) or °F (`1`) as your units                         | `0`      |
-| `maxTemp`                 | Upper bound for the temperature selector in the Home app                    | `30`     |
-| `minTemp`                 | Lower bound for the temperature selector in the Home app                    | `15`     |
-| `minStep`                 | Minimum increment value for the temperature selector in the Home app        | `0.5`    |
+| Key           | Description                                                                 | Default  |
+| ------------- | --------------------------------------------------------------------------- | -------- |
+| `validStates` | Which states you would like to enable (see [key](#heatingcoolingstate-key)) | `[0, 3]` |
+| `maxTemp`     | Upper bound for the temperature selector in the Home app                    | `30`     |
+| `minTemp`     | Lower bound for the temperature selector in the Home app                    | `15`     |
 
 ## HeatingCoolingState Key
 
@@ -85,3 +80,22 @@
 ## Supported Devices
 
 You can use this thermostat with basically any thermostat that seems like it would be compatible. Also feel free to adapt it as needed. You may need to make slight modifications if the features I created aren't the exact features you created. You can see my Thermostat and it's capabilities above. Because of the limitations of HomeKit, I didn't leverage all the buttons (FANS SPEED which increase the fan speed, and OPER MODE which changes it from air conditioning to heat, etc). This plugin will work with any thermostat with temperature up and down buttons and a power on/off button. Additional actions are not currently supported but could easily be added in. I'd like to add fan speed, however, I don't believe thats currently supported by Homebridge Thermostats.
+
+## Features
+
+- Full support for Queuing
+  - This eliminates 'No Response' errors from HomeKit. It also enables you to send multiple requests like increase the temperature to 70 degrees, then increase the temperature again to 74 degrees.
+- Full Automation Support
+  - HomeKit Automations are sent in, an unfortunate order... When thermostats are already on, they send the Turn off request before sending the change temperature request. I've fully dealt with this complexity, including fully supporting the power and temp state that your thermostat should be in.
+- Full Fahrenheit support
+  - Even if you have your thermostat set to Fahrenheit, HomeKit still send data in Celsius. This creates a lot of complexity because when converting to Fahrenheit, there may be two numbers in Celsius that relate to that number (for example both 22.0 and 22.5 convert to 72 degrees when rounding is taken into account). I've dealt with all this complexity so that at these numbers, only 1 request is sent to your SwitchBots.
+
+## Limitations
+
+As mentioned, I developed this accessory plugin for myself. As such, it currently only supports Fahrenheit and increasing the temperature by .5 degrees F. Even if you have HomeKit set to Fahrenheit, HomeKit still operates as if it is in Celsius, this adds tremendous complexity and dealing with this complexity is responsible for about 33%-50% of the code in this plugin. It's also what's preventing me from making this work with Celsius—but this isn't off the table.
+
+Unfortunately, sometimes Switchbot's API fails to deliver requests to Switchbot Bots. This is a limitation that is out of my control and the control of the Homebridge-Switchbot plugin. I check my thermostat about once per day to make sure everything is in sync.
+
+## Credits
+
+This project was forked from <a href="https://github.com/phenotypic/homebridge-web-thermostat">Homebridge Web Thermostat</a> and leverages <a href="https://github.com/OpenWonderLabs/homebridge-switchbot">Homebridge-Switchbot</a> which includes an addition I developed to make this plugin possible.

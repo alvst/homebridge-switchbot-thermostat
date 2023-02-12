@@ -1,6 +1,6 @@
 <span align="center">
 
-<a href=""><img alt="" src="" width="350px"></a>
+<img alt="Thermostat Gif" src="Thermostat.gif" width="350px">
 
 # Switchbot Thermostat
 
@@ -69,7 +69,7 @@
 | `3`    | Auto |
 
 - ### If using BLE Connection
-  Right now, neither myself [(who created the multi-press functionality in the Switchbot Homebridge plugin)](https://github.com/OpenWonderLabs/homebridge-switchbot/pull/628), nor anyone else, has yet created multi-press BLE functionality so this extension doesn't yet work if you rely on Bluetooth. At some point, if no one else does, I will investigate implementing multi-press functionality compatible with Bluetooth.
+  Right now, neither myself [(who created the multi-press functionality in the Switchbot Homebridge plugin)](https://github.com/OpenWonderLabs/homebridge-switchbot/pull/628), nor anyone else, has yet ported multi-press to support BLE so this extension doesn't yet work if you rely on Bluetooth. At some point, if no one else does, I will investigate implementing multi-press functionality compatible with Bluetooth but if you are interested in porting it, go ahead.
 
 <p align="center">
 

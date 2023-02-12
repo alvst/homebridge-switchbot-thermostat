@@ -1,6 +1,6 @@
 <span align="center">
 
-<img alt="Thermostat Gif" src="Thermostat.gif" width="350px">
+  <p><img alt="Thermostat Gif" src="Thermostat.gif" width="350px"></p>
 
 # Switchbot Thermostat
 

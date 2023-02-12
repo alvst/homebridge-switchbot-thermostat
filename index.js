@@ -244,13 +244,12 @@ Thermostat.prototype = {
         index < value;
         index = index + this.minStep
       ) {
-        console.log(index !== 17.5 && 22.5 && 27.5);
+        console.log(index !== 17.5 && index !== 22.5 && index !== 27.5);
         console.log(index !== 27.5);
         console.log(index !== 22.5);
         console.log(index !== 17.5);
-        if (index !== 17.5 && 22.5 && 27.5) {
+        if (index !== 17.5 && index !== 22.5 && index !== 27.5) {
           count++;
-
           this.log(`increasing temp ${index + this.minStep} / ${value}`);
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
@@ -266,7 +265,7 @@ Thermostat.prototype = {
         index > value;
         index = index - this.minStep
       ) {
-        if (index !== 17.5 && 22.5 && 27.5) {
+        if (index !== 17.5 && index !== 22.5 && index !== 27.5) {
           count++;
           this.log(`decreasing temp ${index + this.minStep} / ${value}`);
           await this.sendCurl(this.temp_down_accessory_uuid);

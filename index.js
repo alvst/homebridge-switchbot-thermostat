@@ -195,13 +195,18 @@ Thermostat.prototype = {
   setTargetHeatingCoolingState: async function (value, startValue, callback) {
     if (value !== startValue) {
       this.log(
-        'setting power state to %s from setTargetHeatingCoolingState function',
+        'Setting power state to %s from setTargetHeatingCoolingState function',
         value
       );
 
       this.sendCurl(this.power_switch_accessory_uuid);
 
       this.updateCache('powerStateOn', value);
+    } else {
+      this.log(
+        "Power state is already %s. The thermostat's power state was likely requested to be changed by a an automation. No change has been made.",
+        value
+      );
     }
   },
 
@@ -230,10 +235,10 @@ Thermostat.prototype = {
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
 
-      this.log('Temporarily turning thermostat on to change temperature');
+      this.log('Temporarily turning thermostat ON to change temperature');
       // this.log('from setTargetTemperature function');
 
-      this.log('This is likely triggered by an automation. ');
+      this.log('This is likely triggered by an automation.');
 
       await this.sleep(5000);
     }
@@ -256,7 +261,7 @@ Thermostat.prototype = {
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
           this.log(
-            `skipping ${value} because it is 22.5 or 17.5 or 27.5 which is a duplicate in Fahrenheit temperature`
+            `Skipping ${value} because it is 22.5 or 17.5 or 27.5 which is a duplicate in Fahrenheit temperature`
           );
         }
       }
@@ -269,11 +274,11 @@ Thermostat.prototype = {
       ) {
         if (index !== 17.5 && index !== 22.5 && index !== 27.5) {
           count++;
-          this.log(`decreasing temp ${index + this.minStep} / ${value}`);
+          this.log(`Decreasing temp ${index + this.minStep} / ${value}`);
           await this.sendCurl(this.temp_down_accessory_uuid);
         } else {
           this.log(
-            `skipping ${value} because it is 22.5 or 17.5 or 27.5 which is a duplicate in Fahrenheit temperature`
+            `Skipping ${value} because it is 22.5 or 17.5 or 27.5 which is a duplicate in Fahrenheit temperature`
           );
         }
       }
@@ -281,7 +286,7 @@ Thermostat.prototype = {
 
     // this.log(count + 1);
     await this.sleep(5000 * (count + 1));
-    this.log('done; sleeping from setTargetTemperature function');
+    this.log('Done; sleeping from setTargetTemperature function');
 
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);

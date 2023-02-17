@@ -172,6 +172,10 @@ Thermostat.prototype = {
   },
 
   changePowerState: async function (value, callback) {
+    let startValue = this.service.getCharacteristic(
+      Characteristic.TargetHeatingCoolingState
+    ).value;
+
     // this.log(value);
     this.service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -181,22 +185,24 @@ Thermostat.prototype = {
     this.queue.add(async () => {
       this.log('queuing for power state change');
 
-      await this.setTargetHeatingCoolingState(value, callback);
+      await this.setTargetHeatingCoolingState(value, startValue, callback);
       await this.sleep(5000);
 
       this.log('done; sleeping for power state change');
     });
   },
 
-  setTargetHeatingCoolingState: async function (value, callback) {
-    this.log(
-      'setting power state to %s from setTargetHeatingCoolingState function',
-      value
-    );
+  setTargetHeatingCoolingState: async function (value, startValue, callback) {
+    if (value !== startValue) {
+      this.log(
+        'setting power state to %s from setTargetHeatingCoolingState function',
+        value
+      );
 
-    this.sendCurl(this.power_switch_accessory_uuid);
+      this.sendCurl(this.power_switch_accessory_uuid);
 
-    this.updateCache('powerStateOn', value);
+      this.updateCache('powerStateOn', value);
+    }
   },
 
   sleep: async function (milliseconds) {

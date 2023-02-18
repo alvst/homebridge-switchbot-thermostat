@@ -27,14 +27,7 @@ function Thermostat(log, config) {
   this.temp_down_accessory_uuid =
     config.thermostat_configuration['temp_down_accessory_uuid'];
 
-  this.validStates = config.validStates || [0, 1, 2, 3];
-
-  this.requestArray = [
-    'targetHeatingCoolingState',
-    'targetTemperature',
-    // 'coolingThresholdTemperature',
-    // 'heatingThresholdTemperature',
-  ];
+  this.validStates = [0, 3];
 
   this.manufacturer = config.manufacturer || packageJson.author;
   this.serial = 'n/a';

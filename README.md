@@ -26,7 +26,7 @@
 
    b. By default, Bearer Tokens only last 8 hours. I _strongly_ recommend making them last longer. Personally, mine rotates every 30 days. To me this is a reasonable middle-ground between security and convenience.
 
-   c. The length of a Bearer Token's expiration can be changed in Homebridge -> ⋮ -> UI Settings -> Advanced -> Session Timeout (in seconds)
+   c. The length of a Bearer Token's expiration can be changed in Homebridge → ⋮ → UI Settings → Advanced → Session Timeout (in seconds)
 
 5. Configure the package.json by adding a new accessory:
 
@@ -58,7 +58,7 @@
 | `temp_up_accessory_uuid`      | Accessory Token UUID for you Switchbot that controls temperature increase | `Yes`    |
 | `temp_down_accessory_uuid`    | Accessory Token UUID for you Switchbot that controls temperature decrease | `Yes`    |
 
-\* If you do not want to/need to control turning devices on and off, this is optional.
+\* If you do not want to/need to control turning on and off your thermostat, this is optional.
 
 ## Optional fields
 
@@ -89,18 +89,18 @@ You can use this thermostat with basically any thermostat that seems like it wou
 
 ## Features
 
-- Support for changing the temperature of your thermostat using 2 SwitchBots
-- Support for turning your thermostat On/Off using 1 SwitchBot
+- Support for changing the temperature of your thermostat using 2 Switchbots
+- Support for turning your thermostat On/Off using 1 Switchbot
 - Full support for Queuing
   - This eliminates 'No Response' errors from HomeKit. It also enables you to send multiple requests like increase the temperature to 70 degrees, then increase the temperature again to 74 degrees.
 - Full Automation Support
   - HomeKit Automations are sent in, an unfortunate order... When thermostats are already on, they send the 'Turn Off' request before sending the 'Change Temperature' request. I've fully dealt with this complexity, including fully supporting the power and temp state that your thermostat should be in.
 - Full Fahrenheit support
-  - Even if you have your thermostat set to Fahrenheit, HomeKit still send data in Celsius. This creates a lot of complexity because when converting to Fahrenheit, there may be two numbers in Celsius that relate to that number (for example both 22.0 and 22.5 convert to 72 degrees when rounding is taken into account). I've dealt with all this complexity so that at these numbers, only 1 request is sent to your SwitchBots.
+  - Even if you have your thermostat set to Fahrenheit, HomeKit still send data in Celsius. This creates a lot of complexity because when converting to Fahrenheit, there may be two numbers in Celsius that relate to that number (for example both 22.0 and 22.5 convert to 72 degrees when rounding is taken into account). I've dealt with all this complexity so that at these numbers, only 1 request is sent to your Switchbots.
 
 ## Device Installation
 
-Place one SwitchBot Bot so it can activate the power button. Place one SwitchBot Bot each on the of the temperature up and down buttons. Get the bayer tokens from homebridge swagger. Also, get the bearer tokens for the 3 Switchbot Bots. (See full instructions under Configuration.)
+Place one Switchbot Bot so it can activate the power button. Place one Switchbot Bot each on the of the temperature up and down buttons. Get the bayer tokens from homebridge swagger. Also, get the bearer tokens for the 3 Switchbot Bots. (See full instructions under Configuration.)
 
 ## Limitations
 

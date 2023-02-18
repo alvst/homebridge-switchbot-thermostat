@@ -35,10 +35,6 @@
          {
             "accessory": "Thermostat",
             "name": "Thermostat",
-            "validStates": [
-                0,
-                3
-            ],
             "thermostat_details": {
                 "minTemp": 15,
                 "maxTemp": 30
@@ -53,15 +49,25 @@
    ]
 ```
 
+## Required fields
+
+| Key                           | Description                                                               | Required |
+| ----------------------------- | ------------------------------------------------------------------------- | -------- |
+| `bearerToken`                 | Bearer authentication Token for your Homebridge Installation              | `Yes`    |
+| `power_switch_accessory_uuid` | Accessory Token UUID for you Switchbot that controls Power                | `Yes*`   |
+| `temp_up_accessory_uuid`      | Accessory Token UUID for you Switchbot that controls temperature increase | `Yes`    |
+| `temp_down_accessory_uuid`    | Accessory Token UUID for you Switchbot that controls temperature decrease | `Yes`    |
+
+\* If you do not want to/need to control turning devices on and off, this is optional.
+
 ## Optional fields
 
-| Key           | Description                                                                 | Default  |
-| ------------- | --------------------------------------------------------------------------- | -------- |
-| `validStates` | Which states you would like to enable (see [key](#heatingcoolingstate-key)) | `[0, 3]` |
-| `maxTemp`     | Upper bound for the temperature selector in the Home app                    | `30`     |
-| `minTemp`     | Lower bound for the temperature selector in the Home app                    | `15`     |
+| Key       | Description                                              | Default |
+| --------- | -------------------------------------------------------- | ------- |
+| `maxTemp` | Upper bound for the temperature selector in the Home app | `30`    |
+| `minTemp` | Lower bound for the temperature selector in the Home app | `15`    |
 
-## HeatingCoolingState Key
+## Thermostat Power States Key
 
 | Number | Name |
 | ------ | ---- |
@@ -79,16 +85,22 @@
 
 ## Supported Devices
 
-You can use this thermostat with basically any thermostat that seems like it would be compatible. Also feel free to adapt it as needed. You may need to make slight modifications if the features I created aren't the exact features you created. You can see my Thermostat and it's capabilities above. Because of the limitations of HomeKit, I didn't leverage all the buttons (FANS SPEED which increase the fan speed, and OPER MODE which changes it from air conditioning to heat, etc). This plugin will work with any thermostat with temperature up and down buttons and a power on/off button. Additional actions are not currently supported but could easily be added in. I'd like to add fan speed, however, I don't believe thats currently supported by Homebridge Thermostats.
+You can use this thermostat with basically any thermostat that seems like it would be compatible. Also feel free to adapt it as needed. You may need to make slight modifications if the features I created aren't the exact features you created. You can see my Thermostat and it's capabilities above. Because of the limitations of HomeKit, I didn't leverage all the buttons (FANS SPEED which increase the fan speed, and OPER MODE which changes it from air conditioning to heat, etc). This plugin will work with any thermostat with temperature up and down buttons and a power on/off button. Additional actions are not currently supported but could easily be added in. I'd like to add fan speed, however, I don't believe that's currently supported by HomeKit/Homebridge Thermostats. Additionally, I have not implemented Heating and Cooling States because control of those is going to vary based on thermostat.
 
 ## Features
 
+- Support for changing the temperature of your thermostat using 2 SwitchBots
+- Support for turning your thermostat On/Off using 1 SwitchBot
 - Full support for Queuing
   - This eliminates 'No Response' errors from HomeKit. It also enables you to send multiple requests like increase the temperature to 70 degrees, then increase the temperature again to 74 degrees.
 - Full Automation Support
-  - HomeKit Automations are sent in, an unfortunate order... When thermostats are already on, they send the Turn off request before sending the change temperature request. I've fully dealt with this complexity, including fully supporting the power and temp state that your thermostat should be in.
+  - HomeKit Automations are sent in, an unfortunate order... When thermostats are already on, they send the 'Turn Off' request before sending the 'Change Temperature' request. I've fully dealt with this complexity, including fully supporting the power and temp state that your thermostat should be in.
 - Full Fahrenheit support
   - Even if you have your thermostat set to Fahrenheit, HomeKit still send data in Celsius. This creates a lot of complexity because when converting to Fahrenheit, there may be two numbers in Celsius that relate to that number (for example both 22.0 and 22.5 convert to 72 degrees when rounding is taken into account). I've dealt with all this complexity so that at these numbers, only 1 request is sent to your SwitchBots.
+
+## Device Installation
+
+Place one SwitchBot Bot so it can activate the power button. Place one SwitchBot Bot each on the of the temperature up and down buttons. Get the bayer tokens from homebridge swagger. Also, get the bearer tokens for the 3 Switchbot Bots. (See full instructions under Configuration.)
 
 ## Limitations
 

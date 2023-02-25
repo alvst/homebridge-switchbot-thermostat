@@ -34,7 +34,7 @@ function Thermostat(log, config) {
   this.serial = 'n/a';
   this.model = config.model || packageJson.name;
 
-  this.temperatureDisplayUnits = config.temperatureDisplayUnits || 0;
+  // this.temperatureDisplayUnits = config.temperatureDisplayUnits || 0;
   this.maxTemp = config.thermostat_details.maxTemp || 30;
   this.minTemp = config.thermostat_details.minTemp || 15;
   this.minStep = config.thermostat_details.tempInterval || 0.5;

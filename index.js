@@ -19,14 +19,14 @@ function Thermostat(log, config) {
   this.log = log;
   this.name = config.name;
 
-  this.bearerToken = config.thermostat_configuration['bearerToken'];
+  this.bearerToken = config.thermostatConfiguration['bearerToken'];
   this.power_switch_accessory_uuid =
-    config.thermostat_configuration['powerSwitchAccessoryUUID'];
+    config.thermostatConfiguration['powerSwitchAccessoryUUID'];
   this.temp_up_accessory_uuid =
-    config.thermostat_configuration['tempUpAccessoryUUID'];
+    config.thermostatConfiguration['tempUpAccessoryUUID'];
   this.temp_down_accessory_uuid =
     config.thermostatConfiguration['tempDownAccessoryUUID'];
-  this.wait_time = config.thermostat_configuration['waitTime'] || 5000;
+  this.wait_time = config.thermostatConfiguration['waitTime'] || 5000;
 
   this.validStates = [0, 3];
 

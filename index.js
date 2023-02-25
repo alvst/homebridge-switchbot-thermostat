@@ -34,7 +34,7 @@ function Thermostat(log, config) {
   this.serial = 'n/a';
   this.model = config.model || packageJson.name;
 
-  // this.temperatureDisplayUnits = config.temperatureDisplayUnits || 0;
+  // this.temperatureUnits = config.temperatureDisplayUnits || 0;
   this.maxTemp = config.thermostat_details.maxTemp || 30;
   this.minTemp = config.thermostat_details.minTemp || 15;
   this.minStep = config.thermostat_details.tempInterval || 0.5;
@@ -213,6 +213,10 @@ Thermostat.prototype = {
     return (value * 9) / 5 + 32;
   },
 
+  setTempFarenheight: function (value, callback) {},
+
+  setTempCelsius: function (value, callback) {},
+
   setTargetTemperature: async function (value, startValue, callback) {
     let count = 0;
     let startPowerState = this.service.getCharacteristic(
@@ -244,6 +248,7 @@ Thermostat.prototype = {
 
     if (startValue < value) {
       this.log('Increasing temp');
+      this.debugLog('Increasing temp');
       for (
         let index = startValue;
         index < value;

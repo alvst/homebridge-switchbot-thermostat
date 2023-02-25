@@ -35,37 +35,44 @@
          {
             "accessory": "Thermostat",
             "name": "Thermostat",
-            "thermostat_details": {
+            "thermostatDetails": {
                 "minTemp": 15,
                 "maxTemp": 30
             },
             "thermostat_configuration": {
                 "bearerToken": "",
-                "power_switch_accessory_uuid": "",
-                "temp_up_accessory_uuid": "",
-                "temp_down_accessory_uuid": ""
+                "powerSwitchAccessoryUUID": "",
+                "tempUpAccessoryUUID": "",
+                "tempDownAccessoryUUID": ""
             },
+            "waitTime": 7000,
         }
    ]
 ```
 
 ## Required fields
 
-| Key                           | Description                                                               | Required |
-| ----------------------------- | ------------------------------------------------------------------------- | -------- |
-| `bearerToken`                 | Bearer authentication Token for your Homebridge Installation              | `Yes`    |
-| `power_switch_accessory_uuid` | Accessory Token UUID for you Switchbot that controls Power                | `Yes*`   |
-| `temp_up_accessory_uuid`      | Accessory Token UUID for you Switchbot that controls temperature increase | `Yes`    |
-| `temp_down_accessory_uuid`    | Accessory Token UUID for you Switchbot that controls temperature decrease | `Yes`    |
+| Key                        | Description                                                               | Required |
+| -------------------------- | ------------------------------------------------------------------------- | -------- |
+| `bearerToken`              | Bearer authentication Token for your Homebridge Installation              | `Yes`    |
+| `powerSwitchAccessoryUUID` | Accessory Token UUID for you Switchbot that controls Power                | `Yes*`   |
+| `tempUpAccessoryUUID`      | Accessory Token UUID for you Switchbot that controls temperature increase | `Yes`    |
+| `tempDownAccessoryUUID`    | Accessory Token UUID for you Switchbot that controls temperature decrease | `Yes`    |
 
 \* If you do not want to/need to control turning on and off your thermostat, this is optional.
 
-## Optional fields
+## Thermostat Details Optional fields
 
-| Key       | Description                                              | Default |
-| --------- | -------------------------------------------------------- | ------- |
-| `maxTemp` | Upper bound for the temperature selector in the Home app | `30`    |
-| `minTemp` | Lower bound for the temperature selector in the Home app | `15`    |
+| Key       | Description                                                           | Default |
+| --------- | --------------------------------------------------------------------- | ------- |
+| `maxTemp` | Upper bound for the temperature selector in the Home app (in celsius) | `30`    |
+| `minTemp` | Lower bound for the temperature selector in the Home app (in celsius) | `15`    |
+
+## Other Optional Fields
+
+| Key        | Description                                                                                                                                                                                                                                                                                           | Default |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `waitTime` | The amount of time between each (attempted) bot press. By default the value is 5000 milliseconds (5 seconds). The ideal time for you may vary based on how far your device is from your hub among other factors. I wouldn't recommend much less than 5 seconds as it will lead to more failed presses | `5000`  |
 
 ## Thermostat Power States Key
 

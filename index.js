@@ -21,11 +21,12 @@ function Thermostat(log, config) {
 
   this.bearerToken = config.thermostat_configuration['bearerToken'];
   this.power_switch_accessory_uuid =
-    config.thermostat_configuration['power_switch_accessory_uuid'];
+    config.thermostat_configuration['powerSwitchAccessoryUUID'];
   this.temp_up_accessory_uuid =
-    config.thermostat_configuration['temp_up_accessory_uuid'];
+    config.thermostat_configuration['tempUpAccessoryUUID'];
   this.temp_down_accessory_uuid =
-    config.thermostat_configuration['temp_down_accessory_uuid'];
+    config.thermostatConfiguration['tempDownAccessoryUUID'];
+  this.wait_time = config.thermostat_configuration['waitTime'] || 5000;
 
   this.validStates = [0, 3];
 
@@ -36,7 +37,7 @@ function Thermostat(log, config) {
   this.temperatureDisplayUnits = config.temperatureDisplayUnits || 0;
   this.maxTemp = config.thermostat_details.maxTemp || 30;
   this.minTemp = config.thermostat_details.minTemp || 15;
-  this.minStep = config.thermostat_details.temp_interval || 0.5;
+  this.minStep = config.thermostat_details.tempInterval || 0.5;
 
   this.service = new Service.Thermostat(this.name);
 
@@ -179,7 +180,7 @@ Thermostat.prototype = {
       this.log('queuing for power state change');
 
       await this.setTargetHeatingCoolingState(value, startValue, callback);
-      await this.sleep(5000);
+      await this.sleep(this.wait_time);
 
       this.log('done; sleeping for power state change');
     });
@@ -233,7 +234,7 @@ Thermostat.prototype = {
 
       this.log('This is likely triggered by an automation.');
 
-      await this.sleep(5000);
+      await this.sleep(this.wait_time);
     }
 
     // this.log(
@@ -278,7 +279,7 @@ Thermostat.prototype = {
     }
 
     // this.log(count + 1);
-    await this.sleep(5000 * (count + 1));
+    await this.sleep(this.wait_time * (count + 1));
     this.log('Done; sleeping from setTargetTemperature function');
 
     if (startPowerState == 0) {
@@ -290,7 +291,7 @@ Thermostat.prototype = {
 
       this.log('This change was likely triggered by an automation.');
 
-      await this.sleep(5000);
+      await this.sleep(this.wait_time);
     }
   },
 

@@ -69,6 +69,7 @@ class Queue {
     }
     this.isProcessing = true;
     const fn = this.queue.shift();
+    this.debugLog('Increasing temp');
     fn().finally(() => {
       this.isProcessing = false;
       this.processQueue();
@@ -248,7 +249,6 @@ Thermostat.prototype = {
 
     if (startValue < value) {
       this.log('Increasing temp');
-      this.debugLog('Increasing temp');
       for (
         let index = startValue;
         index < value;

@@ -27,6 +27,7 @@ function Thermostat(log, config) {
   this.temp_down_accessory_uuid =
     config.thermostatConfiguration['tempDownAccessoryUUID'];
   this.wait_time = config.thermostatConfiguration['waitTime'] || 5000;
+  this.debug = config.debug || false;
 
   this.validStates = [0, 3];
 
@@ -69,7 +70,6 @@ class Queue {
     }
     this.isProcessing = true;
     const fn = this.queue.shift();
-    this.debugLog('Increasing temp');
     fn().finally(() => {
       this.isProcessing = false;
       this.processQueue();
@@ -81,6 +81,12 @@ Thermostat.prototype = {
   identify: function (callback) {
     this.log('Identify requested!');
     callback();
+  },
+
+  debugLog(message) {
+    if (this.debug) {
+      this.log.warn(`[DEBUG] ${message}`);
+    }
   },
 
   checkCache: async function () {
@@ -159,10 +165,10 @@ Thermostat.prototype = {
     callback();
 
     this.queue.add(async () => {
-      this.log('queuing for temp change');
+      this.log(`queuing for temp change`);
 
       await this.setTargetTemperature(value, startValue, callback);
-      this.log('done; sleeping for temp change');
+      this.log(`done; sleeping for temp change`);
     });
   },
 
@@ -183,7 +189,7 @@ Thermostat.prototype = {
       await this.setTargetHeatingCoolingState(value, startValue, callback);
       await this.sleep(this.wait_time);
 
-      this.log('done; sleeping for power state change');
+      this.log(`done; sleeping for power state change`);
     });
   },
 
@@ -199,14 +205,13 @@ Thermostat.prototype = {
       this.updateCache('powerStateOn', value);
     } else {
       this.log(
-        "Power state is already %s. The thermostat's power state was likely requested to be changed by a an automation. No change has been made.",
-        value
+        `Power state is already ${value}. The thermostat's power state was likely requested to be changed by a an automation. No change has been made.`
       );
     }
   },
 
   sleep: async function (milliseconds) {
-    this.log('Pausing for ' + milliseconds + ' milliseconds');
+    this.debugLog(`Pausing for ${milliseconds} milliseconds`);
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   },
 
@@ -214,7 +219,7 @@ Thermostat.prototype = {
     return (value * 9) / 5 + 32;
   },
 
-  setTempFarenheight: function (value, callback) {},
+  setTempFahrenheit: function (value, callback) {},
 
   setTempCelsius: function (value, callback) {},
 
@@ -224,7 +229,7 @@ Thermostat.prototype = {
       Characteristic.TargetHeatingCoolingState
     ).value;
 
-    // this.log('start value C', startValue);
+    this.debugLog(`Start temperature ${startValue}° Celsius`);
 
     this.updateCache(
       'currentTemp',
@@ -234,21 +239,24 @@ Thermostat.prototype = {
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
 
-      this.log('Temporarily turning thermostat ON to change temperature');
-      // this.log('from setTargetTemperature function');
+      this.log(`Temporarily turning thermostat ON to change temperature`);
+      this.debugLog(`This temporary from setTargetTemperature function`);
 
-      this.log('This is likely triggered by an automation.');
+      this.log(
+        `This is likely triggered by an automation & changing the temperature or changing the temperature from the Homebridge-UI without turning the thermostat ON first.`
+      );
 
       await this.sleep(this.wait_time);
     }
 
-    // this.log(
-    //   'this.service.getCharacteristic(Characteristic.CurrentTemperature).value',
-    //   startValue
-    // );
+    this.debugLog(
+      `Setting Temperature Current Temp Characteristic to ${startValue}`
+    );
 
     if (startValue < value) {
-      this.log('Increasing temp');
+      this.debugLog(
+        `Increasing temp | start Temp: ${startValue} | End Temp: ${value}`
+      );
       for (
         let index = startValue;
         index < value;
@@ -260,12 +268,16 @@ Thermostat.prototype = {
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
           this.log(
-            `Skipping ${value} because it is 22.5 or 17.5 or 27.5 which is a duplicate in Fahrenheit temperature`
+            `Skipping ${index} because the thermostat is already at ${this.convertToFahrenheit(
+              index
+            )} since ${index} is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
           );
         }
       }
     } else {
-      this.log('Decreasing temp');
+      this.debugLog(
+        `Decreasing temp | start Temp: ${startValue} | End Temp: ${value}`
+      );
       for (
         let index = startValue;
         index > value;
@@ -277,24 +289,30 @@ Thermostat.prototype = {
           await this.sendCurl(this.temp_down_accessory_uuid);
         } else {
           this.log(
-            `Skipping ${value} because it is 22.5 or 17.5 or 27.5 which is a duplicate in Fahrenheit temperature`
+            `Skipping ${index} because the thermostat is already at ${this.convertToFahrenheit(
+              index
+            )} since ${index} is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
           );
         }
       }
     }
 
-    // this.log(count + 1);
+    this.debugLog(`Count of total number of button presses: ${count}`);
     await this.sleep(this.wait_time * (count + 1));
-    this.log('Done; sleeping from setTargetTemperature function');
+    this.log(`Done; sleeping from setTargetTemperature function`);
 
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
 
-      this.log(
-        'Undoing the temporary power On state change from setTargetTemperature function'
+      this.log('Turning thermostat OFF after changing temperature');
+
+      this.debugLog(
+        `Undoing the temporary power On state change from setTargetTemperature function`
       );
 
-      this.log('This change was likely triggered by an automation.');
+      this.log(
+        `The Thermostats beginning state was OFF. It was turned on, likely triggered by an automation or by changing the temperature from the Homebridge UI without turning the thermostat ON first.`
+      );
 
       await this.sleep(this.wait_time);
     }
@@ -318,13 +336,83 @@ Thermostat.prototype = {
         },
         (error, response, body) => {
           if (error) {
-            this.log(error);
+            this.log.warn(error);
             reject(error);
           } else {
+            this.log.debug(body);
             resolve(response);
           }
         }
       );
+    }).then((resolve) => {
+      // console.log(resolve.body);
+      console.log(resolve.body.statusCode);
+      if (!resolve.body.uniqueId) {
+        let responseCode = resolve.body.statusCode;
+        if (responseCode === 401) {
+          this.log.error(
+            `Failed to send cURL command. Your Bearer Token is either incorrect or has expired. Once you have updated your Bearer Token, please restart Homebridge.`
+          );
+        } else if (responseCode === 400) {
+          if (device === '') {
+            let emptyDevice = [];
+            switch ('') {
+              case this.temp_up_accessory_uuid:
+                emptyDevice.push('tempUpAccessoryUUID');
+              case this.temp_down_accessory_uuid:
+                emptyDevice.push('tempDownAccessoryUUID');
+              default:
+                break;
+            }
+            if (emptyDevice.length === 1) {
+              this.log.error(
+                `Failed to send cURL command. No UUID was provided for ${emptyDevice}. Once you have updated your device UUID, please restart Homebridge.`
+              );
+            } else if (emptyDevice.length === 2) {
+              this.log.error(
+                `Failed to send cURL command. No UUID was provided for ${emptyDevice[0]} and ${emptyDevice[1]}. Once you have updated your device UUID(s), please restart Homebridge.`
+              );
+            }
+          } else {
+            let type = '';
+            switch (device) {
+              case this.temp_up_accessory_uuid:
+                this.log.error(
+                  `Failed to send cURL command. The UUID '${device}' for device tempUpAccessoryUUID was not found. Once you have updated your device UUID in your config.json, please restart Homebridge.`
+                );
+              case this.temp_down_accessory_uuid:
+                this.log.error(
+                  `Failed to send cURL command. The UUID '${device}' for device tempDownAccessoryUUID was not found. Once you have updated your device UUID in your config.json, please restart Homebridge.`
+                );
+                break;
+
+              default:
+                break;
+            }
+          }
+        } else {
+          if (device.toLowerCase() == 'n/a') {
+            this.debugLog(
+              `Update power state requested, but no UUID was provided for the powerSwitchAccessoryUUID.`
+            );
+          } else {
+            this.log.error(
+              `Failed to send cURL command. An unknown error occurred: ${responseCode}: ${resolve.body.message}.`
+            );
+          }
+        }
+      } else {
+        switch (device) {
+          case this.temp_down_accessory_uuid:
+            type = 'tempDownAccessoryUUID';
+            break;
+          case this.temp_up_accessory_uuid:
+            type = 'tempUpAccessoryUUID';
+          default:
+            break;
+        }
+        this.log(`Successfully sent cURL command to ${device}`);
+      }
     });
   },
 

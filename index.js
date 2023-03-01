@@ -28,6 +28,7 @@ function Thermostat(log, config) {
     config.thermostatConfiguration['tempDownAccessoryUUID'];
   this.wait_time = config.thermostatConfiguration['waitTime'] || 5000;
   this.debug = config.debug || false;
+  this.homebridgeCustomPort = config.customPort || 8581;
 
   this.validStates = [0, 3];
 
@@ -65,7 +66,7 @@ class Queue {
       return;
     }
     if (this.queue.length === 0) {
-      console.log('Homebridge Thermostat queue is empty');
+      // console.log('Homebridge Thermostat queue is empty');
       return;
     }
     this.isProcessing = true;
@@ -208,6 +209,10 @@ Thermostat.prototype = {
         `Power state is already ${value}. The thermostat's power state was likely requested to be changed by a an automation. No change has been made.`
       );
     }
+
+    if (this.queue.length === 1) {
+      this.log('Homebridge Thermostat queue is empty');
+    }
   },
 
   sleep: async function (milliseconds) {
@@ -316,13 +321,17 @@ Thermostat.prototype = {
 
       await this.sleep(this.wait_time);
     }
+
+    if (this.queue.length === 1) {
+      this.log('Homebridge Thermostat queue is empty');
+    }
   },
 
   sendCurl: async function (device) {
     new Promise((resolve, reject) => {
       request(
         {
-          url: `http://localhost:8581/api/accessories/${device}`,
+          url: `http://localhost:${this.homebridgeCustomPort}/api/accessories/${device}`,
           method: 'PUT',
           headers: {
             accept: '*/*',
@@ -346,7 +355,7 @@ Thermostat.prototype = {
       );
     }).then((resolve) => {
       // console.log(resolve.body);
-      console.log(resolve.body.statusCode);
+      // this.log(resolve.body);
       if (!resolve.body.uniqueId) {
         let responseCode = resolve.body.statusCode;
         if (responseCode === 401) {
@@ -411,7 +420,7 @@ Thermostat.prototype = {
           default:
             break;
         }
-        this.log(`Successfully sent cURL command to ${device}`);
+        this.log(`Successfully sent cURL command to ${type}`);
       }
     });
   },

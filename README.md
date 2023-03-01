@@ -14,6 +14,7 @@
 
 1. Prerequisite the [Homebridge Switchbot plugin](https://www.npmjs.com/package/@switchbot/homebridge-switchbot)
 2. Install the this package (note: as of right now this package is not available on NPM)
+3. `npm install -g alvst/homebridge-switchbot-thermostat`
 
 ## Configuration
 

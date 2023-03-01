@@ -4,7 +4,7 @@
 
 # Switchbot Thermostat
 
-<p>The Homebridge <a href="https://www.switch-bot.com">SwitchBot Thermostat</a> is an accessory plugin allows you to access your SwitchBot Device(s) to control your thermostat from HomeKit with
+<p>The Homebridge <a href="https://www.switch-bot.com">SwitchBot Thermostat</a> is an accessory plugin that allows SwitchBot Devices to control thermostats from HomeKit with
   <a href="https://homebridge.io">Homebridge</a>. 
 </p>
 

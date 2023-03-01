@@ -45,6 +45,8 @@
                 "tempUpAccessoryUUID": "",
                 "tempDownAccessoryUUID": ""
             },
+            "debug": true,
+            "customPort": 1234,
             "waitTime": 7000,
         }
    ]
@@ -59,7 +61,7 @@
 | `tempUpAccessoryUUID`      | Accessory Token UUID for you Switchbot that controls temperature increase | `Yes`    |
 | `tempDownAccessoryUUID`    | Accessory Token UUID for you Switchbot that controls temperature decrease | `Yes`    |
 
-\* If you do not want to/need to control turning on and off your thermostat, this is optional.
+\* If you do not want to/need to control turning on and off your thermostat, make powerSwitchAccessoryUUID: n/a to avoid error messages.
 
 ## Thermostat Details Optional fields
 
@@ -70,9 +72,11 @@
 
 ## Other Optional Fields
 
-| Key        | Description                                                                                                                                                                                                                                                                                           | Default |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `waitTime` | The amount of time between each (attempted) bot press. By default the value is 5000 milliseconds (5 seconds). The ideal time for you may vary based on how far your device is from your hub among other factors. I wouldn't recommend much less than 5 seconds as it will lead to more failed presses | `5000`  |
+| Key        | Description                                                                                                                                                                                                                                                                                                                                                 | Default |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `waitTime` | The amount of time between each (attempted) bot press. By default the value is 5000 milliseconds (5 seconds). The ideal time for you may vary based on how far your device is from your hub among other factors. I wouldn't recommend much less than 5 seconds as it will lead to more failed presses. If you are having failed presses, increase this time | `5000`  |
+| `debug`    | Add additional logging messages                                                                                                                                                                                                                                                                                                                             | `false` |
+| `debug`    | Lower bound for the temperature selector in the Home app (in celsius)                                                                                                                                                                                                                                                                                       | `8581`  |
 
 ## Thermostat Power States Key
 

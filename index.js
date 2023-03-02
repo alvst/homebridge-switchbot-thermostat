@@ -60,6 +60,9 @@ class Queue {
     this.counter++;
     this.processQueue();
   }
+  len() {
+    return this.queue.length;
+  }
 
   processQueue() {
     if (this.isProcessing) {

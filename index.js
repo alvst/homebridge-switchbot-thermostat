@@ -214,6 +214,7 @@ Thermostat.prototype = {
       );
     }
 
+    console.log('setTargetHeatingCoolingState', this.queue.len());
     if (this.queue.len() === 1) {
       this.log('Switchbot Thermostat queue is empty');
     }
@@ -310,7 +311,7 @@ Thermostat.prototype = {
     await this.sleep(this.wait_time * (count + 1));
     this.log(`Done; sleeping from setTargetTemperature function`);
 
-    if (startPowerState == 0) {
+    if (startPowerState === 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
 
       this.log('Turning thermostat OFF after changing temperature');
@@ -326,6 +327,9 @@ Thermostat.prototype = {
       await this.sleep(this.wait_time);
     }
 
+    console.log(this.queue.len());
+
+    console.log('setTargetTemperature', this.queue.len());
     if (this.queue.len() === 1) {
       this.log('Switchbot Thermostat queue is empty');
     }

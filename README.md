@@ -1,12 +1,14 @@
 <span align="center">
 
-  <p><img alt="Thermostat Gif" src="Thermostat.gif" width="350px"></p>
 
 # Switchbot Thermostat
 
 <p>The Homebridge <a href="https://www.switch-bot.com">SwitchBot Thermostat</a> is an accessory plugin that allows SwitchBot Devices to control thermostats from HomeKit with
   <a href="https://homebridge.io">Homebridge</a>. 
 </p>
+
+<p><img alt="Thermostat Gif" src="Thermostat.gif" width="350px"></p>
+
 
 </span>
 

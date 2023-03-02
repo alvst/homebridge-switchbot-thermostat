@@ -174,7 +174,7 @@ Thermostat.prototype = {
       await this.setTargetTemperature(value, startValue, callback);
       this.log(`done; sleeping for temp change`);
       if (this.queue.len() === 0) {
-        this.log('Switchbot Thermostat queue is empty');
+        this.log('[QUEUE] Switchbot Thermostat queue is empty');
       }
     });
   },
@@ -198,7 +198,7 @@ Thermostat.prototype = {
 
       this.log(`done; sleeping for power state change`);
       if (this.queue.len() === 0) {
-        this.log('Switchbot Thermostat queue is empty');
+        this.log('[QUEUE] Switchbot Thermostat queue is empty');
       }
     });
   },
@@ -219,8 +219,6 @@ Thermostat.prototype = {
         `Power state is already ${value}. The thermostat's power state was likely requested to be changed by a an automation. No change has been made.`
       );
     }
-
-    console.log('setTargetHeatingCoolingState', this.queue.len());
   },
 
   sleep: async function (milliseconds) {

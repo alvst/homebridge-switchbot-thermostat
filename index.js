@@ -214,13 +214,8 @@ Thermostat.prototype = {
       );
     }
 
-    console.log(this.queue.len());
-
-    if (this.queue.length === 1) {
+    if (this.queue.len() === 1) {
       this.log('Switchbot Thermostat queue is empty');
-    }
-    if (this.queue.length === 0) {
-      this.log('Switchbot Thermostat queue is empty1');
     }
   },
 
@@ -331,8 +326,8 @@ Thermostat.prototype = {
       await this.sleep(this.wait_time);
     }
 
-    if (this.queue.length === 1) {
-      this.log('Homebridge Thermostat queue is empty');
+    if (this.queue.len() === 1) {
+      this.log('Switchbot Thermostat queue is empty');
     }
   },
 

@@ -196,10 +196,11 @@ Thermostat.prototype = {
 
   setTargetHeatingCoolingState: async function (value, startValue, callback) {
     if (value !== startValue) {
-      this.log(
-        'Setting power state to %s from setTargetHeatingCoolingState function',
-        value
+      this.debugLog(
+        `Setting power state to %s from setTargetHeatingCoolingState function
+        ${value}`
       );
+      this.log(`Setting power state to ${value}...`);
 
       this.sendCurl(this.power_switch_accessory_uuid);
 
@@ -210,8 +211,13 @@ Thermostat.prototype = {
       );
     }
 
+    console.log(this.queue.length);
+
     if (this.queue.length === 1) {
-      this.log('Homebridge Thermostat queue is empty');
+      this.log('Switchbot Thermostat queue is empty');
+    }
+    if (this.queue.length === 0) {
+      this.log('Switchbot Thermostat queue is empty1');
     }
   },
 

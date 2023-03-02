@@ -420,6 +420,7 @@ Thermostat.prototype = {
           }
         }
       } else {
+        let type = '';
         switch (device) {
           case this.temp_down_accessory_uuid:
             type = 'tempDownAccessoryUUID';

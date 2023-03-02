@@ -214,7 +214,7 @@ Thermostat.prototype = {
       );
     }
 
-    console.log(this.queue.length);
+    console.log(this.queue.len());
 
     if (this.queue.length === 1) {
       this.log('Switchbot Thermostat queue is empty');

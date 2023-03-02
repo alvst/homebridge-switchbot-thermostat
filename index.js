@@ -173,6 +173,9 @@ Thermostat.prototype = {
 
       await this.setTargetTemperature(value, startValue, callback);
       this.log(`done; sleeping for temp change`);
+      if (this.queue.len() === 0) {
+        this.log('Switchbot Thermostat queue is empty');
+      }
     });
   },
 
@@ -194,6 +197,9 @@ Thermostat.prototype = {
       await this.sleep(this.wait_time);
 
       this.log(`done; sleeping for power state change`);
+      if (this.queue.len() === 0) {
+        this.log('Switchbot Thermostat queue is empty');
+      }
     });
   },
 
@@ -215,9 +221,6 @@ Thermostat.prototype = {
     }
 
     console.log('setTargetHeatingCoolingState', this.queue.len());
-    if (this.queue.len() === 1) {
-      this.log('Switchbot Thermostat queue is empty');
-    }
   },
 
   sleep: async function (milliseconds) {
@@ -325,13 +328,6 @@ Thermostat.prototype = {
       );
 
       await this.sleep(this.wait_time);
-    }
-
-    console.log(this.queue.len());
-
-    console.log('setTargetTemperature', this.queue.len());
-    if (this.queue.len() === 1) {
-      this.log('Switchbot Thermostat queue is empty');
     }
   },
 

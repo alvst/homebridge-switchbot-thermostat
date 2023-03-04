@@ -29,6 +29,7 @@ function Thermostat(log, config) {
   this.wait_time = config.thermostatConfiguration['waitTime'] || 5000;
   this.debug = config.debug || false;
   this.homebridgeCustomPort = config.customPort || 8581;
+  this.degreeUnits = config.thermostat_details.degreeUnits || 1;
 
   this.validStates = [0, 3];
 
@@ -40,6 +41,9 @@ function Thermostat(log, config) {
   this.maxTemp = config.thermostat_details.maxTemp || 30;
   this.minTemp = config.thermostat_details.minTemp || 15;
   this.minStep = config.thermostat_details.tempInterval || 0.5;
+  if (this.degreeUnits === 1) {
+    this.minStep = 0.5;
+  }
 
   this.service = new Service.Thermostat(this.name);
 
@@ -69,7 +73,6 @@ class Queue {
       return;
     }
     if (this.queue.length === 0) {
-      // console.log('Homebridge Thermostat queue is empty');
       return;
     }
     this.isProcessing = true;
@@ -101,7 +104,7 @@ Thermostat.prototype = {
       const data = fs.readFileSync(filePath, 'utf-8');
       this.log('Cache file exists, reading data...');
       const fileData = JSON.parse(data);
-      // this.log(fileData);
+      this.debugLog(fileData);
       powerStateOn = fileData.powerStateOn;
       currentTemp = fileData.currentTemp;
       this.log(
@@ -152,7 +155,7 @@ Thermostat.prototype = {
         fs.writeFile(filePath, JSON.stringify(fileData), (err) => {
           if (err) throw err;
           this.log('Cache successfully updated');
-          // this.log(fileData);
+          this.debugLog(fileData);
         });
       }
     });
@@ -171,7 +174,12 @@ Thermostat.prototype = {
     this.queue.add(async () => {
       this.log(`queuing for temp change`);
 
-      await this.setTargetTemperature(value, startValue, callback);
+      if (this.degreeUnits === 'F') {
+        await this.setTempFahrenheit(value, startValue, callback);
+      } else {
+        await this.setTempCelsius(value, startValue, callback);
+      }
+
       this.log(`done; sleeping for temp change`);
       if (this.queue.len() === 0) {
         this.log('[QUEUE] Switchbot Thermostat queue is empty');
@@ -230,11 +238,86 @@ Thermostat.prototype = {
     return (value * 9) / 5 + 32;
   },
 
-  setTempFahrenheit: function (value, callback) {},
+  setTempCelsius: async function (value, callback) {
+    let count = 0;
+    let startPowerState = this.service.getCharacteristic(
+      Characteristic.TargetHeatingCoolingState
+    ).value;
 
-  setTempCelsius: function (value, callback) {},
+    this.debugLog(`Start temperature ${startValue}° Celsius`);
 
-  setTargetTemperature: async function (value, startValue, callback) {
+    this.updateCache(
+      'currentTemp',
+      this.service.getCharacteristic(Characteristic.CurrentTemperature).value
+    );
+
+    if (startPowerState == 0) {
+      this.sendCurl(this.power_switch_accessory_uuid);
+
+      this.log(`Temporarily turning thermostat ON to change temperature`);
+      this.debugLog(`This temporary from setTargetTemperature function`);
+
+      this.log(
+        `This is likely triggered by an automation & changing the temperature or changing the temperature from the Homebridge-UI without turning the thermostat ON first.`
+      );
+
+      await this.sleep(this.wait_time);
+    }
+
+    this.debugLog(
+      `Setting Temperature Current Temp Characteristic to ${startValue}`
+    );
+
+    if (startValue < value) {
+      this.debugLog(
+        `Increasing temp | start Temp: ${startValue} | End Temp: ${value}`
+      );
+      for (
+        let index = startValue;
+        index < value;
+        index = index + this.minStep
+      ) {
+        count++;
+        this.log(`increasing temp ${index + this.minStep} / ${value}`);
+        this.sendCurl(this.temp_up_accessory_uuid);
+      }
+    } else {
+      this.debugLog(
+        `Decreasing temp | start Temp: ${startValue} | End Temp: ${value}`
+      );
+      for (
+        let index = startValue;
+        index > value;
+        index = index - this.minStep
+      ) {
+        count++;
+        this.log(`Decreasing temp ${index + this.minStep} / ${value}`);
+        await this.sendCurl(this.temp_down_accessory_uuid);
+      }
+    }
+
+    this.debugLog(`Count of total number of button presses: ${count}`);
+    await this.sleep(this.wait_time * (count + 1));
+    this.log(`Done; sleeping from setTargetTemperature function`);
+
+    if (startPowerState === 0) {
+      this.sendCurl(this.power_switch_accessory_uuid);
+
+      this.log('Turning thermostat OFF after changing temperature');
+
+      this.debugLog(
+        `Undoing the temporary power On state change from setTargetTemperature function`
+      );
+
+      this.log(
+        `The Thermostats beginning state was OFF. It was turned on, likely triggered by an automation or by changing the temperature from the Homebridge UI without turning the thermostat ON first.`
+      );
+
+      await this.sleep(this.wait_time);
+    }
+  },
+
+  setTempFahrenheit: async function (value, startValue, callback) {
     let count = 0;
     let startPowerState = this.service.getCharacteristic(
       Characteristic.TargetHeatingCoolingState
@@ -439,7 +522,7 @@ Thermostat.prototype = {
     // Needed
     this.service
       .getCharacteristic(Characteristic.TemperatureDisplayUnits)
-      .updateValue(1);
+      .updateValue(this.degreeUnits);
 
     this.checkCache();
 

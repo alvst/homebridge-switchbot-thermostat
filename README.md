@@ -66,18 +66,20 @@
 
 ## Thermostat Details Optional fields
 
-| Key       | Description                                                           | Default |
-| --------- | --------------------------------------------------------------------- | ------- |
-| `maxTemp` | Upper bound for the temperature selector in the Home app (in celsius) | `30`    |
-| `minTemp` | Lower bound for the temperature selector in the Home app (in celsius) | `15`    |
+| Key           | Description                                                                                                                                   | Default |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `maxTemp`     | Upper bound for the temperature selector in the Home app (in celsius)                                                                         | `30`    |
+| `minTemp`     | Lower bound for the temperature selector in the Home app (in celsius)                                                                         | `15`    |
+| `degreeUnits` | The temperature Units (Celsius or Fahrenheit) that your thermostat is set to. °C (0) or °F (1) for units.                                     | `1`     |
+| `minStep`     | Increment value for the temperature selector in the Home app amount this value is in Celsius and other values are only supported for Celsius. | `.5`    |
 
 ## Other Optional Fields
 
-| Key        | Description                                                                                                                                                                                                                                                                                                                                                 | Default |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `waitTime` | The amount of time between each (attempted) bot press. By default the value is 5000 milliseconds (5 seconds). The ideal time for you may vary based on how far your device is from your hub among other factors. I wouldn't recommend much less than 5 seconds as it will lead to more failed presses. If you are having failed presses, increase this time | `5000`  |
-| `debug`    | Add additional logging messages                                                                                                                                                                                                                                                                                                                             | `false` |
-| `debug`    | Lower bound for the temperature selector in the Home app (in celsius)                                                                                                                                                                                                                                                                                       | `8581`  |
+| Key          | Description                                                                                                                                                                                                                                                                                                                                                 | Default |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `waitTime`   | The amount of time between each (attempted) bot press. By default the value is 5000 milliseconds (5 seconds). The ideal time for you may vary based on how far your device is from your hub among other factors. I wouldn't recommend much less than 5 seconds as it will lead to more failed presses. If you are having failed presses, increase this time | `5000`  |
+| `debug`      | Add additional logging messages                                                                                                                                                                                                                                                                                                                             | `false` |
+| `customPort` | If your Homebridge Server is set to run on a port other than the default 8581, you can set that here (if you haven't set this manually, you can ignore this).                                                                                                                                                                                               | `8581`  |
 
 ## Thermostat Power States Key
 
@@ -91,7 +93,7 @@
 
 <p align="center">
 
-<img src="https://github.com/alvst/switchbot-theromstat/blob/main/Thermostat.jpg?raw=true" width="350px">
+<img src="Thermostat.jpg" width="350px">
 
 </p>
 
@@ -103,6 +105,7 @@ You can use this thermostat with basically any thermostat that seems like it wou
 
 - Support for changing the temperature of your thermostat using 2 Switchbots
 - Support for turning your thermostat On/Off using 1 Switchbot
+- Fahrenheit (in 1 degree increments) and Celsius Support support.
 - Full support for Queuing
   - This eliminates 'No Response' errors from HomeKit. It also enables you to send multiple requests like increase the temperature to 70 degrees, then increase the temperature again to 74 degrees.
 - Full Automation Support
@@ -116,7 +119,7 @@ Place one Switchbot Bot so it can activate the power button. Place one Switchbot
 
 ## Limitations
 
-As mentioned, I developed this accessory plugin for myself. As such, it currently only supports Fahrenheit and increasing the temperature by .5 degrees F. Even if you have HomeKit set to Fahrenheit, HomeKit still operates as if it is in Celsius, this adds tremendous complexity and dealing with this complexity is responsible for about 33%-50% of the code in this plugin. It's also what's preventing me from making this work with Celsius—but this isn't off the table.
+As mentioned, I developed this accessory plugin for myself. As such, it currently only supports Fahrenheit and increasing the temperature by 1 degrees F. Even if you have HomeKit set to Fahrenheit, HomeKit still operates as if it is in Celsius, this adds tremendous complexity and dealing with this complexity is responsible for about 33%-50% of the code in this plugin. Because of this limitations, adding support for intervals smaller than .5° Fahrenheit is not currently planned as it would be to complex for me to test unless I get a thermostat that has .5° intervals. I am open to pull requests that add this functionality.
 
 Unfortunately, sometimes Switchbot's API fails to deliver requests to Switchbot Bots. This is a limitation that is out of my control and the control of the Homebridge-Switchbot plugin. I check my thermostat about once per day to make sure everything is in sync.
 

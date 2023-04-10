@@ -171,6 +171,7 @@ Thermostat.prototype = {
       .updateValue(value);
     callback();
 
+    console.log(this.degreeUnits);
     this.queue.add(async () => {
       this.log(`queuing for temp change`);
 
@@ -323,7 +324,11 @@ Thermostat.prototype = {
       Characteristic.TargetHeatingCoolingState
     ).value;
 
-    this.debugLog(`Start temperature ${startValue}° Celsius`);
+    this.debugLog(
+      `Start temperature ${startValue}° Celsius | ${this.convertToFahrenheit(
+        startValue
+      )}° Fahrenheit`
+    );
 
     this.updateCache(
       'currentTemp',

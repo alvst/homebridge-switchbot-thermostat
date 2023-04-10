@@ -174,7 +174,7 @@ Thermostat.prototype = {
     this.queue.add(async () => {
       this.log(`queuing for temp change`);
 
-      if (this.degreeUnits === 'F') {
+      if (this.degreeUnits === 1) {
         await this.setTempFahrenheit(value, startValue, callback);
       } else {
         await this.setTempCelsius(value, startValue, callback);

@@ -238,7 +238,7 @@ Thermostat.prototype = {
     return (value * 9) / 5 + 32;
   },
 
-  setTempCelsius: async function (value, callback) {
+  setTempCelsius: async function (value, startValue, callback) {
     let count = 0;
     let startPowerState = this.service.getCharacteristic(
       Characteristic.TargetHeatingCoolingState

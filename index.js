@@ -43,7 +43,17 @@ function Thermostat(log, config) {
   this.minStep = config.thermostat_details.tempInterval || 0.5;
   if (this.degreeUnits === 1) {
     this.minStep = 0.5;
+    this.log(`Your thermostat is configured in FAHRENHEIT.`);
+    this.log(
+      `The temperature range is ${this.minTemp}° to ${this.maxTemp}°. The temperature interval is 1° Fahrenheit.`
+    );
+  } else {
+    this.log(`Your thermostat is configured in CELSIUS.`);
+    this.log(
+      ` The temperature range is ${this.minTemp}° to ${this.maxTemp}°. The temperature interval is ${this.minStep}° celsius.`
+    );
   }
+  this.debugLog(`Thermostat Debug Mode Enabled`);
 
   this.service = new Service.Thermostat(this.name);
 
@@ -171,13 +181,18 @@ Thermostat.prototype = {
       .updateValue(value);
     callback();
 
-    console.log(this.degreeUnits);
     this.queue.add(async () => {
       this.log(`queuing for temp change`);
 
       if (this.degreeUnits === 1) {
+        this.debugLog(
+          `Changing Temperature with device configured to FAHRENHEIT.`
+        );
         await this.setTempFahrenheit(value, startValue, callback);
       } else {
+        this.debugLog(
+          `Changing Temperature with device configured to CELSIUS.`
+        );
         await this.setTempCelsius(value, startValue, callback);
       }
 
@@ -508,6 +523,8 @@ Thermostat.prototype = {
             break;
           case this.temp_up_accessory_uuid:
             type = 'tempUpAccessoryUUID';
+          case this.power_switch_accessory_uuid:
+            type = 'powerSwitchAccessoryUUID';
           default:
             break;
         }

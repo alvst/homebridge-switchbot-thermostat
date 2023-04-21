@@ -45,7 +45,11 @@ function Thermostat(log, config) {
     this.minStep = 0.5;
     this.log(`Your thermostat is configured in FAHRENHEIT.`);
     this.log(
-      `The temperature range is ${this.minTemp}° to ${this.maxTemp}°. The temperature interval is 1° Fahrenheit.`
+      `The temperature range is ${Math.round(
+        (this.minTemp * 9) / 5 + 32
+      )}° to ${Math.round(
+        (this.maxTemp * 9) / 5 + 32
+      )}°. The temperature interval is 1° Fahrenheit.`
     );
   } else {
     this.log(`Your thermostat is configured in CELSIUS.`);

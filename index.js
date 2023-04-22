@@ -132,7 +132,9 @@ Thermostat.prototype = {
         }`
       );
     } catch (err) {
-      this.log('Cache file does not exist, creating a new file...');
+      this.log(
+        `Cache file does not exist, creating a new file... Error: ${err}, if this error persists, please report to the developer using the error code and any reproduction steps.`
+      );
       const newData = {
         powerStateOn: powerStateOn,
         currentTemp: currentTemp,
@@ -159,17 +161,23 @@ Thermostat.prototype = {
           currentTemp: 22.5,
         };
         fs.writeFile(filePath, JSON.stringify(newData), (err) => {
-          if (err) throw err;
-          this.log('File created successfully');
+          if (err) {
+            this.log('Error creating file:', err);
+          } else {
+            this.log('File created successfully');
+          }
         });
       } else {
         this.log('Updating Cache...');
         const fileData = JSON.parse(data);
         fileData[key] = value;
         fs.writeFile(filePath, JSON.stringify(fileData), (err) => {
-          if (err) throw err;
-          this.log('Cache successfully updated');
-          this.debugLog(fileData);
+          if (err) {
+            this.log('Error updating cache:', err);
+          } else {
+            this.log('Cache successfully updated');
+            this.debugLog(fileData);
+          }
         });
       }
     });
@@ -271,6 +279,7 @@ Thermostat.prototype = {
       this.service.getCharacteristic(Characteristic.CurrentTemperature).value
     );
 
+    // If the thermostat is off, temporarily turn it on to change the temperature
     if (startPowerState == 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
 
@@ -320,6 +329,7 @@ Thermostat.prototype = {
     await this.sleep(this.wait_time * (count + 1));
     this.log(`Done; sleeping from setTargetTemperature function`);
 
+    // If the thermostat was off, turn it back off after changing the temperature
     if (startPowerState === 0) {
       this.sendCurl(this.power_switch_accessory_uuid);
 
@@ -382,7 +392,7 @@ Thermostat.prototype = {
       ) {
         if (index !== 17.5 && index !== 22.5 && index !== 27.5) {
           count++;
-          this.log(`increasing temp ${index + this.minStep} / ${value}`);
+          this.log(`Increasing temp ${index + this.minStep} / ${value}`);
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
           this.log(

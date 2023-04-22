@@ -358,6 +358,11 @@ Thermostat.prototype = {
         startValue
       )}° Fahrenheit`
     );
+    this.debugLog(
+      `End temperature ${value}° Celsius | ${this.convertToFahrenheit(
+        value
+      )}° Fahrenheit`
+    );
 
     this.updateCache(
       'currentTemp',
@@ -408,7 +413,7 @@ Thermostat.prototype = {
             )} since ${index} is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
           );
           this.debugLog(
-            `Current Temp temperature ${
+            `Current SKIPPED Temp temperature ${
               index + this.minStep
             }° Celsius | ${this.convertToFahrenheit(
               index + this.minStep

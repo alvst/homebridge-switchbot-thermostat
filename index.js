@@ -393,12 +393,26 @@ Thermostat.prototype = {
         if (index !== 17.5 && index !== 22.5 && index !== 27.5) {
           count++;
           this.log(`Increasing temp ${index + this.minStep} / ${value}`);
+          this.debugLog(
+            `Current Temp temperature ${
+              index + this.minStep
+            }° Celsius | ${this.convertToFahrenheit(
+              index + this.minStep
+            )}° Fahrenheit`
+          );
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
           this.log(
             `Skipping ${index} because the thermostat is already at ${this.convertToFahrenheit(
               index
             )} since ${index} is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
+          );
+          this.debugLog(
+            `Current Temp temperature ${
+              index + this.minStep
+            }° Celsius | ${this.convertToFahrenheit(
+              index + this.minStep
+            )}° Fahrenheit`
           );
         }
       }
@@ -414,6 +428,13 @@ Thermostat.prototype = {
         if (index !== 17.5 && index !== 22.5 && index !== 27.5) {
           count++;
           this.log(`Decreasing temp ${index + this.minStep} / ${value}`);
+          this.debugLog(
+            `Current Temp temperature ${
+              index + this.minStep
+            }° Celsius | ${this.convertToFahrenheit(
+              index + this.minStep
+            )}° Fahrenheit`
+          );
           await this.sendCurl(this.temp_down_accessory_uuid);
         } else {
           this.log(
@@ -421,9 +442,22 @@ Thermostat.prototype = {
               index
             )} since ${index} is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
           );
+          this.debugLog(
+            `Current Temp temperature ${
+              index + this.minStep
+            }° Celsius | ${this.convertToFahrenheit(
+              index + this.minStep
+            )}° Fahrenheit`
+          );
         }
       }
     }
+
+    this.debugLog(
+      `Current Temp temperature ${value}° Celsius | ${this.convertToFahrenheit(
+        value
+      )}° Fahrenheit`
+    );
 
     this.debugLog(`Count of total number of button presses: ${count}`);
     await this.sleep(this.wait_time * (count + 1));

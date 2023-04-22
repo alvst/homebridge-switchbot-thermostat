@@ -1,6 +1,6 @@
 {
   "name": "homebridge-switchbot-thermostat",
-  "version": "2.0.1",
+  "version": "2.0.1.1",
   "description": "Homebridge plugin for a Switchbot powered thermostat",
   "main": "index.js",
   "dependencies": {

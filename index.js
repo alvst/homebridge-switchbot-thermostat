@@ -432,12 +432,10 @@ Thermostat.prototype = {
       ) {
         if (index !== 17.5 && index !== 22.5 && index !== 27.5) {
           count++;
-          this.log(`Decreasing temp ${index + this.minStep} / ${value}`);
+          this.log(`Decreasing temp ${index} / ${value}`);
           this.debugLog(
-            `Current Temp temperature ${
-              index + this.minStep
-            }° Celsius | ${this.convertToFahrenheit(
-              index + this.minStep
+            `Current Temp temperature ${index}° Celsius | ${this.convertToFahrenheit(
+              index
             )}° Fahrenheit`
           );
           await this.sendCurl(this.temp_down_accessory_uuid);
@@ -448,10 +446,8 @@ Thermostat.prototype = {
             )} since ${index} is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
           );
           this.debugLog(
-            `Current SKIPPED Temp temperature ${
-              index + this.minStep + this.minStep
-            }° Celsius | ${this.convertToFahrenheit(
-              index + this.minStep + this.minStep
+            `Current SKIPPED Temp temperature ${index}° Celsius | ${this.convertToFahrenheit(
+              index
             )}° Fahrenheit`
           );
         }
@@ -459,7 +455,7 @@ Thermostat.prototype = {
     }
 
     this.debugLog(
-      `Current Temp temperature ${value}° Celsius | ${this.convertToFahrenheit(
+      `Changes Complete. Thermostat set to ${value}° Celsius | ${this.convertToFahrenheit(
         value
       )}° Fahrenheit`
     );

@@ -118,7 +118,7 @@ Thermostat.prototype = {
       const data = fs.readFileSync(filePath, 'utf-8');
       this.log('Cache file exists, reading data...');
       const fileData = JSON.parse(data);
-      this.debugLog(fileData);
+      // this.debugLog(fileData);
       powerStateOn = fileData.powerStateOn;
       currentTemp = fileData.currentTemp;
       this.log(
@@ -408,15 +408,15 @@ Thermostat.prototype = {
           this.sendCurl(this.temp_up_accessory_uuid);
         } else {
           this.log(
-            `Skipping ${index} because the thermostat is already at ${this.convertToFahrenheit(
+            `Skipping ${index}°C because the thermostat is already at ${this.convertToFahrenheit(
               index
-            )} since ${index} is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
+            )}°F since ${index}°C is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
           );
           this.debugLog(
             `Current SKIPPED Temp temperature ${
-              index + this.minStep
+              index + this.minStep + this.minStep
             }° Celsius | ${this.convertToFahrenheit(
-              index + this.minStep
+              index + this.minStep + this.minStep
             )}° Fahrenheit`
           );
         }
@@ -448,10 +448,10 @@ Thermostat.prototype = {
             )} since ${index} is a duplicate temperature when converting between Celsius and Fahrenheit and would cause an extra button press.`
           );
           this.debugLog(
-            `Current Temp temperature ${
-              index + this.minStep
+            `Current SKIPPED Temp temperature ${
+              index + this.minStep + this.minStep
             }° Celsius | ${this.convertToFahrenheit(
-              index + this.minStep
+              index + this.minStep + this.minStep
             )}° Fahrenheit`
           );
         }
